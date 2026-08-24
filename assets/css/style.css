@@ -1,0 +1,621 @@
+/* ==========================================================================
+   1. GLOBAL & RESET STYLES (Berlaku untuk Semua Halaman)
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* ==========================================================================
+   2. SIDEBAR COMPONENT (Digunakan di Dashboard & Form Surat)
+   ========================================================================== */
+.sidebar {
+    width: 260px;
+    background-color: #110c43;
+    color: #ffffff;
+    padding: 40px 24px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.surat-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-left: 12px;
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+    margin-top: 8px;
+}
+
+.submenu-item {
+    color: #d1d5db;
+    font-size: 0.85rem;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    line-height: 1.3;
+}
+
+.submenu-item:hover, 
+.submenu-item.active {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.15);
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   3. HALAMAN: JENIS SURAT (jenis-surat.html)
+   ========================================================================== */
+.main-content {
+    flex: 1;
+    padding: 40px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content-header {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 40px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 1080px;
+}
+
+@media (max-width: 992px) {
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background-color: #d9d9d9;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 110px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.card-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1;
+}
+
+.card-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #111111;
+    line-height: 1.3;
+}
+
+.btn-pilih {
+    background-color: #110c43;
+    color: #ffffff;
+    border: none;
+    padding: 6px 20px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-pilih:hover {
+    background-color: #211978;
+}
+
+.btn-pilih:active {
+    transform: scale(0.96);
+}
+
+/* ==========================================================================
+   4. HALAMAN: FORM & PREVIEW SURAT (buka-isolir.html, dll)
+   ========================================================================== */
+.main-container {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-header-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #111;
+}
+
+.workspace-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* --- Card Formulir (Seksi Kiri) --- */
+.card-form {
+    background-color: #d9d9d9;
+    border-radius: 20px;
+    padding: 28px;
+}
+
+.section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #222;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 0.85rem;
+    background-color: #ffffff;
+}
+
+.optional-box {
+    background-color: #ffffff;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 12px 0 20px 0;
+    color: #333;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background-color: #110c43;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #1c1563;
+}
+
+/* --- Card Preview Surat (Seksi Kanan) --- */
+.card-preview {
+    background-color: #d9d9d9;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.toolbar {
+    background-color: #110c43;
+    border-radius: 8px;
+    padding: 6px 12px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.tool-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.paper-wrapper {
+    background-color: #ffffff;
+    width: 100%;
+    min-height: 520px;
+    padding: 24px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    overflow-y: auto;
+}
+
+/* State Awal Preview Kosong */
+.empty-preview {
+    height: 100%;
+    min-height: 460px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #888888;
+    font-size: 0.9rem;
+    padding: 0 20px;
+}
+
+/* Format Template Kertas PDF Surat */
+.letter-paper {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000;
+    font-size: 0.72rem;
+    line-height: 1.35;
+}
+
+.letter-title {
+    text-align: center;
+    text-decoration: underline;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+}
+
+.paragraph {
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table td {
+    padding: 2px 0;
+    vertical-align: top;
+}
+
+.data-table .lbl {
+    width: 130px;
+}
+
+.note {
+    font-style: italic;
+    font-size: 0.65rem;
+    margin-bottom: 8px;
+}
+
+.statement-title {
+    text-align: center;
+    font-weight: bold;
+    margin: 12px 0 6px 0;
+}
+
+.bold-table {
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.keterangan-list {
+    padding-left: 16px;
+}
+
+/* Action Buttons (Unduh & Bagikan) */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-top: 16px;
+}
+
+.btn-action {
+    flex: 1;
+    padding: 12px;
+    background-color: #110c43;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.btn-action:disabled {
+    background-color: #888888;
+    cursor: not-allowed;
+}
+
+.back-link {
+    margin-top: 14px;
+    color: #111;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   5. STYLING AREA TANDA TANGAN (PRESISI & SEJAJAR)
+   ========================================================================== */
+.signature-section {
+    margin-top: 20px;
+}
+
+.sig-date {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.sig-grid {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.sig-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    height: 85px;
+    position: relative;
+}
+
+.materai-box {
+    border: 1px dashed #666;
+    width: 52px;
+    height: 34px;
+    margin-top: 4px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.48rem;
+    color: #777;
+    text-align: center;
+    line-height: 1.1;
+    font-weight: bold;
+}
+
+.sig-name {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+}
+
+/* Mode Fullscreen untuk Card Preview */
+.card-preview.fullscreen-mode {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    border-radius: 0;
+    padding: 24px;
+    overflow-y: auto;
+    background-color: rgba(217, 217, 217, 0.98);
+}
+
+.card-preview.fullscreen-mode .paper-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    height: calc(100vh - 180px);
+}
+
+/* ==========================================================================
+   6. PRINT MEDIA STYLES (A4 PRESISI TANPA NGELAG)
+   ========================================================================== */
+@media print {
+    /* Sembunyikan semua elemen UI kecuali Kertas Surat */
+    body * {
+        visibility: hidden !important;
+    }
+
+    .paper-wrapper, 
+    .paper-wrapper * {
+        visibility: visible !important;
+    }
+
+    .paper-wrapper {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+    }
+
+    .letter-paper {
+        transform: scale(1) !important;
+        font-size: 11pt !important;
+        line-height: 1.4 !important;
+        color: #000000 !important;
+        width: 100% !important;
+    }
+
+    .letter-title {
+        font-size: 13pt !important;
+        margin-bottom: 24px !important;
+    }
+
+    .materai-box {
+        border: 1px dashed #000 !important;
+    }
+
+    @page {
+        size: A4 portrait;
+        margin: 2cm 1.5cm;
+    }
+}
+
+/* ==========================================================================
+   7. MODAL BAGIKAN SURAT (WHATSAPP & TELEGRAM)
+   ========================================================================== */
+.share-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+}
+
+.share-modal-content {
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.share-modal-content h3 {
+    font-size: 1.1rem;
+    color: #110c43;
+    margin-bottom: 8px;
+}
+
+.share-desc {
+    font-size: 0.82rem;
+    color: #555555;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.share-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.share-btn {
+    display: block;
+    padding: 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.88rem;
+    transition: opacity 0.2s;
+}
+
+.share-btn:hover {
+    opacity: 0.9;
+}
+
+.wa-btn {
+    background-color: #25D366;
+}
+
+.tg-btn {
+    background-color: #0088cc;
+}
+
+.close-modal-btn {
+    background: none;
+    border: none;
+    color: #666;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+
+/* Styling Accordion Penerima Kuasa */
+.accordion-header {
+    background-color: #ffffff;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 16px 0 8px 0;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.accordion-header:hover {
+    background-color: #f0f0f0;
+}
+
+.accordion-arrow {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.accordion-arrow.active {
+    transform: rotate(90deg); /* Panah berputar ke bawah saat terbuka */
+}
+
+.accordion-content {
+    display: none; /* Sembunyi secara default */
+    margin-top: 10px;
+}
+
+.accordion-content.open {
+    display: block; /* Muncul saat di-toggle */
+}

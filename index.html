@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - E-Surat</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom, #232066, #E8F1FA);
+      padding: 20px;
+    }
+
+    .card {
+      background-color: #DCDCDC;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #140F47;
+      margin-bottom: 20px;
+    }
+
+    .icon-container {
+      margin-bottom: 12px;
+    }
+
+    .icon-container svg {
+      width: 70px;
+      height: 70px;
+      fill: #2C82C9;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 28px;
+      line-height: 1.3;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      background-color: #C4C4C4;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .input-field::placeholder {
+      color: #666;
+    }
+
+    .input-field:focus {
+      border-color: #140F47;
+    }
+
+    .input-field.error {
+      background-color: #FFE5E5;
+      border-color: #ff0000;
+    }
+
+    .error-text {
+      color: #d32f2f;
+      font-size: 12px;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .btn-submit {
+      width: 100%;
+      height: 50px;
+      background-color: #140F47;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #1c165c;
+    }
+
+    .forgot-password {
+      text-align: right;
+      margin-top: 12px;
+    }
+
+    .forgot-password a {
+      color: #140F47;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1 class="title">Login</h1>
+    
+    <div class="icon-container">
+      <svg viewBox="0 0 24 24">
+        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/>
+      </svg>
+    </div>
+
+    <div class="subtitle">
+      Pembuat Surat<br>Otomatis
+    </div>
+
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <input 
+          type="email" 
+          id="email" 
+          class="input-field" 
+          placeholder="Email" 
+          oninput="validateEmail()"
+          required
+        >
+        <div id="emailError" class="error-text">Email salah</div>
+      </div>
+
+      <div class="form-group">
+        <input 
+          type="password" 
+          id="password" 
+          class="input-field" 
+          placeholder="Kata Sandi" 
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn-submit">Masuk</button>
+    </form>
+
+    <div class="forgot-password">
+      <a href="#">Lupa Kata Sandi?</a>
+    </div>
+  </div>
+
+  <script>
+    const validEmail = 'yustikamonita@gmail.com';
+    const validPassword = 'alwaysthebest';
+
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const emailErrorText = document.getElementById('emailError');
+
+    function validateEmail() {
+      const emailValue = emailInput.value.trim().toLowerCase();
+
+      if (emailValue !== '' && emailValue !== validEmail.toLowerCase()) {
+        emailInput.classList.add('error');
+        emailErrorText.style.display = 'block';
+        return false;
+      } else {
+        emailInput.classList.remove('error');
+        emailErrorText.style.display = 'none';
+        return true;
+      }
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+
+      const email = emailInput.value.trim().toLowerCase();
+      const password = passwordInput.value.trim().toLowerCase();
+
+      const isEmailValid = email === validEmail.toLowerCase();
+      const isPasswordValid = password === validPassword.toLowerCase();
+
+      if (!isEmailValid) {
+        emailInput.classList.add('error');
+        emailErrorText.style.display = 'block';
+      }
+
+      if (!isEmailValid || !isPasswordValid) {
+        if (!isPasswordValid) {
+          alert('Kata sandi salah!');
+        }
+        return;
+      }
+
+      // Pengalihan langsung ke jenis-surat.html
+      window.location.href = 'jenis-surat.html';
+    }
+  </script>
+
+</body>
+</html>
