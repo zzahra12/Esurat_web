@@ -7,7 +7,6 @@ function generatePreview(event) {
     const tipeIdentitas = document.getElementById('tipeIdentitas').value;
     const nikPelanggan = document.getElementById('nikPelanggan').value;
     const alamatPelanggan = document.getElementById('alamatPelanggan').value;
-
     const namaTelkom = document.getElementById('namaTelkom').value || 'Yustika Monita';
 
     const namaKuasa = document.getElementById('namaKuasa').value;
@@ -15,37 +14,43 @@ function generatePreview(event) {
     const tipeIdentitasKuasa = document.getElementById('tipeIdentitasKuasa').value;
     const alamatKuasa = document.getElementById('alamatKuasa').value;
 
-    // 2. Bagian Atas ("Yang bertanda tangan di bawah ini") -> Data PELANGGAN
-    document.getElementById('prevYangBertandaTanganNama').innerText = namaPelanggan;
-    document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatPelanggan;
-    document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitas;
-    document.getElementById('prevYangBertandaTanganNik').innerText = nikPelanggan;
-
-    // 3. Bagian Bawah ("Bertindak untuk dan atas nama") -> Data PENERIMA KUASA
+    // 2. Olah Logika Kuasa (Jika Penerima Kuasa Diisi)
     if (namaKuasa && namaKuasa.trim() !== '') {
-        document.getElementById('prevAtasNamaPelangganNama').innerText = namaKuasa;
-        document.getElementById('prevAtasNamaPelangganAlamat').innerText = alamatKuasa;
-        document.getElementById('prevAtasNamaPelangganTipe').innerText = tipeIdentitasKuasa;
-        document.getElementById('prevAtasNamaPelangganNik').innerText = nikKuasa;
+        // Pihak 1 (Atas): Penerima Kuasa
+        document.getElementById('prevYangBertandaTanganNama').innerText = namaKuasa;
+        document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatKuasa;
+        document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitasKuasa;
+        document.getElementById('prevYangBertandaTanganNik').innerText = nikKuasa;
+
+        // Pihak 2 (Tengah): Pelanggan Pemilik Layanan
+        document.getElementById('prevAtasNamaPelangganNama').innerText = namaPelanggan;
+        document.getElementById('prevAtasNamaPelangganAlamat').innerText = alamatPelanggan;
+        document.getElementById('prevAtasNamaPelangganTipe').innerText = tipeIdentitas;
+        document.getElementById('prevAtasNamaPelangganNik').innerText = nikPelanggan;
     } else {
+        // Tanpa Kuasa: Pihak 1 (Atas) adalah Pelanggan Langsung
+        document.getElementById('prevYangBertandaTanganNama').innerText = namaPelanggan;
+        document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatPelanggan;
+        document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitas;
+        document.getElementById('prevYangBertandaTanganNik').innerText = nikPelanggan;
+
+        // Pihak 2 (Tengah) Dikosongkan/Strip
         document.getElementById('prevAtasNamaPelangganNama').innerText = '-';
         document.getElementById('prevAtasNamaPelangganAlamat').innerText = '-';
         document.getElementById('prevAtasNamaPelangganTipe').innerText = '-';
         document.getElementById('prevAtasNamaPelangganNik').innerText = '-';
     }
 
-    // 4. Data Layanan & Tanda Tangan
+    // 3. Data Layanan
     document.getElementById('prevNoLayanan').innerText = noLayanan;
     document.getElementById('prevAtasNamaLayanan').innerText = namaPelanggan;
     document.getElementById('prevAlamatLayanan').innerText = alamatPelanggan;
 
-    // Tanda Tangan Penanggung Jawab Telkom (Default: Yustika Monita)
+    // 4. Data Penanggung Jawab & Pelanggan di Tanda Tangan
     document.getElementById('prevSignPenanggungJawab').innerText = namaTelkom;
-
-    // Tanda Tangan Pelanggan
     document.getElementById('prevSignPelanggan').innerText = namaPelanggan;
 
-    // 5. Format Tanggal Real-time
+    // 5. Generate Tanggal Realtime (Banyuwangi)
     const today = new Date();
     const formattedDate = today.toLocaleDateString('id-ID', {
         day: 'numeric',
@@ -54,20 +59,21 @@ function generatePreview(event) {
     });
     document.getElementById('prevRealtimeDate').innerText = `Banyuwangi, ${formattedDate}`;
 
-    // 6. Tampilkan Preview & Aktifkan Tombol Unduh
+    // 6. Tampilkan Kertas Preview & Aktifkan Tombol Unduh PDF
     document.getElementById('emptyState').style.display = 'none';
     document.getElementById('letterPaper').style.display = 'block';
 
     document.getElementById('btnDownload').disabled = false;
 }
 
-// Unduh PDF Presisi A4 Tanpa Terpotong
+// ==========================================
+// FUNGSI UNDUH PDF (A4 PRESET)
+// ==========================================
 async function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const element = document.getElementById('letterPaper');
     const namaPelanggan = document.getElementById('namaPelanggan').value || 'Pelanggan';
 
-    // Reset gaya tampilan sementara agar seluruh elemen surat terbaca utuh
     const originalTransform = element.style.transform;
     const originalMaxHeight = element.style.maxHeight;
     const originalOverflow = element.style.overflow;
@@ -85,7 +91,6 @@ async function downloadPDF() {
         });
 
         const imgData = canvas.toDataURL('image/jpeg', 1.0);
-        
         const pdf = new jsPDF('p', 'mm', 'a4');
         const pdfWidth = pdf.internal.pageSize.getWidth();
         
@@ -107,7 +112,9 @@ async function downloadPDF() {
     }
 }
 
-// Variable Skala Zoom
+// ==========================================
+// FITUR TOOLBAR (ZOOM & FULLSCREEN)
+// ==========================================
 let currentScale = 1;
 
 function zoomIn() {
@@ -137,17 +144,5 @@ function toggleFullscreen() {
     const previewCard = document.querySelector('.card-preview');
     if (previewCard) {
         previewCard.classList.toggle('fullscreen-mode');
-    }
-}
-
-
-// Fungsi Toggle Accordion Penerima Kuasa
-function toggleKuasaSection() {
-    const content = document.getElementById('kuasaContent');
-    const arrow = document.getElementById('kuasaArrow');
-    
-    if (content && arrow) {
-        content.classList.toggle('open');
-        arrow.classList.toggle('active');
     }
 }

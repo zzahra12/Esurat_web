@@ -1,17 +1,16 @@
-// Helper format tanggal ke bahasa Indonesia
-function formatDateIndo(dateStr) {
-    if (!dateStr) return '-';
-    const dateObj = new Date(dateStr);
-    if (isNaN(dateObj)) return dateStr;
-    return dateObj.toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    });
-}
-
 function generatePreview(event) {
     event.preventDefault();
+
+    // Helper untuk format tanggal ke format lokal Indonesia
+    const formatDateIndo = (dateString) => {
+        if (!dateString) return '-';
+        const date = new Date(dateString);
+        return isNaN(date) ? '-' : date.toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+    };
 
     // 1. Ambil Nilai dari Form Input
     const namaPelanggan = document.getElementById('namaPelanggan').value;
@@ -21,9 +20,9 @@ function generatePreview(event) {
     const alamatPelanggan = document.getElementById('alamatPelanggan').value;
 
     const durasiIsolir = document.getElementById('durasiIsolir').value || '-';
-    const tglMulaiIsolir = document.getElementById('tglMulaiIsolir').value;
-    const tglBukaIsolir = document.getElementById('tglBukaIsolir').value;
-    const keterangan = document.getElementById('keteranganIsolir').value || '-';
+    const tglBukaIsolirVal = document.getElementById('tglBukaIsolir').value;
+    const tglMulaiIsolirVal = document.getElementById('tglMulaiIsolir').value;
+    const keteranganIsolir = document.getElementById('keteranganIsolir').value || '-';
 
     const namaTelkom = document.getElementById('namaTelkom').value || 'Yustika Monita';
 
@@ -32,41 +31,51 @@ function generatePreview(event) {
     const tipeIdentitasKuasa = document.getElementById('tipeIdentitasKuasa').value;
     const alamatKuasa = document.getElementById('alamatKuasa').value;
 
-    // 2. Bagian Atas ("Yang bertanda tangan di bawah ini") -> Data PELANGGAN
-    document.getElementById('prevYangBertandaTanganNama').innerText = namaPelanggan;
-    document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatPelanggan;
-    document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitas;
-    document.getElementById('prevYangBertandaTanganNik').innerText = nikPelanggan;
+    // 2. Logika Kuasa (Jika Penerima Kuasa Diisi)
+    const containerKuasa = document.getElementById('containerPrevKuasa');
 
-    // 3. Bagian Bawah ("Bertindak untuk dan atas nama") -> Data PENERIMA KUASA
     if (namaKuasa && namaKuasa.trim() !== '') {
-        document.getElementById('prevAtasNamaPelangganNama').innerText = namaKuasa;
-        document.getElementById('prevAtasNamaPelangganAlamat').innerText = alamatKuasa;
-        document.getElementById('prevAtasNamaPelangganTipe').innerText = tipeIdentitasKuasa;
-        document.getElementById('prevAtasNamaPelangganNik').innerText = nikKuasa;
+        // Tampilkan tabel "Bertindak untuk dan atas nama:" jika ada Kuasa
+        if (containerKuasa) containerKuasa.style.display = 'block';
+
+        // Pihak 1 (Atas): Penerima Kuasa
+        document.getElementById('prevYangBertandaTanganNama').innerText = namaKuasa;
+        document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatKuasa;
+        document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitasKuasa;
+        document.getElementById('prevYangBertandaTanganNik').innerText = nikKuasa;
+
+        // Pihak 2 (Tengah): Pelanggan Utama Pemilik Layanan
+        document.getElementById('prevAtasNamaPelangganNama').innerText = namaPelanggan;
+        document.getElementById('prevAtasNamaPelangganAlamat').innerText = alamatPelanggan;
+        document.getElementById('prevAtasNamaPelangganTipe').innerText = tipeIdentitas;
+        document.getElementById('prevAtasNamaPelangganNik').innerText = nikPelanggan;
     } else {
-        document.getElementById('prevAtasNamaPelangganNama').innerText = '-';
-        document.getElementById('prevAtasNamaPelangganAlamat').innerText = '-';
-        document.getElementById('prevAtasNamaPelangganTipe').innerText = '-';
-        document.getElementById('prevAtasNamaPelangganNik').innerText = '-';
+        // Sembunyikan tabel "Bertindak untuk dan atas nama:" jika tidak ada Kuasa
+        if (containerKuasa) containerKuasa.style.display = 'none';
+
+        // Pihak 1 (Atas): Pelanggan Utama Langsung
+        document.getElementById('prevYangBertandaTanganNama').innerText = namaPelanggan;
+        document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatPelanggan;
+        document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitas;
+        document.getElementById('prevYangBertandaTanganNik').innerText = nikPelanggan;
     }
 
-    // 4. Data Layanan
+    // 3. Data Layanan
     document.getElementById('prevNoLayanan').innerText = noLayanan;
     document.getElementById('prevAtasNamaLayanan').innerText = namaPelanggan;
     document.getElementById('prevAlamatLayanan').innerText = alamatPelanggan;
 
-    // 5. Detail Waktu Isolir
+    // 4. Detail Waktu Isolir
     document.getElementById('prevDurasiIsolir').innerText = durasiIsolir;
-    document.getElementById('prevTglMulaiIsolir').innerText = formatDateIndo(tglMulaiIsolir);
-    document.getElementById('prevTglBukaIsolir').innerText = formatDateIndo(tglBukaIsolir);
-    document.getElementById('prevKeterangan').innerText = keterangan;
+    document.getElementById('prevTglMulaiIsolir').innerText = formatDateIndo(tglMulaiIsolirVal);
+    document.getElementById('prevTglBukaIsolir').innerText = formatDateIndo(tglBukaIsolirVal);
+    document.getElementById('prevKeterangan').innerText = keteranganIsolir;
 
-    // 6. Tanda Tangan
+    // 5. Tanda Tangan
     document.getElementById('prevSignPenanggungJawab').innerText = namaTelkom;
     document.getElementById('prevSignPelanggan').innerText = namaPelanggan;
 
-    // 7. Realtime Date
+    // 6. Realtime Date (Banyuwangi)
     const today = new Date();
     const formattedDate = today.toLocaleDateString('id-ID', {
         day: 'numeric',
@@ -75,7 +84,7 @@ function generatePreview(event) {
     });
     document.getElementById('prevRealtimeDate').innerText = `Banyuwangi, ${formattedDate}`;
 
-    // 8. Tampilkan Preview
+    // 7. Tampilkan Preview & Aktifkan Tombol Unduh PDF
     document.getElementById('emptyState').style.display = 'none';
     document.getElementById('letterPaper').style.display = 'block';
 

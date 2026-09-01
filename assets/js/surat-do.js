@@ -8,8 +8,8 @@ function generatePreview(event) {
     const nikPelanggan = document.getElementById('nikPelanggan').value;
     const alamatPelanggan = document.getElementById('alamatPelanggan').value;
 
-    const keterangan = document.getElementById('keteranganBerhenti').value || '-';
-    const tagihan = document.getElementById('informasiTagihan').value || '-';
+    const keteranganBerhenti = document.getElementById('keteranganBerhenti').value || '-';
+    const informasiTagihan = document.getElementById('informasiTagihan').value || '-';
 
     const namaTelkom = document.getElementById('namaTelkom').value || 'Yustika Monita';
 
@@ -18,39 +18,49 @@ function generatePreview(event) {
     const tipeIdentitasKuasa = document.getElementById('tipeIdentitasKuasa').value;
     const alamatKuasa = document.getElementById('alamatKuasa').value;
 
-    // 2. Bagian Atas ("Yang bertanda tangan di bawah ini") -> Data PELANGGAN
-    document.getElementById('prevYangBertandaTanganNama').innerText = namaPelanggan;
-    document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatPelanggan;
-    document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitas;
-    document.getElementById('prevYangBertandaTanganNik').innerText = nikPelanggan;
+    // 2. Logika Kuasa (Jika Penerima Kuasa Diisi)
+    const containerKuasa = document.getElementById('containerPrevKuasa');
 
-    // 3. Bagian Bawah ("Bertindak untuk dan atas nama") -> Data PENERIMA KUASA
     if (namaKuasa && namaKuasa.trim() !== '') {
-        document.getElementById('prevAtasNamaPelangganNama').innerText = namaKuasa;
-        document.getElementById('prevAtasNamaPelangganAlamat').innerText = alamatKuasa;
-        document.getElementById('prevAtasNamaPelangganTipe').innerText = tipeIdentitasKuasa;
-        document.getElementById('prevAtasNamaPelangganNik').innerText = nikKuasa;
+        // Tampilkan tabel "Bertindak untuk dan atas nama:" jika ada Kuasa
+        if (containerKuasa) containerKuasa.style.display = 'block';
+
+        // Pihak 1 (Atas): Penerima Kuasa
+        document.getElementById('prevYangBertandaTanganNama').innerText = namaKuasa;
+        document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatKuasa;
+        document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitasKuasa;
+        document.getElementById('prevYangBertandaTanganNik').innerText = nikKuasa;
+
+        // Pihak 2 (Tengah): Pelanggan Utama Pemilik Layanan
+        document.getElementById('prevAtasNamaPelangganNama').innerText = namaPelanggan;
+        document.getElementById('prevAtasNamaPelangganAlamat').innerText = alamatPelanggan;
+        document.getElementById('prevAtasNamaPelangganTipe').innerText = tipeIdentitas;
+        document.getElementById('prevAtasNamaPelangganNik').innerText = nikPelanggan;
     } else {
-        document.getElementById('prevAtasNamaPelangganNama').innerText = '-';
-        document.getElementById('prevAtasNamaPelangganAlamat').innerText = '-';
-        document.getElementById('prevAtasNamaPelangganTipe').innerText = '-';
-        document.getElementById('prevAtasNamaPelangganNik').innerText = '-';
+        // Sembunyikan tabel "Bertindak untuk dan atas nama:" jika tidak ada Kuasa
+        if (containerKuasa) containerKuasa.style.display = 'none';
+
+        // Pihak 1 (Atas): Pelanggan Utama Langsung
+        document.getElementById('prevYangBertandaTanganNama').innerText = namaPelanggan;
+        document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatPelanggan;
+        document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitas;
+        document.getElementById('prevYangBertandaTanganNik').innerText = nikPelanggan;
     }
 
-    // 4. Data Layanan
+    // 3. Data Layanan
     document.getElementById('prevNoLayanan').innerText = noLayanan;
     document.getElementById('prevAtasNamaLayanan').innerText = namaPelanggan;
     document.getElementById('prevAlamatLayanan').innerText = alamatPelanggan;
 
-    // 5. Detail Berhenti Berlangganan
-    document.getElementById('prevKeterangan').innerText = keterangan;
-    document.getElementById('prevTagihan').innerText = tagihan;
+    // 4. Detail DO / Berhenti Berlangganan
+    document.getElementById('prevKeterangan').innerText = keteranganBerhenti;
+    document.getElementById('prevTagihan').innerText = informasiTagihan;
 
-    // 6. Tanda Tangan
+    // 5. Tanda Tangan
     document.getElementById('prevSignPenanggungJawab').innerText = namaTelkom;
     document.getElementById('prevSignPelanggan').innerText = namaPelanggan;
 
-    // 7. Realtime Date
+    // 6. Realtime Date (Banyuwangi)
     const today = new Date();
     const formattedDate = today.toLocaleDateString('id-ID', {
         day: 'numeric',
@@ -59,7 +69,7 @@ function generatePreview(event) {
     });
     document.getElementById('prevRealtimeDate').innerText = `Banyuwangi, ${formattedDate}`;
 
-    // 8. Tampilkan Preview
+    // 7. Tampilkan Preview & Aktifkan Tombol Unduh PDF
     document.getElementById('emptyState').style.display = 'none';
     document.getElementById('letterPaper').style.display = 'block';
 

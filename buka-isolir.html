@@ -10,8 +10,6 @@
     <!-- Pustaka Stabil Ekspor PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
@@ -19,14 +17,14 @@
     <aside class="sidebar">
         <h2 class="sidebar-title" onclick="window.location.href='jenis-surat.html'">Dashboard</h2>
         <div class="surat-submenu">
-    <a href="buka-isolir.html" class="submenu-item active">Surat Permintaan Buka Isolir Sementara</a>
-    <a href="surat-pda.html" class="submenu-item">Surat PDA</a>
-    <a href="surat-gno.html" class="submenu-item">Surat GNO</a>
-    <a href="surat-bna.html" class="submenu-item">Surat BNA</a>
-    <a href="surat-do.html" class="submenu-item">Surat Permintaan DO</a>
-    <a href="surat-isolir.html" class="submenu-item">Surat Permintaan Isolir</a>
-    <a href="surat-upgrade-downgrade.html" class="submenu-item">Surat Upgrade-Downgrade</a>
-</div>
+            <a href="buka-isolir.html" class="submenu-item active">Surat Permintaan Buka Isolir Sementara</a>
+            <a href="surat-pda.html" class="submenu-item">Surat PDA</a>
+            <a href="surat-gno.html" class="submenu-item">Surat GNO</a>
+            <a href="surat-bna.html" class="submenu-item">Surat BNA</a>
+            <a href="surat-do.html" class="submenu-item">Surat Permintaan DO</a>
+            <a href="surat-isolir.html" class="submenu-item">Surat Permintaan Isolir</a>
+            <a href="surat-upgrade-downgrade.html" class="submenu-item">Surat Upgrade-Downgrade</a>
+        </div>
     </aside>
 
     <!-- Main Workspace -->
@@ -78,34 +76,36 @@
                     </div>
 
                     <!-- Section Penerima Kuasa Accordion -->
-<div class="accordion-header" onclick="toggleKuasaSection()">
-    <span>Isi Data Penerima Kuasa (Opsional)</span>
-    <span class="accordion-arrow" id="kuasaArrow">❯</span>
-</div>
+                    <details class="kuasa-dropdown">
+                        <summary class="kuasa-summary">
+                            <span>Isi Data Penerima Kuasa (Opsional)</span>
+                            <span class="arrow-icon">❯</span>
+                        </summary>
+                        
+                        <div class="kuasa-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Nama Penerima Kuasa</label>
+                                    <input type="text" id="namaKuasa" placeholder="Nama Lengkap Kuasa">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nomor Identitas Kuasa</label>
+                                    <input type="text" id="nikKuasa" placeholder="NIK Kuasa">
+                                </div>
+                            </div>
 
-<div class="accordion-content" id="kuasaContent">
-    <div class="form-row">
-        <div class="form-group">
-            <label>Nama Penerima Kuasa</label>
-            <input type="text" id="namaKuasa" placeholder="Nama Lengkap Kuasa">
-        </div>
-        <div class="form-group">
-            <label>Nomor Identitas Kuasa</label>
-            <input type="text" id="nikKuasa" placeholder="NIK Kuasa">
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group">
-            <label>Tipe Identitas Kuasa</label>
-            <input type="text" id="tipeIdentitasKuasa" placeholder="KTP/SIM">
-        </div>
-        <div class="form-group">
-            <label>Alamat Kuasa</label>
-            <input type="text" id="alamatKuasa" placeholder="Alamat Penerima Kuasa">
-        </div>
-    </div>
-</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Tipe Identitas Kuasa</label>
+                                    <input type="text" id="tipeIdentitasKuasa" placeholder="KTP/SIM">
+                                </div>
+                                <div class="form-group">
+                                    <label>Alamat Kuasa</label>
+                                    <input type="text" id="alamatKuasa" placeholder="Alamat Penerima Kuasa">
+                                </div>
+                            </div>
+                        </div>
+                    </details>
 
                     <button type="submit" class="btn-primary">Lanjutkan</button>
                 </form>
@@ -139,14 +139,35 @@
                         </table>
                         <p class="note">(*diisi bila mutasi dilakukan oleh pihak penerima kuasa dari PELANGGAN)</p>
 
-                        <!-- Pihak 2 (Tengah): Kuasa / Pelanggan Utama -->
-                        <p class="paragraph">Bertindak untuk dan atas nama:</p>
-                        <table class="data-table">
-                            <tr><td class="lbl">Nama*</td><td>: <span id="prevAtasNamaPelangganNama">-</span></td></tr>
-                            <tr><td class="lbl">Alamat*</td><td>: <span id="prevAtasNamaPelangganAlamat">-</span></td></tr>
-                            <tr><td class="lbl">Tipe Identitas*</td><td>: <span id="prevAtasNamaPelangganTipe">-</span></td></tr>
-                            <tr><td class="lbl">Nomor Identitas*</td><td>: <span id="prevAtasNamaPelangganNik">-</span></td></tr>
-                        </table>
+                        <!-- Section Penerima Kuasa Accordion -->
+<div class="accordion-header" onclick="toggleKuasaSection()">
+    <span>Isi Data Penerima Kuasa (Opsional)</span>
+    <span class="accordion-arrow" id="kuasaArrow">❯</span>
+</div>
+
+<div class="accordion-content" id="kuasaContent">
+    <div class="form-row">
+        <div class="form-group">
+            <label>Nama Penerima Kuasa</label>
+            <input type="text" id="namaKuasa" placeholder="Nama Lengkap Kuasa">
+        </div>
+        <div class="form-group">
+            <label>Nomor Identitas Kuasa</label>
+            <input type="text" id="nikKuasa" placeholder="NIK Kuasa">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label>Tipe Identitas Kuasa</label>
+            <input type="text" id="tipeIdentitasKuasa" placeholder="KTP/SIM">
+        </div>
+        <div class="form-group">
+            <label>Alamat Kuasa</label>
+            <input type="text" id="alamatKuasa" placeholder="Alamat Penerima Kuasa">
+        </div>
+    </div>
+</div>
 
                         <p class="paragraph">Selanjutnya disebut sebagai "PELANGGAN", selaku pihak yang berlangganan layanan sebagai berikut:</p>
                         <table class="data-table">
@@ -176,7 +197,10 @@
                                 <!-- Kolom Kiri: Penanggung Jawab Telkom -->
                                 <div class="sig-box">
                                     <p><strong>Penanggung Jawab Telkom</strong></p>
-                                    <div class="sig-space"></div>
+                                    <div class="sig-space" style="height: 60px; display: flex; align-items: center; justify-content: center;">
+                                        <!-- Tanda Tangan Langsung Terpasang Otomatis -->
+                                        <img src="assets/images/ttd-telkom.jpg" alt="Tanda Tangan Telkom" style="max-height: 55px; width: auto;">
+                                    </div>
                                     <p class="sig-name">(<span id="prevSignPenanggungJawab">Yustika Monita</span>)</p>
                                 </div>
                                 

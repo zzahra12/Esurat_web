@@ -19,24 +19,35 @@ function generatePreview(event) {
     const tipeIdentitasKuasa = document.getElementById('tipeIdentitasKuasa').value;
     const alamatKuasa = document.getElementById('alamatKuasa').value;
 
-    // 2. Bagian Atas ("Yang bertanda tangan di bawah ini") -> Data PELANGGAN
-    document.getElementById('prevYangBertandaTanganNama').innerText = namaPelanggan;
-    document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatPelanggan;
-    document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitas;
-    document.getElementById('prevYangBertandaTanganNik').innerText = nikPelanggan;
+    /* === [BAGIAN YANG DIUBAH]: LOGIKA DINAMIS PENERIMA KUASA === */
+    const containerKuasa = document.getElementById('containerPrevKuasa');
 
-    // 3. Bagian Bawah ("Bertindak untuk dan atas nama") -> Data PENERIMA KUASA
     if (namaKuasa && namaKuasa.trim() !== '') {
-        document.getElementById('prevAtasNamaPelangganNama').innerText = namaKuasa;
-        document.getElementById('prevAtasNamaPelangganAlamat').innerText = alamatKuasa;
-        document.getElementById('prevAtasNamaPelangganTipe').innerText = tipeIdentitasKuasa;
-        document.getElementById('prevAtasNamaPelangganNik').innerText = nikKuasa;
+        // Tampilkan tabel "Bertindak untuk dan atas nama:" jika ada Kuasa
+        if (containerKuasa) containerKuasa.style.display = 'block';
+
+        // Pihak 1 (Atas): Penerima Kuasa (yang menandatangani)
+        document.getElementById('prevYangBertandaTanganNama').innerText = namaKuasa;
+        document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatKuasa;
+        document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitasKuasa;
+        document.getElementById('prevYangBertandaTanganNik').innerText = nikKuasa;
+
+        // Pihak 2 (Tengah): Pelanggan Utama Pemilik Layanan
+        document.getElementById('prevAtasNamaPelangganNama').innerText = namaPelanggan;
+        document.getElementById('prevAtasNamaPelangganAlamat').innerText = alamatPelanggan;
+        document.getElementById('prevAtasNamaPelangganTipe').innerText = tipeIdentitas;
+        document.getElementById('prevAtasNamaPelangganNik').innerText = nikPelanggan;
     } else {
-        document.getElementById('prevAtasNamaPelangganNama').innerText = '-';
-        document.getElementById('prevAtasNamaPelangganAlamat').innerText = '-';
-        document.getElementById('prevAtasNamaPelangganTipe').innerText = '-';
-        document.getElementById('prevAtasNamaPelangganNik').innerText = '-';
+        // Sembunyikan tabel "Bertindak untuk dan atas nama:" jika tidak ada Kuasa
+        if (containerKuasa) containerKuasa.style.display = 'none';
+
+        // Pihak 1 (Atas): Pelanggan Utama Langsung
+        document.getElementById('prevYangBertandaTanganNama').innerText = namaPelanggan;
+        document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatPelanggan;
+        document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitas;
+        document.getElementById('prevYangBertandaTanganNik').innerText = nikPelanggan;
     }
+    /* === [AKHIR BAGIAN YANG DIUBAH] === */
 
     // 4. Data Layanan
     document.getElementById('prevNoLayanan').innerText = noLayanan;

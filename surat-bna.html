@@ -92,35 +92,37 @@
                         <input type="text" id="namaTelkom" value="Yustika Monita" placeholder="Nama Petugas Telkom">
                     </div>
 
-                     <!-- Section Penerima Kuasa Accordion -->
-<div class="accordion-header" onclick="toggleKuasaSection()">
-    <span>Isi Data Penerima Kuasa (Opsional)</span>
-    <span class="accordion-arrow" id="kuasaArrow">❯</span>
-</div>
+                    <!-- Accordion Pengisian Penerima Kuasa (Kotak Putih Rounded) -->
+                    <details class="kuasa-dropdown">
+                        <summary class="kuasa-summary">
+                            <span>Isi Data Penerima Kuasa (Opsional)</span>
+                            <span class="arrow-icon">❯</span>
+                        </summary>
+                        
+                        <div class="kuasa-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Nama Penerima Kuasa</label>
+                                    <input type="text" id="namaKuasa" placeholder="Nama Lengkap Kuasa">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nomor Identitas Kuasa</label>
+                                    <input type="text" id="nikKuasa" placeholder="NIK Kuasa">
+                                </div>
+                            </div>
 
-<div class="accordion-content" id="kuasaContent">
-    <div class="form-row">
-        <div class="form-group">
-            <label>Nama Penerima Kuasa</label>
-            <input type="text" id="namaKuasa" placeholder="Nama Lengkap Kuasa">
-        </div>
-        <div class="form-group">
-            <label>Nomor Identitas Kuasa</label>
-            <input type="text" id="nikKuasa" placeholder="NIK Kuasa">
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group">
-            <label>Tipe Identitas Kuasa</label>
-            <input type="text" id="tipeIdentitasKuasa" placeholder="KTP/SIM">
-        </div>
-        <div class="form-group">
-            <label>Alamat Kuasa</label>
-            <input type="text" id="alamatKuasa" placeholder="Alamat Penerima Kuasa">
-        </div>
-    </div>
-</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Tipe Identitas Kuasa</label>
+                                    <input type="text" id="tipeIdentitasKuasa" placeholder="KTP/SIM">
+                                </div>
+                                <div class="form-group">
+                                    <label>Alamat Kuasa</label>
+                                    <input type="text" id="alamatKuasa" placeholder="Alamat Penerima Kuasa">
+                                </div>
+                            </div>
+                        </div>
+                    </details>
 
                     <button type="submit" class="btn-primary">Lanjutkan</button>
                 </form>
@@ -153,14 +155,16 @@
                         </table>
                         <p class="note">(*diisi bila mutasi dilakukan oleh pihak penerima kuasa dari PELANGGAN)</p>
 
-                        <!-- Data Tengah: Penerima Kuasa (Opsional) -->
-                        <p class="paragraph">Bertindak untuk dan atas nama:</p>
-                        <table class="data-table">
-                            <tr><td class="lbl">Nama*</td><td>: <span id="prevAtasNamaPelangganNama">-</span></td></tr>
-                            <tr><td class="lbl">Alamat*</td><td>: <span id="prevAtasNamaPelangganAlamat">-</span></td></tr>
-                            <tr><td class="lbl">Tipe Identitas*</td><td>: <span id="prevAtasNamaPelangganTipe">-</span></td></tr>
-                            <tr><td class="lbl">Nomor Identitas*</td><td>: <span id="prevAtasNamaPelangganNik">-</span></td></tr>
-                        </table>
+                        <!-- Data Tengah: Penerima Kuasa (Hanya muncul jika diisi) -->
+                        <div id="containerPrevKuasa" style="display: none;">
+                            <p class="paragraph">Bertindak untuk dan atas nama:</p>
+                            <table class="data-table">
+                                <tr><td class="lbl">Nama*</td><td>: <span id="prevAtasNamaPelangganNama">-</span></td></tr>
+                                <tr><td class="lbl">Alamat*</td><td>: <span id="prevAtasNamaPelangganAlamat">-</span></td></tr>
+                                <tr><td class="lbl">Tipe Identitas*</td><td>: <span id="prevAtasNamaPelangganTipe">-</span></td></tr>
+                                <tr><td class="lbl">Nomor Identitas*</td><td>: <span id="prevAtasNamaPelangganNik">-</span></td></tr>
+                            </table>
+                        </div>
 
                         <p class="paragraph">Selanjutnya disebut sebagai "PELANGGAN", selaku pihak yang berlangganan layanan sebagai berikut:</p>
                         <table class="data-table">
@@ -191,7 +195,10 @@
                             <div class="sig-grid">
                                 <div class="sig-box">
                                     <p><strong>Penanggung Jawab Telkom</strong></p>
-                                    <div class="sig-space"></div>
+                                    <div class="sig-space" style="height: 60px; display: flex; align-items: center; justify-content: center;">
+                                        <!-- Gambar Tanda Tangan Otomatis -->
+                                        <img src="assets/images/ttd-telkom.jpg" alt="Tanda Tangan Telkom" style="max-height: 55px; width: auto;">
+                                    </div>
                                     <p class="sig-name">(<span id="prevSignPenanggungJawab">Yustika Monita</span>)</p>
                                 </div>
                                 
