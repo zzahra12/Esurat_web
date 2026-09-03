@@ -3,13 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surat Permintaan Isolir Layanan</title>
+    <title>Surat Permintaan Isolir / Cabut Layanan</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 
     <!-- Pustaka Ekspor PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        .letter-paper {
+            font-size: 11px !important;
+            line-height: 1.35 !important;
+            padding: 25px 30px !important;
+        }
+        .letter-title {
+            font-size: 13px !important;
+            margin-bottom: 12px !important;
+        }
+        .data-table td {
+            padding: 2px 0 !important;
+            font-size: 11px !important;
+        }
+        .paragraph {
+            margin-bottom: 6px !important;
+        }
+        .statement-title {
+            margin: 10px 0 6px 0 !important;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
@@ -29,7 +53,7 @@
 
     <!-- Main Workspace -->
     <main class="main-container">
-        <h1 class="page-header-title">Surat Permintaan Isolir</h1>
+        <h1 class="page-header-title">Surat Permintaan Isolir / Cabut Layanan</h1>
 
         <div class="workspace-grid">
             
@@ -65,32 +89,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Alamat</label>
+                        <label>Alamat Pelanggan</label>
                         <textarea id="alamatPelanggan" rows="2" placeholder="Alamat Pelanggan" required></textarea>
                     </div>
 
-                    <h3 class="section-title" style="margin-top: 10px;">DETAIL WAKTU ISOLIR</h3>
+                    <h3 class="section-title" style="margin-top: 10px;">DETAIL PERMINTAAN ISOLIR</h3>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Durasi Isolir (Opsional)</label>
-                            <input type="text" id="durasiIsolir" placeholder="Contoh: 1 Bulan">
-                        </div>
-                        <div class="form-group">
-                            <label>Tanggal Buka Isolir</label>
-                            <input type="date" id="tglBukaIsolir">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Tanggal Mulai Isolir</label>
-                            <input type="date" id="tglMulaiIsolir" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Keterangan / Alasan</label>
-                            <input type="text" id="keteranganIsolir" placeholder="Keterangan / Alasan">
-                        </div>
+                    <div class="form-group">
+                        <label>Alasan / Keterangan Isolir</label>
+                        <textarea id="keteranganTambahan" rows="2" placeholder="Alasan Isolir..." required></textarea>
                     </div>
 
                     <div class="form-group">
@@ -98,7 +105,13 @@
                         <input type="text" id="namaTelkom" value="Yustika Monita" placeholder="Nama Petugas Telkom">
                     </div>
 
-                    <!-- Accordion Pengisian Penerima Kuasa (Kotak Putih Rounded) -->
+                    <!-- CHECKBOX KHUSUS YUSTIKA MONITA -->
+                    <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-top: -5px; margin-bottom: 15px;">
+                        <input type="checkbox" id="checkTtdMonita" checked style="width: auto; cursor: pointer;">
+                        <label for="checkTtdMonita" style="margin: 0; cursor: pointer; font-size: 13px; font-weight: 500;">Tempelkan Tanda Tangan Yustika Monita</label>
+                    </div>
+
+                    <!-- Accordion Pengisian Penerima Kuasa -->
                     <details class="kuasa-dropdown">
                         <summary class="kuasa-summary">
                             <span>Isi Data Penerima Kuasa (Opsional)</span>
@@ -149,70 +162,64 @@
                     </div>
 
                     <div id="letterPaper" class="letter-paper" style="display: none;">
-                        <h4 class="letter-title">SURAT PERMINTAAN ISOLIR LAYANAN</h4>
+                        <h4 class="letter-title" style="text-align: center; text-decoration: underline;">SURAT PERMINTAAN ISOLIR / CABUT LAYANAN</h4>
                         
-                        <!-- Data Atas: Pelanggan Utama -->
+                        <!-- DATA ATAS: PELANGGAN UTAMA -->
                         <p class="paragraph">Yang bertanda tangan di bawah ini :</p>
                         <table class="data-table">
-                            <tr><td class="lbl">Nama</td><td>: <span id="prevYangBertandaTanganNama">-</span></td></tr>
-                            <tr><td class="lbl">Alamat</td><td>: <span id="prevYangBertandaTanganAlamat">-</span></td></tr>
-                            <tr><td class="lbl">Tipe Identitas</td><td>: <span id="prevYangBertandaTanganTipe">-</span></td></tr>
-                            <tr><td class="lbl">Nomor Identitas</td><td>: <span id="prevYangBertandaTanganNik">-</span></td></tr>
+                            <tr><td class="lbl" style="width: 140px;">Nama</td><td>: <span id="prevPelangganNama">-</span></td></tr>
+                            <tr><td class="lbl" style="width: 140px;">Alamat</td><td>: <span id="prevPelangganAlamat">-</span></td></tr>
+                            <tr><td class="lbl" style="width: 140px;">Tipe Identitas</td><td>: <span id="prevPelangganTipe">-</span></td></tr>
+                            <tr><td class="lbl" style="width: 140px;">Nomor Identitas</td><td>: <span id="prevPelangganNik">-</span></td></tr>
                         </table>
                         <p class="note">(*diisi bila mutasi dilakukan oleh pihak penerima kuasa dari PELANGGAN)</p>
 
-                        <!-- Data Tengah: Penerima Kuasa (Hanya muncul jika diisi) -->
+                        <!-- DATA TENGAH: PENERIMA KUASA -->
                         <div id="containerPrevKuasa" style="display: none;">
                             <p class="paragraph">Bertindak untuk dan atas nama:</p>
                             <table class="data-table">
-                                <tr><td class="lbl">Nama*</td><td>: <span id="prevAtasNamaPelangganNama">-</span></td></tr>
-                                <tr><td class="lbl">Alamat*</td><td>: <span id="prevAtasNamaPelangganAlamat">-</span></td></tr>
-                                <tr><td class="lbl">Tipe Identitas*</td><td>: <span id="prevAtasNamaPelangganTipe">-</span></td></tr>
-                                <tr><td class="lbl">Nomor Identitas*</td><td>: <span id="prevAtasNamaPelangganNik">-</span></td></tr>
+                                <tr><td class="lbl" style="width: 140px;">Nama*</td><td>: <span id="prevKuasaNama">-</span></td></tr>
+                                <tr><td class="lbl" style="width: 140px;">Alamat*</td><td>: <span id="prevKuasaAlamat">-</span></td></tr>
+                                <tr><td class="lbl" style="width: 140px;">Tipe Identitas*</td><td>: <span id="prevKuasaTipe">-</span></td></tr>
+                                <tr><td class="lbl" style="width: 140px;">Nomor Identitas*</td><td>: <span id="prevKuasaNik">-</span></td></tr>
                             </table>
                         </div>
 
                         <p class="paragraph">Selanjutnya disebut sebagai "PELANGGAN", selaku pihak yang berlangganan layanan sebagai berikut:</p>
                         <table class="data-table">
-                            <tr><td class="lbl">Nomor Layanan</td><td>: <span id="prevNoLayanan">-</span></td></tr>
-                            <tr><td class="lbl">Atas Nama</td><td>: <span id="prevAtasNamaLayanan">-</span></td></tr>
-                            <tr><td class="lbl">Alamat</td><td>: <span id="prevAlamatLayanan">-</span></td></tr>
+                            <tr><td class="lbl" style="width: 140px;">Nomor Layanan</td><td>: <span id="prevNoLayanan">-</span></td></tr>
+                            <tr><td class="lbl" style="width: 140px;">Atas Nama</td><td>: <span id="prevAtasNamaLayanan">-</span></td></tr>
+                            <tr><td class="lbl" style="width: 140px;">Alamat</td><td>: <span id="prevAlamatLayanan">-</span></td></tr>
                         </table>
 
                         <div class="statement-title">MENYATAKAN</div>
-                        <p class="paragraph">BAHWA, PELANGGAN adalah benar pihak yang berlangganan Layanan Indibiz berdasarkan Kontrak Berlangganan, dan dengan ini mengajukan permintaan Isolir Layanan Indibiz, sebagai berikut:</p>
+                        <p class="paragraph">BAHWA, PELANGGAN adalah benar pihak yang berlangganan Layanan Indibiz berdasarkan Kontrak Berlangganan, dan dengan ini mengajukan permohonan Permintaan Isolir / Cabut Layanan Indibiz, dengan alasan sebagai berikut:</p>
 
-                        <p class="paragraph"><strong>Jenis Permohonan : Isolir</strong></p>
-                        <p class="paragraph" style="margin-left: 12px; margin-bottom: 4px;">1. Nama Transaksi : Isolir layanan internet Selama <span id="prevDurasiIsolir">-</span></p>
-                        <p class="paragraph" style="margin-left: 12px; margin-bottom: 4px;">Waktu Isolir</p>
                         <table class="data-table">
-                            <tr><td class="lbl" style="width: 180px; padding-left: 24px;">a) Tanggal Isolir</td><td>: <span id="prevTglMulaiIsolir">-</span></td></tr>
-                            <tr><td class="lbl" style="width: 180px; padding-left: 24px;">b) Tanggal Buka Isolir</td><td>: <span id="prevTglBukaIsolir">-</span></td></tr>
-                            <tr><td class="lbl" style="width: 180px; padding-left: 24px;">c) Keterangan</td><td>: <span id="prevKeterangan">-</span></td></tr>
+                            <tr><td class="lbl" style="width: 170px; white-space: nowrap;">a. Keterangan / Alasan</td><td>: <span id="prevKeterangan">-</span></td></tr>
                         </table>
 
-                        <p class="paragraph" style="margin-top: 10px;">Keterangan Tambahan:</p>
-                        <ol class="keterangan-list">
-                            <li>Permohonan ini berlaku sejak ditandatanganinya Surat Permintaan Isolir Layanan Indibiz ini.</li>
-                            <li>Surat Permintaan Isolir Layanan Indibiz ini merupakan satu kesatuan yang tidak terpisahkan dengan Kontrak Berlangganan yang telah ditandatangani PT Telkom Indonesia (Persero) Tbk dengan PELANGGAN.</li>
+                        <p class="paragraph" style="margin-top: 8px;">Keterangan Tambahan:</p>
+                        <ol class="keterangan-list" style="margin-top: 2px;">
+                            <li>Permohonan ini berlaku sejak ditandatanganinya Surat Permintaan Isolir / Cabut Layanan Indibiz ini.</li>
+                            <li>Surat Permintaan Isolir / Cabut Layanan Indibiz ini merupakan satu kesatuan yang tidak terpisahkan dengan Kontrak Berlangganan yang telah ditandatangani PT Telkom Indonesia (Persero) Tbk dengan PELANGGAN.</li>
                         </ol>
 
                         <!-- Area Tanda Tangan & Realtime Date -->
-                        <div class="signature-section">
+                        <div class="signature-section" style="margin-top: 15px;">
                             <div class="sig-date" id="prevRealtimeDate">Banyuwangi, 24 Agustus 2026</div>
                             <div class="sig-grid">
                                 <div class="sig-box">
                                     <p><strong>Penanggung Jawab Telkom</strong></p>
-                                    <div class="sig-space" style="height: 60px; display: flex; align-items: center; justify-content: center;">
-                                        <!-- Gambar Tanda Tangan Otomatis -->
-                                        <img src="assets/images/ttd-telkom.jpg" alt="Tanda Tangan Telkom" style="max-height: 55px; width: auto;">
+                                    <div class="sig-space" style="height: 55px; display: flex; align-items: center; justify-content: center;">
+                                        <img id="imgTtdMonita" src="assets/images/ttd-telkom.jpg" alt="Tanda Tangan Yustika Monita" style="max-height: 50px; width: auto;" onerror="this.style.display='none'">
                                     </div>
                                     <p class="sig-name">(<span id="prevSignPenanggungJawab">Yustika Monita</span>)</p>
                                 </div>
                                 
                                 <div class="sig-box">
                                     <p><strong>Pelanggan</strong></p>
-                                    <div class="materai-box">Materai<br>10.000</div>
+                                    <div class="materai-box" style="padding: 4px; font-size: 9px;">Materai<br>10.000</div>
                                     <p class="sig-name">(<span id="prevSignPelanggan">nama pelanggan</span>)</p>
                                 </div>
                             </div>

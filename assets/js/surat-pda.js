@@ -1,135 +1,153 @@
 function generatePreview(event) {
     event.preventDefault();
 
-    // 1. Ambil Nilai dari Form Input
-    const namaPelanggan = document.getElementById('namaPelanggan').value;
-    const noLayanan = document.getElementById('noLayanan').value;
-    const tipeIdentitas = document.getElementById('tipeIdentitas').value;
-    const nikPelanggan = document.getElementById('nikPelanggan').value;
+    try {
+        // 1. Ambil Input Pelanggan Utama
+        const namaPelanggan = document.getElementById('namaPelanggan')?.value || '-';
+        const noLayanan = document.getElementById('noLayanan')?.value || '-';
+        const tipeIdentitas = document.getElementById('tipeIdentitas')?.value || '-';
+        const nikPelanggan = document.getElementById('nikPelanggan')?.value || '-';
 
-    const alamatLama = document.getElementById('alamatLama').value;
-    const alamatBaru = document.getElementById('alamatBaru').value;
-    const noTelpLama = document.getElementById('noTelpLama').value || '-';
-    const noTelpBaru = document.getElementById('noTelpBaru').value || '-';
-    const noInternetLama = document.getElementById('noInternetLama').value || '-';
-    const noInternetBaru = document.getElementById('noInternetBaru').value || '-';
-    const keterangan = document.getElementById('keteranganTambahan').value || '-';
+        // 2. Ambil Input Alamat & Detail PDA
+        const alamatLama = document.getElementById('alamatLama')?.value || '-';
+        const alamatBaru = document.getElementById('alamatBaru')?.value || '-';
+        const noTelpLama = document.getElementById('noTelpLama')?.value || '-';
+        const noTelpBaru = document.getElementById('noTelpBaru')?.value || '-';
+        const noInternetLama = document.getElementById('noInternetLama')?.value || '-';
+        const noInternetBaru = document.getElementById('noInternetBaru')?.value || '-';
+        const keterangan = document.getElementById('keteranganTambahan')?.value || '-';
 
-    const namaTelkom = document.getElementById('namaTelkom').value || 'Yustika Monita';
+        const namaTelkom = document.getElementById('namaTelkom')?.value || 'Yustika Monita';
+        const isTtdChecked = document.getElementById('checkTtdTelkom')?.checked;
 
-    const namaKuasa = document.getElementById('namaKuasa').value;
-    const nikKuasa = document.getElementById('nikKuasa').value;
-    const tipeIdentitasKuasa = document.getElementById('tipeIdentitasKuasa').value;
-    const alamatKuasa = document.getElementById('alamatKuasa').value;
+        // 3. Ambil Input Kuasa
+        const namaKuasa = document.getElementById('namaKuasa')?.value;
+        const nikKuasa = document.getElementById('nikKuasa')?.value;
+        const tipeIdentitasKuasa = document.getElementById('tipeIdentitasKuasa')?.value;
+        const alamatKuasa = document.getElementById('alamatKuasa')?.value;
 
-    // 2. Logika Kuasa (Jika Penerima Kuasa Diisi)
-    const containerKuasa = document.getElementById('containerPrevKuasa');
+        // --- LOGIKA TEMPEL TTD TELKOM ---
+        const imgTtd = document.getElementById('imgTtdTelkom');
+        if (imgTtd) {
+            imgTtd.style.display = isTtdChecked ? 'block' : 'none';
+        }
 
-    if (namaKuasa && namaKuasa.trim() !== '') {
-        // Tampilkan tabel "Bertindak untuk dan atas nama:" jika ada Kuasa
-        if (containerKuasa) containerKuasa.style.display = 'block';
+        // --- MENGISI PREVIEW LEMBAR SURAT ---
 
-        // Pihak 1 (Atas): Penerima Kuasa
-        document.getElementById('prevYangBertandaTanganNama').innerText = namaKuasa;
-        document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatKuasa;
-        document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitasKuasa;
-        document.getElementById('prevYangBertandaTanganNik').innerText = nikKuasa;
+        // Pihak 1 (Atas): Pelanggan Utama
+        if (document.getElementById('prevPelangganNama')) document.getElementById('prevPelangganNama').innerText = namaPelanggan;
+        if (document.getElementById('prevPelangganAlamat')) document.getElementById('prevPelangganAlamat').innerText = alamatLama;
+        if (document.getElementById('prevPelangganTipe')) document.getElementById('prevPelangganTipe').innerText = tipeIdentitas;
+        if (document.getElementById('prevPelangganNik')) document.getElementById('prevPelangganNik').innerText = nikPelanggan;
 
-        // Pihak 2 (Tengah): Pelanggan Utama Pemilik Layanan
-        document.getElementById('prevAtasNamaPelangganNama').innerText = namaPelanggan;
-        document.getElementById('prevAtasNamaPelangganAlamat').innerText = alamatLama;
-        document.getElementById('prevAtasNamaPelangganTipe').innerText = tipeIdentitas;
-        document.getElementById('prevAtasNamaPelangganNik').innerText = nikPelanggan;
-    } else {
-        // Sembunyikan tabel "Bertindak untuk dan atas nama:" jika tidak ada Kuasa
-        if (containerKuasa) containerKuasa.style.display = 'none';
+        // Pihak 2 (Tengah): Penerima Kuasa (Tampil jika Diisi)
+        const containerKuasa = document.getElementById('containerPrevKuasa');
+        if (namaKuasa && namaKuasa.trim() !== '') {
+            if (containerKuasa) containerKuasa.style.display = 'block';
+            if (document.getElementById('prevKuasaNama')) document.getElementById('prevKuasaNama').innerText = namaKuasa;
+            if (document.getElementById('prevKuasaAlamat')) document.getElementById('prevKuasaAlamat').innerText = alamatKuasa || '-';
+            if (document.getElementById('prevKuasaTipe')) document.getElementById('prevKuasaTipe').innerText = tipeIdentitasKuasa || '-';
+            if (document.getElementById('prevKuasaNik')) document.getElementById('prevKuasaNik').innerText = nikKuasa || '-';
 
-        // Pihak 1 (Atas): Pelanggan Utama Langsung
-        document.getElementById('prevYangBertandaTanganNama').innerText = namaPelanggan;
-        document.getElementById('prevYangBertandaTanganAlamat').innerText = alamatLama;
-        document.getElementById('prevYangBertandaTanganTipe').innerText = tipeIdentitas;
-        document.getElementById('prevYangBertandaTanganNik').innerText = nikPelanggan;
+            if (document.getElementById('prevSignPelanggan')) document.getElementById('prevSignPelanggan').innerText = namaKuasa;
+        } else {
+            if (containerKuasa) containerKuasa.style.display = 'none';
+            if (document.getElementById('prevSignPelanggan')) document.getElementById('prevSignPelanggan').innerText = namaPelanggan;
+        }
+
+        // Data Layanan
+        if (document.getElementById('prevNoLayanan')) document.getElementById('prevNoLayanan').innerText = noLayanan;
+        if (document.getElementById('prevAtasNamaLayanan')) document.getElementById('prevAtasNamaLayanan').innerText = namaPelanggan;
+        if (document.getElementById('prevAlamatLayanan')) document.getElementById('prevAlamatLayanan').innerText = alamatLama;
+
+        // Detail Pindah Alamat (PDA)
+        if (document.getElementById('prevAlamatLama')) document.getElementById('prevAlamatLama').innerText = alamatLama;
+        if (document.getElementById('prevAlamatBaru')) document.getElementById('prevAlamatBaru').innerText = alamatBaru;
+        if (document.getElementById('prevNoTelpLama')) document.getElementById('prevNoTelpLama').innerText = noTelpLama;
+        if (document.getElementById('prevNoTelpBaru')) document.getElementById('prevNoTelpBaru').innerText = noTelpBaru;
+        if (document.getElementById('prevNoInternetLama')) document.getElementById('prevNoInternetLama').innerText = noInternetLama;
+        if (document.getElementById('prevNoInternetBaru')) document.getElementById('prevNoInternetBaru').innerText = noInternetBaru;
+        if (document.getElementById('prevKeterangan')) document.getElementById('prevKeterangan').innerText = keterangan;
+
+        if (document.getElementById('prevSignPenanggungJawab')) document.getElementById('prevSignPenanggungJawab').innerText = namaTelkom;
+
+        // Tanggal Realtime
+        const today = new Date();
+        if (document.getElementById('prevRealtimeDate')) {
+            document.getElementById('prevRealtimeDate').innerText = `Banyuwangi, ${today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+        }
+
+        // Tampilkan Preview & Aktifkan Tombol Unduh PDF
+        const emptyState = document.getElementById('emptyState');
+        const letterPaper = document.getElementById('letterPaper');
+        const btnDownload = document.getElementById('btnDownload');
+
+        if (emptyState) emptyState.style.display = 'none';
+        if (letterPaper) letterPaper.style.display = 'block';
+        if (btnDownload) btnDownload.disabled = false;
+
+    } catch (error) {
+        console.error("Gagal memproses preview:", error);
+        alert("Terjadi kesalahan saat membuat preview.");
     }
-
-    // 3. Data Layanan
-    document.getElementById('prevNoLayanan').innerText = noLayanan;
-    document.getElementById('prevAtasNamaLayanan').innerText = namaPelanggan;
-    document.getElementById('prevAlamatLayanan').innerText = alamatLama;
-
-    // 4. Detail Pindah Alamat / PDA
-    document.getElementById('prevAlamatLama').innerText = alamatLama;
-    document.getElementById('prevAlamatBaru').innerText = alamatBaru;
-    document.getElementById('prevNoTelpLama').innerText = noTelpLama;
-    document.getElementById('prevNoTelpBaru').innerText = noTelpBaru;
-    document.getElementById('prevNoInternetLama').innerText = noInternetLama;
-    document.getElementById('prevNoInternetBaru').innerText = noInternetBaru;
-    document.getElementById('prevKeterangan').innerText = keterangan;
-
-    // 5. Tanda Tangan
-    document.getElementById('prevSignPenanggungJawab').innerText = namaTelkom;
-    document.getElementById('prevSignPelanggan').innerText = namaPelanggan;
-
-    // 6. Realtime Date (Banyuwangi)
-    const today = new Date();
-    const formattedDate = today.toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    });
-    document.getElementById('prevRealtimeDate').innerText = `Banyuwangi, ${formattedDate}`;
-
-    // 7. Tampilkan Preview & Aktifkan Tombol Unduh PDF
-    document.getElementById('emptyState').style.display = 'none';
-    document.getElementById('letterPaper').style.display = 'block';
-
-    document.getElementById('btnDownload').disabled = false;
 }
 
-// Unduh PDF Presisi A4
+// Unduh PDF Presisi (Pas 1 Halaman A4)
 async function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const element = document.getElementById('letterPaper');
-    const namaPelanggan = document.getElementById('namaPelanggan').value || 'Pelanggan';
+    const namaPelanggan = document.getElementById('namaPelanggan')?.value || 'Pelanggan';
 
     const originalTransform = element.style.transform;
-    const originalMaxHeight = element.style.maxHeight;
-    const originalOverflow = element.style.overflow;
+    const originalBoxShadow = element.style.boxShadow;
 
     element.style.transform = 'scale(1)';
-    element.style.maxHeight = 'none';
-    element.style.overflow = 'visible';
+    element.style.boxShadow = 'none';
 
     try {
         const canvas = await html2canvas(element, {
             scale: 2,
             useCORS: true,
             logging: false,
-            scrollY: -window.scrollY
+            windowWidth: element.scrollWidth,
+            windowHeight: element.scrollHeight
         });
 
         const imgData = canvas.toDataURL('image/jpeg', 1.0);
         const pdf = new jsPDF('p', 'mm', 'a4');
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        
-        const marginX = 12;
-        const marginY = 12;
-        const printWidth = pdfWidth - (marginX * 2);
-        const printHeight = (canvas.height * printWidth) / canvas.width;
 
-        pdf.addImage(imgData, 'JPEG', marginX, marginY, printWidth, printHeight);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        const marginX = 8;
+        const marginY = 8;
+        const maxPrintWidth = pdfWidth - (marginX * 2);
+        const maxPrintHeight = pdfHeight - (marginY * 2);
+
+        let printWidth = maxPrintWidth;
+        let printHeight = (canvas.height * printWidth) / canvas.width;
+
+        if (printHeight > maxPrintHeight) {
+            printHeight = maxPrintHeight;
+            printWidth = (canvas.width * printHeight) / canvas.height;
+        }
+
+        const posX = (pdfWidth - printWidth) / 2;
+        const posY = marginY;
+
+        pdf.addImage(imgData, 'JPEG', posX, posY, printWidth, printHeight);
         pdf.save(`Surat_PDA_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
 
     } catch (error) {
         console.error("Gagal mengunduh PDF:", error);
-        alert("Terjadi kesalahan saat memproses file PDF.");
+        alert("Terjadi kesalahan saat mendownload PDF.");
     } finally {
         element.style.transform = originalTransform;
-        element.style.maxHeight = originalMaxHeight;
-        element.style.overflow = originalOverflow;
+        element.style.boxShadow = originalBoxShadow;
     }
 }
 
-// Control Zoom & Fullscreen
+// Zoom & Fullscreen
 let currentScale = 1;
 
 function zoomIn() {
