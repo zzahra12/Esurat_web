@@ -12,13 +12,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
-        .letter-paper {
-            font-size: 11px !important;
-            line-height: 1.35 !important;
-            padding: 25px 30px !important;
+        .card-preview {
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            padding: 20px !important;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+        .paper-wrapper {
+            width: 100%;
+            max-width: 700px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .a4-page {
+            width: 100% !important;
+            box-sizing: border-box !important;
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            padding: 35px 40px !important;
+            font-size: 11px !important;
+            line-height: 1.4 !important;
+            color: #000000;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
         .letter-title {
-            font-size: 13px !important;
+            font-size: 12.5px !important;
             margin-bottom: 2px !important;
             font-weight: bold;
             text-align: center;
@@ -28,28 +51,33 @@
             text-align: center;
             margin-bottom: 12px !important;
         }
+        .data-table {
+            width: 100%;
+            margin-bottom: 8px;
+            border-collapse: collapse;
+        }
         .data-table td {
             padding: 2px 0 !important;
             font-size: 11px !important;
+            vertical-align: top;
         }
         .paragraph {
-            margin-bottom: 6px !important;
+            margin-bottom: 5px !important;
             text-align: justify;
         }
 
-        /* Daftar Berpenomoran 1-10 */
         .wms-numbered-list {
-            padding-left: 20px !important;
+            padding-left: 18px !important;
             margin-top: 4px !important;
-            margin-bottom: 10px !important;
+            margin-bottom: 8px !important;
         }
         .wms-numbered-list li {
             margin-bottom: 4px !important;
             text-align: justify;
-            padding-left: 4px;
+            padding-left: 2px;
         }
 
-        /* Area Tanda Tangan Tunggal */
+        /* Area Tanda Tangan */
         .single-signature-section {
             margin-top: 15px;
             display: flex;
@@ -58,20 +86,19 @@
         }
         .single-sig-box {
             text-align: center;
-            width: 220px;
+            width: 200px;
         }
         .single-materai-box {
             border: 1px dashed #e02424;
             color: #e02424;
-            width: 100px;
-            height: 60px;
+            width: 85px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 10px auto;
-            font-size: 9px;
+            margin: 8px auto;
+            font-size: 8.5px;
             font-weight: bold;
-            text-align: center;
         }
     </style>
 </head>
@@ -160,29 +187,24 @@
                     <button type="button" class="tool-btn" onclick="toggleFullscreen()" title="Layar Penuh">⛶</button>
                 </div>
 
-                <div class="paper-wrapper">
+                <div class="paper-wrapper" id="paperWrapper" style="display: none;">
                     
-                    <div id="emptyState" class="empty-preview">
-                        <p>Isi formulir di sebelah kiri dan klik <strong>Lanjutkan</strong> untuk meninjau template surat.</p>
-                    </div>
-
-                    <div id="letterPaper" class="letter-paper" style="display: none;">
-                        <h4 class="letter-title">SURAT PERNITYAAN BERLANGGANAN<br>WIFI MANAGED SERVICE (WMS)</h4>
-                        <div class="letter-subtitle">No : TEL. XXXX/YN000/T3W-0B0L0000/{<span id="prevTelda">BANYUWANGI</span>}/2026</div>
+                    <div id="page1" class="a4-page">
+                        <h4 class="letter-title">SURAT PERNYATAAN BERLANGGANAN<br>WIFI MANAGED SERVICE (WMS)</h4>
+                        <div class="letter-subtitle">No : TEL. XXXX/YN000/T3W-0B0L0000/{<span id="prevTelda">BANYUWANGI</span>}/<span id="prevTahunHeader">2026</span></div>
                         
                         <p class="paragraph">Saya yang bertanda tangan di bawah ini,</p>
                         
-                        <!-- TABEL DATA PELANGGAN -->
                         <table class="data-table">
-                            <tr><td class="lbl" style="width: 210px;">Nama Lengkap Pelanggan</td><td>: <span id="prevPelangganNama">-</span></td></tr>
-                            <tr><td class="lbl" style="width: 210px;">NIK (KTP)</td><td>: <span id="prevPelangganNik">-</span></td></tr>
-                            <tr><td class="lbl" style="width: 210px;">Alamat Lengkap Pemasangan</td><td>: <span id="prevPelangganAlamat">-</span></td></tr>
-                            <tr><td class="lbl" style="width: 210px;">Nomor HP Aktif</td><td>: <span id="prevPelangganHp">-</span></td></tr>
-                            <tr><td class="lbl" style="width: 210px;">Nomor Layanan WMS</td><td>: <span id="prevNoLayanan">-</span></td></tr>
-                            <tr><td class="lbl" style="width: 210px;">Paket WMS</td><td>: <span id="prevPaketWms">-</span></td></tr>
+                            <tr><td style="width: 180px;">Nama Lengkap Pelanggan</td><td style="width: 10px;">:</td><td><span id="prevPelangganNama">-</span></td></tr>
+                            <tr><td>NIK (KTP)</td><td>:</td><td><span id="prevPelangganNik">-</span></td></tr>
+                            <tr><td>Alamat Lengkap Pemasangan</td><td>:</td><td><span id="prevPelangganAlamat">-</span></td></tr>
+                            <tr><td>Nomor HP Aktif</td><td>:</td><td><span id="prevPelangganHp">-</span></td></tr>
+                            <tr><td>Nomor Layanan WMS</td><td>:</td><td><span id="prevNoLayanan">-</span></td></tr>
+                            <tr><td>Paket WMS</td><td>:</td><td><span id="prevPaketWms">-</span></td></tr>
                         </table>
 
-                        <p class="paragraph" style="margin-top: 8px;">Dengan ini secara sadar dan tanpa tekanan menyatakan akan mematuhi ketentuan berikut:</p>
+                        <p class="paragraph">Dengan ini secara sadar dan tanpa tekanan menyatakan akan mematuhi ketentuan berikut:</p>
                         
                         <ol class="wms-numbered-list">
                             <li>Mempergunakan layanan WMS sesuai dengan ketentuan di dalam Kontrak Berlangganan Layanan WMS, berikut lampiran dan perubahannya.</li>
@@ -197,17 +219,21 @@
                             <li>Saya setuju dengan syarat dan ketentuan yang berlaku di dalam Surat Pernyataan ini dan Kontrak Berlangganan Layanan WMS</li>
                         </ol>
 
-                        <!-- AREA TANDA TANGAN (NAMA OTOMATIS) -->
+                        <!-- AREA TANDA TANGAN REAL-TIME -->
                         <div class="single-signature-section">
                             <div class="sig-date" id="prevRealtimeDate">Banyuwangi, 3 September 2026</div>
                             <div class="single-sig-box">
                                 <div class="single-materai-box">Materai 10rb</div>
-                                <p class="sig-name" style="margin-top: 5px; font-weight: 500;">(<span id="prevSignPelanggan">....................................</span>)</p>
-                                <p style="font-size: 10px; margin-top: -2px;">Pelanggan Telkom</p>
+                                <p class="sig-name" style="margin-top: 4px; font-weight: 600;">(<span id="prevSignPelanggan">....................................</span>)</p>
+                                <p style="font-size: 11px; margin-top: 2px; font-weight: 500;" id="prevSubSignPelanggan">Pelanggan Telkom</p>
                             </div>
                         </div>
                     </div>
 
+                </div>
+
+                <div id="emptyState" class="empty-preview">
+                    <p>Isi formulir di sebelah kiri dan klik <strong>Lanjutkan</strong> untuk meninjau template surat.</p>
                 </div>
 
                 <div class="action-buttons">
