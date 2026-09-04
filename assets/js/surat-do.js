@@ -16,7 +16,7 @@ function generatePreview(event) {
         const namaTelkom = document.getElementById('namaTelkom')?.value || 'Yustika Monita';
         const isTtdMonitaChecked = document.getElementById('checkTtdMonita')?.checked;
 
-        // 3. Data Kuasa & Fallback Strip (-)
+        // 3. Data Kuasa Opsional (Fallback Strip '-' Jika Kosong)
         const namaKuasaInput = document.getElementById('namaKuasa')?.value;
         const nikKuasaInput = document.getElementById('nikKuasa')?.value;
         const tipeIdentitasKuasaInput = document.getElementById('tipeIdentitasKuasa')?.value;
@@ -27,37 +27,40 @@ function generatePreview(event) {
         const tipeIdentitasKuasa = (tipeIdentitasKuasaInput && tipeIdentitasKuasaInput.trim() !== '') ? tipeIdentitasKuasaInput.trim() : '-';
         const alamatKuasa = (alamatKuasaInput && alamatKuasaInput.trim() !== '') ? alamatKuasaInput.trim() : '-';
 
-        // --- LOGIKA TEMPEL TTD MONITA ---
+        // Toggle Gambar TTD Monita
         const imgTtd = document.getElementById('imgTtdMonita');
         if (imgTtd) {
             imgTtd.style.display = isTtdMonitaChecked ? 'block' : 'none';
         }
 
-        // --- MENGISI PREVIEW LEMBAR SURAT ---
+        // --- MENGISI PREVIEW SURAT DO ---
 
-        // Pihak 1 (Atas): Pelanggan Utama
+        // Pihak Atas: Yang bertanda tangan di bawah ini = PERMANEN PELANGGAN UTAMA
         if (document.getElementById('prevPelangganNama')) document.getElementById('prevPelangganNama').innerText = namaPelanggan;
         if (document.getElementById('prevPelangganAlamat')) document.getElementById('prevPelangganAlamat').innerText = alamatPelanggan;
         if (document.getElementById('prevPelangganTipe')) document.getElementById('prevPelangganTipe').innerText = tipeIdentitas;
         if (document.getElementById('prevPelangganNik')) document.getElementById('prevPelangganNik').innerText = nikPelanggan;
 
-        // Pihak 2 (Tengah): Penerima Kuasa (Selalu Tampil, Bawaan - Jika Kosong)
+        // Pihak Tengah: Bertindak untuk dan atas nama = PERMANEN PENERIMA KUASA
+        const containerKuasa = document.getElementById('containerPrevKuasa');
+        if (containerKuasa) containerKuasa.style.display = 'block';
+
         if (document.getElementById('prevKuasaNama')) document.getElementById('prevKuasaNama').innerText = namaKuasa;
         if (document.getElementById('prevKuasaAlamat')) document.getElementById('prevKuasaAlamat').innerText = alamatKuasa;
         if (document.getElementById('prevKuasaTipe')) document.getElementById('prevKuasaTipe').innerText = tipeIdentitasKuasa;
         if (document.getElementById('prevKuasaNik')) document.getElementById('prevKuasaNik').innerText = nikKuasa;
 
-        // Tanda Tangan: Jika Kuasa Diisi Pakai Kuasa, Jika Kosong Pakai Pelanggan Utama
+        // TANDA TANGAN KANAN BAWAH = TERKUNCI PERMANEN NAMA PELANGGAN UTAMA
         if (document.getElementById('prevSignPelanggan')) {
-            document.getElementById('prevSignPelanggan').innerText = (namaKuasa !== '-') ? namaKuasa : namaPelanggan;
+            document.getElementById('prevSignPelanggan').innerText = namaPelanggan;
         }
 
-        // Data Layanan
+        // Detail Layanan & Penanggung Jawab
         if (document.getElementById('prevNoLayanan')) document.getElementById('prevNoLayanan').innerText = noLayanan;
         if (document.getElementById('prevAtasNamaLayanan')) document.getElementById('prevAtasNamaLayanan').innerText = namaPelanggan;
         if (document.getElementById('prevAlamatLayanan')) document.getElementById('prevAlamatLayanan').innerText = alamatPelanggan;
-
         if (document.getElementById('prevKeterangan')) document.getElementById('prevKeterangan').innerText = keterangan;
+
         if (document.getElementById('prevSignPenanggungJawab')) document.getElementById('prevSignPenanggungJawab').innerText = namaTelkom;
 
         // Tanggal Realtime
@@ -66,14 +69,18 @@ function generatePreview(event) {
             document.getElementById('prevRealtimeDate').innerText = `Banyuwangi, ${today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
         }
 
-        // Tampilkan Preview & Aktifkan Tombol Unduh PDF
+        // Tampilkan Preview & Buka Kunci Tombol Unduh PDF
         const emptyState = document.getElementById('emptyState');
         const letterPaper = document.getElementById('letterPaper');
         const btnDownload = document.getElementById('btnDownload');
 
         if (emptyState) emptyState.style.display = 'none';
         if (letterPaper) letterPaper.style.display = 'block';
-        if (btnDownload) btnDownload.disabled = false;
+
+        if (btnDownload) {
+            btnDownload.disabled = false;
+            btnDownload.removeAttribute('disabled');
+        }
 
     } catch (error) {
         console.error("Gagal memproses preview:", error);
@@ -81,11 +88,21 @@ function generatePreview(event) {
     }
 }
 
-// Unduh PDF Presisi (Pas 1 Halaman A4)
+// Fungsi Unduh PDF Presisi
 async function downloadPDF() {
-    const { jsPDF } = window.jspdf;
+    const btnDownload = document.getElementById('btnDownload');
     const element = document.getElementById('letterPaper');
     const namaPelanggan = document.getElementById('namaPelanggan')?.value || 'Pelanggan';
+
+    if (!element) {
+        alert("Elemen lembar surat tidak ditemukan.");
+        return;
+    }
+
+    if (btnDownload) {
+        btnDownload.disabled = true;
+        btnDownload.innerText = "Mengunduh...";
+    }
 
     const originalTransform = element.style.transform;
     const originalBoxShadow = element.style.boxShadow;
@@ -94,6 +111,13 @@ async function downloadPDF() {
     element.style.boxShadow = 'none';
 
     try {
+        const jsPDF = window.jspdf ? window.jspdf.jsPDF : null;
+
+        if (!jsPDF || typeof html2canvas === 'undefined') {
+            alert("Pustaka ekspor PDF belum ter-load sempurna. Pastikan koneksi internet aktif.");
+            return;
+        }
+
         const canvas = await html2canvas(element, {
             scale: 2,
             useCORS: true,
@@ -129,42 +153,14 @@ async function downloadPDF() {
 
     } catch (error) {
         console.error("Gagal mengunduh PDF:", error);
-        alert("Terjadi kesalahan saat mendownload PDF.");
+        alert("Terjadi kesalahan saat membuat file PDF: " + error.message);
     } finally {
         element.style.transform = originalTransform;
         element.style.boxShadow = originalBoxShadow;
-    }
-}
 
-// Control Zoom & Fullscreen
-let currentScale = 1;
-
-function zoomIn() {
-    if (currentScale < 1.5) {
-        currentScale += 0.1;
-        applyZoom();
-    }
-}
-
-function zoomOut() {
-    if (currentScale > 1.0) {
-        currentScale -= 0.1;
-        applyZoom();
-    }
-}
-
-function applyZoom() {
-    const paper = document.getElementById('letterPaper');
-    if (paper) {
-        paper.style.transform = `scale(${currentScale})`;
-        paper.style.transformOrigin = 'top center';
-        paper.style.transition = 'transform 0.2s ease';
-    }
-}
-
-function toggleFullscreen() {
-    const previewCard = document.querySelector('.card-preview');
-    if (previewCard) {
-        previewCard.classList.toggle('fullscreen-mode');
+        if (btnDownload) {
+            btnDownload.disabled = false;
+            btnDownload.innerText = "Unduh PDF";
+        }
     }
 }

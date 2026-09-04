@@ -54,7 +54,7 @@
 
     <!-- Main Workspace -->
     <main class="main-container">
-        <h1 class="page-header-title">Surat Upgrade / Downgrade Layanan</h1>
+        <h1 class="page-header-title">Surat Permintaan Upgrade / Downgrade Layanan</h1>
 
         <div class="workspace-grid">
             
@@ -96,14 +96,24 @@
 
                     <h3 class="section-title" style="margin-top: 10px;">DETAIL PERUBAHAN LAYANAN</h3>
 
+                    <!-- TIPE TRANSAKSI (UPGRADE / DOWNGRADE) -->
+                    <div class="form-group">
+                        <label>Jenis Permohonan Perubahan</label>
+                        <select id="jenisPerubahan" required>
+                            <option value="Upgrade / Downgrade">Upgrade / Downgrade</option>
+                            <option value="Upgrade Layanan">Upgrade Layanan</option>
+                            <option value="Downgrade Layanan">Downgrade Layanan</option>
+                        </select>
+                    </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label>Paket Layanan Lama</label>
-                            <input type="text" id="paketLama" placeholder="Contoh: 30 Mbps" required>
+                            <input type="text" id="paketLama" placeholder="Contoh: 20 Mbps" required>
                         </div>
                         <div class="form-group">
                             <label>Paket Layanan Baru</label>
-                            <input type="text" id="paketBaru" placeholder="Contoh: 100 Mbps" required>
+                            <input type="text" id="paketBaru" placeholder="Contoh: 50 Mbps" required>
                         </div>
                     </div>
 
@@ -117,7 +127,7 @@
                         <input type="text" id="namaTelkom" value="Yustika Monita" placeholder="Nama Petugas Telkom">
                     </div>
 
-                    <!-- CHECKBOX TEMPEL TTD YUSTIKA MONITA -->
+                    <!-- CHECKBOX KHUSUS YUSTIKA MONITA -->
                     <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-top: -5px; margin-bottom: 15px;">
                         <input type="checkbox" id="checkTtdMonita" checked style="width: auto; cursor: pointer;">
                         <label for="checkTtdMonita" style="margin: 0; cursor: pointer; font-size: 13px; font-weight: 500;">Tempelkan Tanda Tangan Yustika Monita</label>
@@ -176,7 +186,7 @@
                     <div id="letterPaper" class="letter-paper" style="display: none;">
                         <h4 class="letter-title" style="text-align: center; text-decoration: underline;">SURAT PERMINTAAN UPGRADE / DOWNGRADE LAYANAN</h4>
                         
-                        <!-- DATA ATAS: PENERIMA KUASA / PELANGGAN UTAMA -->
+                        <!-- DATA ATAS: PELANGGAN UTAMA -->
                         <p class="paragraph">Yang bertanda tangan di bawah ini :</p>
                         <table class="data-table">
                             <tr><td class="lbl" style="width: 140px;">Nama</td><td>: <span id="prevPelangganNama">-</span></td></tr>
@@ -186,8 +196,8 @@
                         </table>
                         <p class="note">(*diisi bila mutasi dilakukan oleh pihak penerima kuasa dari PELANGGAN)</p>
 
-                        <!-- DATA TENGAH: PELANGGAN UTAMA (Tampil Jika Ada Kuasa) -->
-                        <div id="containerPrevKuasa" style="display: none;">
+                        <!-- DATA TENGAH: PENERIMA KUASA -->
+                        <div id="containerPrevKuasa">
                             <p class="paragraph">Bertindak untuk dan atas nama:</p>
                             <table class="data-table">
                                 <tr><td class="lbl" style="width: 140px;">Nama*</td><td>: <span id="prevKuasaNama">-</span></td></tr>
@@ -207,11 +217,11 @@
                         <div class="statement-title">MENYATAKAN</div>
                         <p class="paragraph">BAHWA, PELANGGAN adalah benar pihak yang berlangganan Layanan Indibiz berdasarkan Kontrak Berlangganan, dan dengan ini mengajukan permintaan Upgrade / Downgrade Layanan Indibiz, sebagai berikut:</p>
 
-                        <p class="paragraph"><strong>Jenis Permohonan : Upgrade / Downgrade Layanan</strong></p>
+                        <p class="paragraph"><strong>Jenis Permohonan : <span id="prevJenisPerubahan">Upgrade / Downgrade Layanan</span></strong></p>
                         <table class="data-table">
-                            <tr><td class="lbl" style="padding-left: 12px; width: 170px; white-space: nowrap;">a. Paket Layanan Lama</td><td>: <span id="prevPaketLama">-</span></td></tr>
-                            <tr><td class="lbl" style="padding-left: 12px; width: 170px; white-space: nowrap;">b. Paket Layanan Baru</td><td>: <span id="prevPaketBaru">-</span></td></tr>
-                            <tr><td class="lbl" style="padding-left: 12px; width: 170px; white-space: nowrap;">c. Keterangan</td><td>: <span id="prevKeterangan">-</span></td></tr>
+                            <tr><td class="lbl" style="padding-left: 12px; width: 170px;">a. Paket Layanan Lama</td><td>: <span id="prevPaketLama">-</span></td></tr>
+                            <tr><td class="lbl" style="padding-left: 12px; width: 170px;">b. Paket Layanan Baru</td><td>: <span id="prevPaketBaru">-</span></td></tr>
+                            <tr><td class="lbl" style="padding-left: 12px; width: 170px;">c. Keterangan</td><td>: <span id="prevKeterangan">-</span></td></tr>
                         </table>
 
                         <p class="paragraph" style="margin-top: 8px;">Keterangan Tambahan:</p>
@@ -222,7 +232,7 @@
 
                         <!-- Area Tanda Tangan & Realtime Date -->
                         <div class="signature-section" style="margin-top: 15px;">
-                            <div class="sig-date" id="prevRealtimeDate">Banyuwangi, 24 Agustus 2026</div>
+                            <div class="sig-date" id="prevRealtimeDate">Banyuwangi, 4 September 2026</div>
                             <div class="sig-grid">
                                 <div class="sig-box">
                                     <p><strong>Penanggung Jawab Telkom</strong></p>
@@ -244,7 +254,7 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn-action" id="btnDownload" disabled onclick="downloadPDF()">Unduh PDF</button>
+                    <button type="button" class="btn-action" id="btnDownload" onclick="downloadPDF()">Unduh PDF</button>
                 </div>
                 
                 <a href="jenis-surat.html" class="back-link">Kembali Ke Dashboard</a>
