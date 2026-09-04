@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="assets/css/style.css">
 
     <!-- Pustaka Ekspor PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
         .letter-paper {
@@ -48,7 +48,7 @@
             <a href="surat-do.html" class="submenu-item">Surat Permintaan DO</a>
             <a href="surat-isolir.html" class="submenu-item">Surat Permintaan Isolir</a>
             <a href="surat-upgrade-downgrade.html" class="submenu-item">Surat Upgrade-Downgrade</a>
-            <a href="surat-wms.html" class="submenu-item active">Surat Pernyataan WMS</a>
+            <a href="surat-wms.html" class="submenu-item">Surat Pernyataan WMS</a>
         </div>
     </aside>
 
@@ -186,8 +186,8 @@
                         </table>
                         <p class="note">(*diisi bila mutasi dilakukan oleh pihak penerima kuasa dari PELANGGAN)</p>
 
-                        <!-- DATA TENGAH: PENERIMA KUASA (Tampil Jika Diisi) -->
-                        <div id="containerPrevKuasa" style="display: none;">
+                        <!-- DATA TENGAH: PENERIMA KUASA (Selalu Ada di Struktur) -->
+                        <div id="containerPrevKuasa">
                             <p class="paragraph">Bertindak untuk dan atas nama:</p>
                             <table class="data-table">
                                 <tr><td class="lbl" style="width: 140px;">Nama*</td><td>: <span id="prevKuasaNama">-</span></td></tr>
@@ -222,7 +222,7 @@
 
                         <!-- Area Tanda Tangan & Realtime Date -->
                         <div class="signature-section" style="margin-top: 15px;">
-                            <div class="sig-date" id="prevRealtimeDate">Banyuwangi, 24 Agustus 2026</div>
+                            <div class="sig-date" id="prevRealtimeDate">Banyuwangi, 4 September 2026</div>
                             <div class="sig-grid">
                                 <div class="sig-box">
                                     <p><strong>Penanggung Jawab Telkom</strong></p>
@@ -244,8 +244,8 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn-action" id="btnDownload" disabled onclick="downloadPDF()">Unduh PDF</button>
-                </div>
+    <button type="button" class="btn-action" id="btnDownload" onclick="downloadPDF()">Unduh PDF</button>
+</div>
                 
                 <a href="jenis-surat.html" class="back-link">Kembali Ke Dashboard</a>
             </div>
