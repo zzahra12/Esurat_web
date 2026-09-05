@@ -141,6 +141,11 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label>Nomor Surat WMS (Manual)</label>
+                        <input type="text" id="noSuratWms" placeholder="Contoh: TEL. XXXX/YN000/T3W-0B0L0000" value="TEL. XXXX/YN000/T3W-0B0L0000" required>
+                    </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nomor Layanan WMS</label>
@@ -191,7 +196,7 @@
                     
                     <div id="page1" class="a4-page">
                         <h4 class="letter-title">SURAT PERNYATAAN BERLANGGANAN<br>WIFI MANAGED SERVICE (WMS)</h4>
-                        <div class="letter-subtitle">No : TEL. XXXX/YN000/T3W-0B0L0000/{<span id="prevTelda">BANYUWANGI</span>}/<span id="prevTahunHeader">2026</span></div>
+                        <div class="letter-subtitle">No : <span id="prevFullNoSurat">TEL. XXXX/YN000/T3W-0B0L0000/BANYUWANGI/2026</span></div>
                         
                         <p class="paragraph">Saya yang bertanda tangan di bawah ini,</p>
                         
@@ -220,14 +225,13 @@
                         </ol>
 
                         <!-- AREA TANDA TANGAN REAL-TIME -->
-                        <div class="single-signature-section">
-                            <div class="sig-date" id="prevRealtimeDate">Banyuwangi, 3 September 2026</div>
-                            <div class="single-sig-box">
-                                <div class="single-materai-box">Materai 10rb</div>
-                                <p class="sig-name" style="margin-top: 4px; font-weight: 600;">(<span id="prevSignPelanggan">....................................</span>)</p>
-                                <p style="font-size: 11px; margin-top: 2px; font-weight: 500;" id="prevSubSignPelanggan">Pelanggan Telkom</p>
-                            </div>
-                        </div>
+<div class="single-signature-section">
+    <div class="sig-date" id="prevRealtimeDate">Banyuwangi, 5 September 2026</div>
+    <div class="single-sig-box">
+        <div class="single-materai-box">Materai 10rb</div>
+        <p class="sig-name" style="margin-top: 4px; font-weight: 600;">(<span id="prevSignPelanggan">....................................</span>)</p>
+    </div>
+</div>
                     </div>
 
                 </div>

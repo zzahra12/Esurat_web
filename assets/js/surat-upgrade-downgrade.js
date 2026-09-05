@@ -7,20 +7,31 @@ function generatePreview(event) {
         const noLayanan = document.getElementById('noLayanan')?.value || '-';
         const tipeIdentitas = document.getElementById('tipeIdentitas')?.value || '-';
         const nikPelanggan = document.getElementById('nikPelanggan')?.value || '-';
-        const alamatPelanggan = document.getElementById('alamatPelanggan')?.value || '-';
 
-        // 2. Data Upgrade / Downgrade
-        const jenisPerubahan = document.getElementById('jenisPerubahan')?.value || 'Upgrade / Downgrade Layanan';
-        const paketLama = document.getElementById('paketLama')?.value || '-';
-        const paketBaru = document.getElementById('paketBaru')?.value || '-';
-        
-        const keteranganInput = document.getElementById('keteranganTambahan')?.value;
-        const keterangan = (keteranganInput && keteranganInput.trim() !== '') ? keteranganInput.trim() : '-';
+        const alamatPelangganInput = document.getElementById('alamatPelanggan')?.value;
+        const alamatPelanggan = (alamatPelangganInput && alamatPelangganInput.trim() !== '') ? alamatPelangganInput.trim() : '-';
+
+        const atasNamaLayananInput = document.getElementById('atasNamaLayanan')?.value;
+        const atasNamaLayanan = (atasNamaLayananInput && atasNamaLayananInput.trim() !== '') ? atasNamaLayananInput.trim() : '-';
+
+        const alamatLayananInput = document.getElementById('alamatLayanan')?.value;
+        const alamatLayanan = (alamatLayananInput && alamatLayananInput.trim() !== '') ? alamatLayananInput.trim() : '-';
+
+        // 2. Data Detail Modifikasi Layanan
+        const jenisPermohonanInput = document.getElementById('jenisPermohonan')?.value;
+        const namaTransaksiInput = document.getElementById('namaTransaksi')?.value;
+        const keteranganModifikasiInput = document.getElementById('keteranganModifikasi')?.value;
+        const tagihanInput = document.getElementById('tagihan')?.value;
+
+        const jenisPermohonan = (jenisPermohonanInput && jenisPermohonanInput.trim() !== '') ? jenisPermohonanInput.trim() : '-';
+        const namaTransaksi = (namaTransaksiInput && namaTransaksiInput.trim() !== '') ? namaTransaksiInput.trim() : '-';
+        const keteranganModifikasi = (keteranganModifikasiInput && keteranganModifikasiInput.trim() !== '') ? keteranganModifikasiInput.trim() : '-';
+        const tagihan = (tagihanInput && tagihanInput.trim() !== '') ? tagihanInput.trim() : '-';
 
         const namaTelkom = document.getElementById('namaTelkom')?.value || 'Yustika Monita';
         const isTtdMonitaChecked = document.getElementById('checkTtdMonita')?.checked;
 
-        // 3. Data Kuasa Opsional
+        // 3. Data Kuasa (Fallback Strip '-' Jika Kosong)
         const namaKuasaInput = document.getElementById('namaKuasa')?.value;
         const nikKuasaInput = document.getElementById('nikKuasa')?.value;
         const tipeIdentitasKuasaInput = document.getElementById('tipeIdentitasKuasa')?.value;
@@ -37,37 +48,28 @@ function generatePreview(event) {
             imgTtd.style.display = isTtdMonitaChecked ? 'block' : 'none';
         }
 
-        // --- MENGISI PREVIEW SURAT ---
-
-        // Pihak Atas: Yang bertanda tangan di bawah ini = PERMANEN PELANGGAN UTAMA
+        // --- MENGISI PREVIEW ---
         if (document.getElementById('prevPelangganNama')) document.getElementById('prevPelangganNama').innerText = namaPelanggan;
         if (document.getElementById('prevPelangganAlamat')) document.getElementById('prevPelangganAlamat').innerText = alamatPelanggan;
         if (document.getElementById('prevPelangganTipe')) document.getElementById('prevPelangganTipe').innerText = tipeIdentitas;
         if (document.getElementById('prevPelangganNik')) document.getElementById('prevPelangganNik').innerText = nikPelanggan;
-
-        // Pihak Tengah: Bertindak untuk dan atas nama = PERMANEN PENERIMA KUASA
-        const containerKuasa = document.getElementById('containerPrevKuasa');
-        if (containerKuasa) containerKuasa.style.display = 'block';
 
         if (document.getElementById('prevKuasaNama')) document.getElementById('prevKuasaNama').innerText = namaKuasa;
         if (document.getElementById('prevKuasaAlamat')) document.getElementById('prevKuasaAlamat').innerText = alamatKuasa;
         if (document.getElementById('prevKuasaTipe')) document.getElementById('prevKuasaTipe').innerText = tipeIdentitasKuasa;
         if (document.getElementById('prevKuasaNik')) document.getElementById('prevKuasaNik').innerText = nikKuasa;
 
-        // Tanda Tangan Kanan Bawah = TERKUNCI PERMANEN NAMA PELANGGAN UTAMA
-        if (document.getElementById('prevSignPelanggan')) {
-            document.getElementById('prevSignPelanggan').innerText = namaPelanggan;
-        }
+        if (document.getElementById('prevSignPelanggan')) document.getElementById('prevSignPelanggan').innerText = namaPelanggan;
 
-        // Data Layanan & Paket
         if (document.getElementById('prevNoLayanan')) document.getElementById('prevNoLayanan').innerText = noLayanan;
-        if (document.getElementById('prevAtasNamaLayanan')) document.getElementById('prevAtasNamaLayanan').innerText = namaPelanggan;
-        if (document.getElementById('prevAlamatLayanan')) document.getElementById('prevAlamatLayanan').innerText = alamatPelanggan;
+        if (document.getElementById('prevAtasNamaLayanan')) document.getElementById('prevAtasNamaLayanan').innerText = atasNamaLayanan;
+        if (document.getElementById('prevAlamatLayanan')) document.getElementById('prevAlamatLayanan').innerText = alamatLayanan;
 
-        if (document.getElementById('prevJenisPerubahan')) document.getElementById('prevJenisPerubahan').innerText = jenisPerubahan;
-        if (document.getElementById('prevPaketLama')) document.getElementById('prevPaketLama').innerText = paketLama;
-        if (document.getElementById('prevPaketBaru')) document.getElementById('prevPaketBaru').innerText = paketBaru;
-        if (document.getElementById('prevKeterangan')) document.getElementById('prevKeterangan').innerText = keterangan;
+        // Detail Poin Modifikasi Sesuai Template
+        if (document.getElementById('prevJenisPermohonan')) document.getElementById('prevJenisPermohonan').innerText = jenisPermohonan;
+        if (document.getElementById('prevNamaTransaksi')) document.getElementById('prevNamaTransaksi').innerText = namaTransaksi;
+        if (document.getElementById('prevKeteranganModifikasi')) document.getElementById('prevKeteranganModifikasi').innerText = keteranganModifikasi;
+        if (document.getElementById('prevTagihan')) document.getElementById('prevTagihan').innerText = tagihan;
 
         if (document.getElementById('prevSignPenanggungJawab')) document.getElementById('prevSignPenanggungJawab').innerText = namaTelkom;
 
@@ -77,7 +79,7 @@ function generatePreview(event) {
             document.getElementById('prevRealtimeDate').innerText = `Banyuwangi, ${today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
         }
 
-        // Tampilkan Preview & Buka Kunci Tombol Unduh PDF
+        // TAMPILKAN PREVIEW & AKTIFKAN TOMBOL
         const emptyState = document.getElementById('emptyState');
         const letterPaper = document.getElementById('letterPaper');
         const btnDownload = document.getElementById('btnDownload');
@@ -91,12 +93,12 @@ function generatePreview(event) {
         }
 
     } catch (error) {
-        console.error("Gagal memproses preview:", error);
+        console.error("Gagal memproses preview Surat Modifikasi Layanan:", error);
         alert("Terjadi kesalahan saat membuat preview.");
     }
 }
 
-// Fungsi Unduh PDF Presisi
+// Unduh PDF Presisi (Pas 1 Halaman A4)
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
     const element = document.getElementById('letterPaper');
@@ -127,7 +129,7 @@ async function downloadPDF() {
         }
 
         const canvas = await html2canvas(element, {
-            scale: 2,
+            scale: 2.5,
             useCORS: true,
             logging: false,
             windowWidth: element.scrollWidth,
@@ -140,8 +142,8 @@ async function downloadPDF() {
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
 
-        const marginX = 8;
-        const marginY = 8;
+        const marginX = 4;
+        const marginY = 5;
         const maxPrintWidth = pdfWidth - (marginX * 2);
         const maxPrintHeight = pdfHeight - (marginY * 2);
 
@@ -157,7 +159,7 @@ async function downloadPDF() {
         const posY = marginY;
 
         pdf.addImage(imgData, 'JPEG', posX, posY, printWidth, printHeight);
-        pdf.save(`Surat_Upgrade_Downgrade_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
+        pdf.save(`Surat_Modifikasi_Layanan_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
 
     } catch (error) {
         console.error("Gagal mengunduh PDF:", error);

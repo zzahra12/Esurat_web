@@ -8,7 +8,15 @@ function generatePreview(event) {
         const tipeIdentitas = document.getElementById('tipeIdentitas')?.value || '-';
         const nikPelanggan = document.getElementById('nikPelanggan')?.value || '-';
 
-        // 2. Data Alamat & Detail PDA
+        // AMBIL INPUT ALAMAT PELANGGAN / KTP SECARA TERPISAH
+        const alamatPelangganInput = document.getElementById('alamatPelanggan')?.value;
+        const alamatPelanggan = (alamatPelangganInput && alamatPelangganInput.trim() !== '') ? alamatPelangganInput.trim() : '-';
+
+        // AMBIL INPUT ATAS NAMA LAYANAN (KANTOR / USAHA / SEKOLAH)
+        const atasNamaLayananInput = document.getElementById('atasNamaLayanan')?.value;
+        const atasNamaLayanan = (atasNamaLayananInput && atasNamaLayananInput.trim() !== '') ? atasNamaLayananInput.trim() : '-';
+
+        // 2. Data Alamat Pindah & Detail PDA
         const alamatLamaInput = document.getElementById('alamatLama')?.value;
         const alamatBaruInput = document.getElementById('alamatBaru')?.value;
         const noTelpLamaInput = document.getElementById('noTelpLama')?.value;
@@ -47,7 +55,10 @@ function generatePreview(event) {
 
         // ISI PREVIEW SURAT
         if (document.getElementById('prevPelangganNama')) document.getElementById('prevPelangganNama').innerText = namaPelanggan;
-        if (document.getElementById('prevPelangganAlamat')) document.getElementById('prevPelangganAlamat').innerText = alamatLama;
+        
+        // Alamat Atas Pelanggan menggunakan Alamat KTP
+        if (document.getElementById('prevPelangganAlamat')) document.getElementById('prevPelangganAlamat').innerText = alamatPelanggan;
+        
         if (document.getElementById('prevPelangganTipe')) document.getElementById('prevPelangganTipe').innerText = tipeIdentitas;
         if (document.getElementById('prevPelangganNik')) document.getElementById('prevPelangganNik').innerText = nikPelanggan;
 
@@ -61,11 +72,17 @@ function generatePreview(event) {
         }
 
         if (document.getElementById('prevNoLayanan')) document.getElementById('prevNoLayanan').innerText = noLayanan;
-        if (document.getElementById('prevAtasNamaLayanan')) document.getElementById('prevAtasNamaLayanan').innerText = namaPelanggan;
+        
+        // MENGISI PREVIEW ATAS NAMA LAYANAN DARI INPUT MANDIRI
+        if (document.getElementById('prevAtasNamaLayanan')) document.getElementById('prevAtasNamaLayanan').innerText = atasNamaLayanan;
+        
+        // Alamat Layanan (Lokasi Pemasangan Jaringan) menggunakan Alamat Lama
         if (document.getElementById('prevAlamatLayanan')) document.getElementById('prevAlamatLayanan').innerText = alamatLama;
 
+        // Detail Pindah Alamat (Poin a & b)
         if (document.getElementById('prevAlamatLama')) document.getElementById('prevAlamatLama').innerText = alamatLama;
         if (document.getElementById('prevAlamatBaru')) document.getElementById('prevAlamatBaru').innerText = alamatBaru;
+        
         if (document.getElementById('prevNoTelpLama')) document.getElementById('prevNoTelpLama').innerText = noTelpLama;
         if (document.getElementById('prevNoTelpBaru')) document.getElementById('prevNoTelpBaru').innerText = noTelpBaru;
         if (document.getElementById('prevNoInternetLama')) document.getElementById('prevNoInternetLama').innerText = noInternetLama;
@@ -90,7 +107,7 @@ function generatePreview(event) {
 
         if (btnDownload) {
             btnDownload.disabled = false;
-            btnDownload.removeAttribute('disabled'); // Memastikan atribut disabled terhapus sempurna
+            btnDownload.removeAttribute('disabled');
         }
 
     } catch (error) {
@@ -99,7 +116,7 @@ function generatePreview(event) {
     }
 }
 
-// Fungsi Unduh PDF
+// Fungsi Unduh PDF Presisi
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
     const element = document.getElementById('letterPaper');
@@ -110,7 +127,6 @@ async function downloadPDF() {
         return;
     }
 
-    // Ubah teks tombol sementara proses cetak
     if (btnDownload) {
         btnDownload.disabled = true;
         btnDownload.innerText = "Mengunduh...";
@@ -123,10 +139,16 @@ async function downloadPDF() {
     element.style.boxShadow = 'none';
 
     try {
-        const { jsPDF } = window.jspdf;
+        const jsPDF = window.jspdf ? window.jspdf.jsPDF : null;
 
+        if (!jsPDF || typeof html2canvas === 'undefined') {
+            alert("Pustaka ekspor PDF belum ter-load sempurna. Pastikan koneksi internet aktif.");
+            return;
+        }
+
+        // Scale dinaikkan ke 2.5 agar teks dan TTD Monita tajam
         const canvas = await html2canvas(element, {
-            scale: 2,
+            scale: 2.5,
             useCORS: true,
             logging: false,
             windowWidth: element.scrollWidth,
@@ -139,8 +161,8 @@ async function downloadPDF() {
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
 
-        const marginX = 8;
-        const marginY = 8;
+        const marginX = 4;
+        const marginY = 5;
         const maxPrintWidth = pdfWidth - (marginX * 2);
         const maxPrintHeight = pdfHeight - (marginY * 2);
 
@@ -160,7 +182,7 @@ async function downloadPDF() {
 
     } catch (error) {
         console.error("Gagal mengunduh PDF:", error);
-        alert("Gagal mengunduh PDF. Pastikan library html2canvas & jsPDF sudah terhubung.");
+        alert("Terjadi kesalahan saat membuat file PDF: " + error.message);
     } finally {
         element.style.transform = originalTransform;
         element.style.boxShadow = originalBoxShadow;
@@ -169,5 +191,38 @@ async function downloadPDF() {
             btnDownload.disabled = false;
             btnDownload.innerText = "Unduh PDF";
         }
+    }
+}
+
+// Control Zoom & Fullscreen
+let currentScale = 1;
+
+function zoomIn() {
+    if (currentScale < 1.5) {
+        currentScale += 0.1;
+        applyZoom();
+    }
+}
+
+function zoomOut() {
+    if (currentScale > 1.0) {
+        currentScale -= 0.1;
+        applyZoom();
+    }
+}
+
+function applyZoom() {
+    const paper = document.getElementById('letterPaper');
+    if (paper) {
+        paper.style.transform = `scale(${currentScale})`;
+        paper.style.transformOrigin = 'top center';
+        paper.style.transition = 'transform 0.2s ease';
+    }
+}
+
+function toggleFullscreen() {
+    const previewCard = document.querySelector('.card-preview');
+    if (previewCard) {
+        previewCard.classList.toggle('fullscreen-mode');
     }
 }

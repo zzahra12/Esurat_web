@@ -9,6 +9,10 @@ function generatePreview(event) {
         const nikPelanggan = document.getElementById('nikPelanggan')?.value || '-';
         const alamatPelanggan = document.getElementById('alamatPelanggan')?.value || '-';
 
+        // AMBIL INPUT ATAS NAMA LAYANAN SECARA MANDIRI (KANTOR / USAN / SEKOLAH)
+        const atasNamaLayananInput = document.getElementById('atasNamaLayanan')?.value;
+        const atasNamaLayanan = (atasNamaLayananInput && atasNamaLayananInput.trim() !== '') ? atasNamaLayananInput.trim() : '-';
+
         const namaTelkom = document.getElementById('namaTelkom')?.value || 'Yustika Monita';
         const isTtdMonitaChecked = document.getElementById('checkTtdMonita')?.checked;
 
@@ -50,7 +54,10 @@ function generatePreview(event) {
 
         // Detail Layanan & Penanggung Jawab
         if (document.getElementById('prevNoLayanan')) document.getElementById('prevNoLayanan').innerText = noLayanan;
-        if (document.getElementById('prevAtasNamaLayanan')) document.getElementById('prevAtasNamaLayanan').innerText = namaPelanggan;
+        
+        // MENGISI PREVIEW ATAS NAMA LAYANAN MANUALLY
+        if (document.getElementById('prevAtasNamaLayanan')) document.getElementById('prevAtasNamaLayanan').innerText = atasNamaLayanan;
+        
         if (document.getElementById('prevAlamatLayanan')) document.getElementById('prevAlamatLayanan').innerText = alamatPelanggan;
         if (document.getElementById('prevSignPenanggungJawab')) document.getElementById('prevSignPenanggungJawab').innerText = namaTelkom;
 
@@ -98,14 +105,21 @@ async function downloadPDF() {
     const originalTransform = element.style.transform;
     const originalBoxShadow = element.style.boxShadow;
 
+    // Reset skala preview ke kondisi asli sebelum capture
     element.style.transform = 'scale(1)';
     element.style.boxShadow = 'none';
 
     try {
-        const { jsPDF } = window.jspdf;
+        const jsPDF = window.jspdf ? window.jspdf.jsPDF : null;
 
+        if (!jsPDF || typeof html2canvas === 'undefined') {
+            alert("Pustaka ekspor PDF belum ter-load sempurna. Pastikan koneksi internet aktif.");
+            return;
+        }
+
+        // Render dengan scale 2.5 agar teks tajam dan tidak pecah
         const canvas = await html2canvas(element, {
-            scale: 2,
+            scale: 2.5,
             useCORS: true,
             logging: false,
             windowWidth: element.scrollWidth,
@@ -118,8 +132,9 @@ async function downloadPDF() {
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
 
-        const marginX = 8;
-        const marginY = 8;
+        // Margin diperkecil ke 4mm agar tulisan surat otomatis membentang lebih besar & tajam
+        const marginX = 4;
+        const marginY = 5;
         const maxPrintWidth = pdfWidth - (marginX * 2);
         const maxPrintHeight = pdfHeight - (marginY * 2);
 
@@ -139,7 +154,7 @@ async function downloadPDF() {
 
     } catch (error) {
         console.error("Gagal mengunduh PDF:", error);
-        alert("Gagal mengunduh PDF. Pastikan library html2canvas & jsPDF sudah terhubung di file HTML.");
+        alert("Terjadi kesalahan saat membuat file PDF: " + error.message);
     } finally {
         element.style.transform = originalTransform;
         element.style.boxShadow = originalBoxShadow;

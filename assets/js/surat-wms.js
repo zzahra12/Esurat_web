@@ -14,7 +14,10 @@ function generatePreview(event) {
     event.preventDefault();
 
     try {
-        const namaTelda = document.getElementById('namaTelda')?.value || 'BANYUWANGI';
+        const namaTeldaInput = document.getElementById('namaTelda')?.value || 'BANYUWANGI';
+        const namaTelda = namaTeldaInput.trim().toUpperCase();
+
+        const noSuratWmsInput = document.getElementById('noSuratWms')?.value || 'TEL. XXXX/YN000/T3W-0B0L0000';
         const noLayanan = document.getElementById('noLayanan')?.value || '-';
         const paketWms = document.getElementById('paketWms')?.value || '-';
 
@@ -23,9 +26,29 @@ function generatePreview(event) {
         const noHpPelanggan = document.getElementById('noHpPelanggan')?.value || '-';
         const alamatPelanggan = document.getElementById('alamatPelanggan')?.value || '-';
 
-        // Set TELDA pada Subtitle
+        const inputTglVal = document.getElementById('tglSurat')?.value;
+        let dateObj = inputTglVal ? new Date(inputTglVal) : new Date();
+
+        if (isNaN(dateObj.getTime())) {
+            dateObj = new Date();
+        }
+
+        const yearSurat = dateObj.getFullYear();
+
+        // MERANGKAI NOMOR SURAT MURNI TANPA KURUNG KURAWAL {}
+        const fullNoSurat = `${noSuratWmsInput.trim()}/${namaTelda}/${yearSurat}`;
+
+        // Output Subtitle Nomor Surat
+        if (document.getElementById('prevFullNoSurat')) {
+            document.getElementById('prevFullNoSurat').innerText = fullNoSurat;
+        }
+
+        // Output Subtitle Komponen Terpisah (Fallback)
         if (document.getElementById('prevTelda')) {
-            document.getElementById('prevTelda').innerText = namaTelda.toUpperCase();
+            document.getElementById('prevTelda').innerText = namaTelda;
+        }
+        if (document.getElementById('prevTahunHeader')) {
+            document.getElementById('prevTahunHeader').innerText = yearSurat;
         }
 
         // Output Data Pelanggan Utama (Tabel)
@@ -42,24 +65,9 @@ function generatePreview(event) {
             elSign.innerText = (namaPelanggan !== '-' && namaPelanggan !== '') ? namaPelanggan : '....................................';
         }
 
-        // Teks di bawah TTD berubah mengikuti Nama Pelanggan
-        const elSubSign = document.getElementById('prevSubSignPelanggan');
-        if (elSubSign) {
-            elSubSign.innerText = (namaPelanggan !== '-' && namaPelanggan !== '') ? namaPelanggan : 'Pelanggan Telkom';
-        }
-
         // LOGIKA PENANGGALAN REAL-TIME (TEMPAT, TANGGAL BULAN TAHUN)
-        const inputTglVal = document.getElementById('tglSurat')?.value;
         const namaKotaFormatted = namaTelda.charAt(0).toUpperCase() + namaTelda.slice(1).toLowerCase();
 
-        let dateObj;
-        if (inputTglVal) {
-            dateObj = new Date(inputTglVal);
-        } else {
-            dateObj = new Date(); // Realtime sistem hari ini
-        }
-
-        // Format Tanggal Indonesia (Contoh: Banyuwangi, 3 September 2026)
         const tglFormatted = dateObj.toLocaleDateString('id-ID', {
             day: 'numeric',
             month: 'long',
@@ -70,13 +78,17 @@ function generatePreview(event) {
             document.getElementById('prevRealtimeDate').innerText = `${namaKotaFormatted}, ${tglFormatted}`;
         }
 
-        if (document.getElementById('prevTahunHeader')) {
-            document.getElementById('prevTahunHeader').innerText = dateObj.getFullYear();
-        }
+        const emptyState = document.getElementById('emptyState');
+        const paperWrapper = document.getElementById('paperWrapper');
+        const btnDownload = document.getElementById('btnDownload');
 
-        document.getElementById('emptyState').style.display = 'none';
-        document.getElementById('paperWrapper').style.display = 'flex';
-        document.getElementById('btnDownload').disabled = false;
+        if (emptyState) emptyState.style.display = 'none';
+        if (paperWrapper) paperWrapper.style.display = 'flex';
+
+        if (btnDownload) {
+            btnDownload.disabled = false;
+            btnDownload.removeAttribute('disabled');
+        }
 
     } catch (error) {
         console.error("Gagal memproses preview:", error);
@@ -112,7 +124,7 @@ async function downloadPDF() {
     }
 }
 
-// Kontrol Zoom
+// Kontrol Zoom & Fullscreen
 let currentScale = 1;
 function zoomIn() { if (currentScale < 1.3) { currentScale += 0.1; applyZoom(); } }
 function zoomOut() { if (currentScale > 0.5) { currentScale -= 0.1; applyZoom(); } }

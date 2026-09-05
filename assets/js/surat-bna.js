@@ -7,17 +7,27 @@ function generatePreview(event) {
         const noLayanan = document.getElementById('noLayanan')?.value || '-';
         const tipeIdentitas = document.getElementById('tipeIdentitas')?.value || '-';
         const nikPelanggan = document.getElementById('nikPelanggan')?.value || '-';
-        const alamatPelanggan = document.getElementById('alamatPelanggan')?.value || '-';
 
-        // 2. Data Akun BNA
-        const noAkunLama = document.getElementById('noAkunLama')?.value || '-';
-        const noAkunBaru = document.getElementById('noAkunBaru')?.value || '-';
-        
+        const alamatPelangganInput = document.getElementById('alamatPelanggan')?.value;
+        const alamatPelanggan = (alamatPelangganInput && alamatPelangganInput.trim() !== '') ? alamatPelangganInput.trim() : '-';
+
+        const atasNamaLayananInput = document.getElementById('atasNamaLayanan')?.value;
+        const atasNamaLayanan = (atasNamaLayananInput && atasNamaLayananInput.trim() !== '') ? atasNamaLayananInput.trim() : '-';
+
+        const alamatLayananInput = document.getElementById('alamatLayanan')?.value;
+        const alamatLayanan = (alamatLayananInput && alamatLayananInput.trim() !== '') ? alamatLayananInput.trim() : '-';
+
+        // 2. Data Detail Balik Nama (BNA)
+        const noAkunLamaInput = document.getElementById('noAkunLama')?.value;
+        const noAkunBaruInput = document.getElementById('noAkunBaru')?.value;
         const keteranganInput = document.getElementById('keteranganTambahan')?.value;
+
+        const noAkunLama = (noAkunLamaInput && noAkunLamaInput.trim() !== '') ? noAkunLamaInput.trim() : '-';
+        const noAkunBaru = (noAkunBaruInput && noAkunBaruInput.trim() !== '') ? noAkunBaruInput.trim() : '-';
         const keterangan = (keteranganInput && keteranganInput.trim() !== '') ? keteranganInput.trim() : '-';
 
         const namaTelkom = document.getElementById('namaTelkom')?.value || 'Yustika Monita';
-        const isTtdMonitaChecked = document.getElementById('checkTtdMonita')?.checked;
+        const isTtdChecked = document.getElementById('checkTtdMonita')?.checked;
 
         // 3. Data Kuasa (Fallback Strip '-' Jika Kosong)
         const namaKuasaInput = document.getElementById('namaKuasa')?.value;
@@ -30,39 +40,32 @@ function generatePreview(event) {
         const tipeIdentitasKuasa = (tipeIdentitasKuasaInput && tipeIdentitasKuasaInput.trim() !== '') ? tipeIdentitasKuasaInput.trim() : '-';
         const alamatKuasa = (alamatKuasaInput && alamatKuasaInput.trim() !== '') ? alamatKuasaInput.trim() : '-';
 
-        // Tempel TTD Monita
+        // Toggle Gambar TTD Monita
         const imgTtd = document.getElementById('imgTtdMonita');
         if (imgTtd) {
-            imgTtd.style.display = isTtdMonitaChecked ? 'block' : 'none';
+            imgTtd.style.display = isTtdChecked ? 'block' : 'none';
         }
 
-        // --- PREVIEW SURAT (KUNCI MATI POSISI) ---
-
-        // Pihak Atas: Yang bertanda tangan di bawah ini = Pelanggan Utama
+        // --- MENGISI PREVIEW SURAT ---
         if (document.getElementById('prevPelangganNama')) document.getElementById('prevPelangganNama').innerText = namaPelanggan;
         if (document.getElementById('prevPelangganAlamat')) document.getElementById('prevPelangganAlamat').innerText = alamatPelanggan;
         if (document.getElementById('prevPelangganTipe')) document.getElementById('prevPelangganTipe').innerText = tipeIdentitas;
         if (document.getElementById('prevPelangganNik')) document.getElementById('prevPelangganNik').innerText = nikPelanggan;
-
-        // Pihak Tengah: Bertindak untuk dan atas nama = Penerima Kuasa
-        const containerKuasa = document.getElementById('containerPrevKuasa');
-        if (containerKuasa) containerKuasa.style.display = 'block';
 
         if (document.getElementById('prevKuasaNama')) document.getElementById('prevKuasaNama').innerText = namaKuasa;
         if (document.getElementById('prevKuasaAlamat')) document.getElementById('prevKuasaAlamat').innerText = alamatKuasa;
         if (document.getElementById('prevKuasaTipe')) document.getElementById('prevKuasaTipe').innerText = tipeIdentitasKuasa;
         if (document.getElementById('prevKuasaNik')) document.getElementById('prevKuasaNik').innerText = nikKuasa;
 
-        // Tanda Tangan Kanan Bawah = Pelanggan Utama
         if (document.getElementById('prevSignPelanggan')) {
             document.getElementById('prevSignPelanggan').innerText = namaPelanggan;
         }
 
-        // Data Layanan & Akun BNA
         if (document.getElementById('prevNoLayanan')) document.getElementById('prevNoLayanan').innerText = noLayanan;
-        if (document.getElementById('prevAtasNamaLayanan')) document.getElementById('prevAtasNamaLayanan').innerText = namaPelanggan;
-        if (document.getElementById('prevAlamatLayanan')) document.getElementById('prevAlamatLayanan').innerText = alamatPelanggan;
+        if (document.getElementById('prevAtasNamaLayanan')) document.getElementById('prevAtasNamaLayanan').innerText = atasNamaLayanan;
+        if (document.getElementById('prevAlamatLayanan')) document.getElementById('prevAlamatLayanan').innerText = alamatLayanan;
 
+        // Detail Poin a - c Surat BNA
         if (document.getElementById('prevNoAkunLama')) document.getElementById('prevNoAkunLama').innerText = noAkunLama;
         if (document.getElementById('prevNoAkunBaru')) document.getElementById('prevNoAkunBaru').innerText = noAkunBaru;
         if (document.getElementById('prevKeterangan')) document.getElementById('prevKeterangan').innerText = keterangan;
@@ -75,7 +78,7 @@ function generatePreview(event) {
             document.getElementById('prevRealtimeDate').innerText = `Banyuwangi, ${today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
         }
 
-        // Tampilkan Preview & Buka Kunci Tombol Unduh
+        // TAMPILKAN PREVIEW & AKTIFKAN TOMBOL
         const emptyState = document.getElementById('emptyState');
         const letterPaper = document.getElementById('letterPaper');
         const btnDownload = document.getElementById('btnDownload');
@@ -89,19 +92,19 @@ function generatePreview(event) {
         }
 
     } catch (error) {
-        console.error("Gagal memproses preview:", error);
+        console.error("Gagal memproses preview Surat BNA:", error);
         alert("Terjadi kesalahan saat membuat preview.");
     }
 }
 
-// Fungsi Unduh PDF Anti-Gagal
+// Fungsi Unduh PDF Presisi
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
     const element = document.getElementById('letterPaper');
     const namaPelanggan = document.getElementById('namaPelanggan')?.value || 'Pelanggan';
 
     if (!element) {
-        alert("Elemen lembar surat tidak ditemukan.");
+        alert("Elemen surat tidak ditemukan.");
         return;
     }
 
@@ -125,7 +128,7 @@ async function downloadPDF() {
         }
 
         const canvas = await html2canvas(element, {
-            scale: 2,
+            scale: 2.5,
             useCORS: true,
             logging: false,
             windowWidth: element.scrollWidth,
@@ -138,8 +141,8 @@ async function downloadPDF() {
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
 
-        const marginX = 8;
-        const marginY = 8;
+        const marginX = 4;
+        const marginY = 5;
         const maxPrintWidth = pdfWidth - (marginX * 2);
         const maxPrintHeight = pdfHeight - (marginY * 2);
 

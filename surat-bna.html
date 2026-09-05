@@ -3,37 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surat Permintaan Perubahan Nomor Akun / BNA</title>
+    <title>Surat Permintaan Balik Nama Layanan (BNA)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 
     <!-- Pustaka Ekspor PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-    <style>
-        .letter-paper {
-            font-size: 11px !important;
-            line-height: 1.35 !important;
-            padding: 25px 30px !important;
-        }
-        .letter-title {
-            font-size: 13px !important;
-            margin-bottom: 12px !important;
-        }
-        .data-table td {
-            padding: 2px 0 !important;
-            font-size: 11px !important;
-        }
-        .paragraph {
-            margin-bottom: 6px !important;
-        }
-        .statement-title {
-            margin: 10px 0 6px 0 !important;
-            font-weight: bold;
-            text-align: center;
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -54,7 +30,7 @@
 
     <!-- Main Workspace -->
     <main class="main-container">
-        <h1 class="page-header-title">Surat Permintaan Perubahan Nomor Akun (BNA/BNO)</h1>
+        <h1 class="page-header-title">Surat Permintaan Balik Nama Layanan (BNA)</h1>
 
         <div class="workspace-grid">
             
@@ -65,18 +41,18 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Nama Lengkap Pelanggan</label>
+                            <label>Nama Lengkap Pelanggan*</label>
                             <input type="text" id="namaPelanggan" placeholder="Nama Lengkap" required>
                         </div>
                         <div class="form-group">
-                            <label>Nomor Layanan Indibiz</label>
+                            <label>Nomor Layanan Indibiz*</label>
                             <input type="text" id="noLayanan" placeholder="Contoh 1234567890" required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Tipe Identitas</label>
+                            <label>Tipe Identitas*</label>
                             <select id="tipeIdentitas" required>
                                 <option value="KTP">KTP</option>
                                 <option value="SIM">SIM</option>
@@ -84,26 +60,39 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Nomor Identitas (NIK)</label>
+                            <label>Nomor Identitas (NIK)*</label>
                             <input type="text" id="nikPelanggan" placeholder="NIK 1234567890" required>
                         </div>
                     </div>
 
+                    <!-- 1. ALAMAT PELANGGAN / KTP -->
                     <div class="form-group">
-                        <label>Alamat Pelanggan</label>
-                        <textarea id="alamatPelanggan" rows="2" placeholder="Alamat Pelanggan" required></textarea>
+                        <label>Alamat Pelanggan (Sesuai KTP)*</label>
+                        <textarea id="alamatPelanggan" rows="2" placeholder="Alamat Domisili / KTP Pelanggan" required></textarea>
                     </div>
 
-                    <h3 class="section-title" style="margin-top: 10px;">DETAIL PERUBAHAN NOMOR AKUN (BNA)</h3>
+                    <!-- 2. ATAS NAMA LAYANAN -->
+                    <div class="form-group">
+                        <label>Atas Nama Layanan (Nama Kantor / Usaha / Sekolah)*</label>
+                        <input type="text" id="atasNamaLayanan" placeholder="Contoh: PT Telkom / SMK Negeri 1" required>
+                    </div>
+
+                    <!-- 3. ALAMAT LOKASI LAYANAN -->
+                    <div class="form-group">
+                        <label>Alamat Lokasi Layanan (Pemasangan)*</label>
+                        <textarea id="alamatLayanan" rows="2" placeholder="Alamat Fisik Pemasangan Jaringan" required></textarea>
+                    </div>
+
+                    <h3 class="section-title" style="margin-top: 15px;">DETAIL PERUBAHAN BALIK NAMA LAYANAN (BNA)</h3>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Nama Lama</label>
-                            <input type="text" id="noAkunLama" placeholder="Nama Lama" required>
+                            <label>Nama Lama*</label>
+                            <input type="text" id="noAkunLama" placeholder="Nama Pemilik Lama" required>
                         </div>
                         <div class="form-group">
-                            <label>Nama Baru</label>
-                            <input type="text" id="noAkunBaru" placeholder="Nama Baru" required>
+                            <label>Nama Baru*</label>
+                            <input type="text" id="noAkunBaru" placeholder="Nama Pemilik Baru" required>
                         </div>
                     </div>
 
@@ -174,67 +163,69 @@
                     </div>
 
                     <div id="letterPaper" class="letter-paper" style="display: none;">
-                        <h4 class="letter-title" style="text-align: center; text-decoration: underline;">SURAT PERMINTAAN PERUBAHAN NOMOR AKUN LAYANAN (BNA)</h4>
+                        <h4 class="letter-title">SURAT PERMINTAAN BALIK NAMA LAYANAN (BNA)</h4>
                         
                         <!-- DATA ATAS: PELANGGAN UTAMA -->
                         <p class="paragraph">Yang bertanda tangan di bawah ini :</p>
                         <table class="data-table">
-                            <tr><td class="lbl" style="width: 140px;">Nama</td><td>: <span id="prevPelangganNama">-</span></td></tr>
-                            <tr><td class="lbl" style="width: 140px;">Alamat</td><td>: <span id="prevPelangganAlamat">-</span></td></tr>
-                            <tr><td class="lbl" style="width: 140px;">Tipe Identitas</td><td>: <span id="prevPelangganTipe">-</span></td></tr>
-                            <tr><td class="lbl" style="width: 140px;">Nomor Identitas</td><td>: <span id="prevPelangganNik">-</span></td></tr>
+                            <tr><td class="lbl">Nama</td><td>: <span id="prevPelangganNama">-</span></td></tr>
+                            <tr><td class="lbl">Alamat</td><td>: <span id="prevPelangganAlamat">-</span></td></tr>
+                            <tr><td class="lbl">Tipe Identitas</td><td>: <span id="prevPelangganTipe">-</span></td></tr>
+                            <tr><td class="lbl">Nomor Identitas</td><td>: <span id="prevPelangganNik">-</span></td></tr>
                         </table>
                         <p class="note">(*diisi bila mutasi dilakukan oleh pihak penerima kuasa dari PELANGGAN)</p>
 
-                        <!-- DATA TENGAH: PENERIMA KUASA (Selalu Ada di Struktur) -->
+                        <!-- DATA TENGAH: PENERIMA KUASA -->
                         <div id="containerPrevKuasa">
                             <p class="paragraph">Bertindak untuk dan atas nama:</p>
                             <table class="data-table">
-                                <tr><td class="lbl" style="width: 140px;">Nama</td><td>: <span id="prevKuasaNama">-</span></td></tr>
-                                <tr><td class="lbl" style="width: 140px;">Alamat</td><td>: <span id="prevKuasaAlamat">-</span></td></tr>
-                                <tr><td class="lbl" style="width: 140px;">Tipe Identitas</td><td>: <span id="prevKuasaTipe">-</span></td></tr>
-                                <tr><td class="lbl" style="width: 140px;">Nomor Identitas</td><td>: <span id="prevKuasaNik">-</span></td></tr>
+                                <tr><td class="lbl">Nama</td><td>: <span id="prevKuasaNama">-</span></td></tr>
+                                <tr><td class="lbl">Alamat</td><td>: <span id="prevKuasaAlamat">-</span></td></tr>
+                                <tr><td class="lbl">Tipe Identitas</td><td>: <span id="prevKuasaTipe">-</span></td></tr>
+                                <tr><td class="lbl">Nomor Identitas</td><td>: <span id="prevKuasaNik">-</span></td></tr>
                             </table>
                         </div>
 
                         <p class="paragraph">Selanjutnya disebut sebagai "PELANGGAN", selaku pihak yang berlangganan layanan sebagai berikut:</p>
                         <table class="data-table">
-                            <tr><td class="lbl" style="width: 140px;">Nomor Layanan</td><td>: <span id="prevNoLayanan">-</span></td></tr>
-                            <tr><td class="lbl" style="width: 140px;">Atas Nama</td><td>: <span id="prevAtasNamaLayanan">-</span></td></tr>
-                            <tr><td class="lbl" style="width: 140px;">Alamat</td><td>: <span id="prevAlamatLayanan">-</span></td></tr>
+                            <tr><td class="lbl">Nomor Layanan</td><td>: <span id="prevNoLayanan">-</span></td></tr>
+                            <tr><td class="lbl">Atas Nama</td><td>: <span id="prevAtasNamaLayanan">-</span></td></tr>
+                            <tr><td class="lbl">Alamat</td><td>: <span id="prevAlamatLayanan">-</span></td></tr>
                         </table>
 
                         <div class="statement-title">MENYATAKAN</div>
-                        <p class="paragraph">BAHWA, PELANGGAN adalah benar pihak yang berlangganan Layanan Indibiz berdasarkan Kontrak Berlangganan, dan dengan ini mengajukan permintaan Perubahan Nomor Akun (BNA) Layanan Indibiz, sebagai berikut:</p>
+                        <p class="paragraph">BAHWA, PELANGGAN adalah benar pihak yang berlangganan Layanan Indibiz berdasarkan Kontrak Berlangganan, dan dengan ini mengajukan permintaan Balik Nama (BNA) Layanan Indibiz, sebagai berikut:</p>
 
-                        <p class="paragraph"><strong>Jenis Permohonan : Perubahan Nomor Akun (BNA)</strong></p>
+                        <p class="paragraph"><strong>Jenis Permohonan : Balik Nama (BNA)</strong></p>
                         <table class="data-table">
-                            <tr><td class="lbl" style="padding-left: 12px; width: 170px; white-space: nowrap;">a. Nama Lama</td><td>: <span id="prevNoAkunLama">-</span></td></tr>
-                            <tr><td class="lbl" style="padding-left: 12px; width: 170px; white-space: nowrap;">b. Nama Baru</td><td>: <span id="prevNoAkunBaru">-</span></td></tr>
-                            <tr><td class="lbl" style="padding-left: 12px; width: 170px; white-space: nowrap;">c. Keterangan</td><td>: <span id="prevKeterangan">-</span></td></tr>
+                            <tr><td class="lbl" style="padding-left: 12px; white-space: nowrap;">a. Nama Lama</td><td>: <span id="prevNoAkunLama">-</span></td></tr>
+                            <tr><td class="lbl" style="padding-left: 12px; white-space: nowrap;">b. Nama Baru</td><td>: <span id="prevNoAkunBaru">-</span></td></tr>
+                            <tr><td class="lbl" style="padding-left: 12px; white-space: nowrap;">c. Keterangan</td><td>: <span id="prevKeterangan">-</span></td></tr>
                         </table>
 
                         <p class="paragraph" style="margin-top: 8px;">Keterangan Tambahan:</p>
-                        <ol class="keterangan-list" style="margin-top: 2px;">
-                            <li>Permohonan ini berlaku sejak ditandatanganinya Surat Permintaan Perubahan Nomor Akun Layanan Indibiz ini.</li>
-                            <li>Surat Permintaan Perubahan Nomor Akun Layanan Indibiz ini merupakan satu kesatuan yang tidak terpisahkan dengan Kontrak Berlangganan yang telah ditandatanganinya PT Telkom Indonesia (Persero) Tbk dengan PELANGGAN.</li>
+                        <ol class="keterangan-list">
+                            <li>Permohonan ini berlaku sejak ditandatanganinya Surat Permintaan Balik Nama Layanan Indibiz ini.</li>
+                            <li>Surat Permintaan Balik Nama Layanan Indibiz ini merupakan satu kesatuan yang tidak terpisahkan dengan Kontrak Berlangganan yang telah ditandatanganinya PT Telkom Indonesia (Persero) Tbk dengan PELANGGAN.</li>
                         </ol>
 
                         <!-- Area Tanda Tangan & Realtime Date -->
-                        <div class="signature-section" style="margin-top: 15px;">
+                        <div class="signature-section">
                             <div class="sig-date" id="prevRealtimeDate">Banyuwangi, 4 September 2026</div>
                             <div class="sig-grid">
                                 <div class="sig-box">
                                     <p><strong>Penanggung Jawab Telkom</strong></p>
-                                    <div class="sig-space" style="height: 55px; display: flex; align-items: center; justify-content: center;">
-                                        <img id="imgTtdMonita" src="assets/images/ttd-telkom.jpg" alt="Tanda Tangan Yustika Monita" style="max-height: 50px; width: auto;" onerror="this.style.display='none'">
+                                    <div class="sig-space">
+                                        <img id="imgTtdMonita" src="assets/images/ttd-telkom.jpg" alt="Tanda Tangan Yustika Monita" onerror="this.style.display='none'">
                                     </div>
                                     <p class="sig-name">(<span id="prevSignPenanggungJawab">Yustika Monita</span>)</p>
                                 </div>
                                 
                                 <div class="sig-box">
                                     <p><strong>Pelanggan</strong></p>
-                                    <div class="materai-box" style="padding: 4px; font-size: 9px;">Materai<br>10.000</div>
+                                    <div class="sig-space">
+                                        <div class="materai-box">Materai<br>10.000</div>
+                                    </div>
                                     <p class="sig-name">(<span id="prevSignPelanggan">nama pelanggan</span>)</p>
                                 </div>
                             </div>
@@ -244,8 +235,8 @@
                 </div>
 
                 <div class="action-buttons">
-    <button type="button" class="btn-action" id="btnDownload" onclick="downloadPDF()">Unduh PDF</button>
-</div>
+                    <button type="button" class="btn-action" id="btnDownload" onclick="downloadPDF()">Unduh PDF</button>
+                </div>
                 
                 <a href="jenis-surat.html" class="back-link">Kembali Ke Dashboard</a>
             </div>
