@@ -3,11 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Pilih Jenis Surat</title>
+    <title>Pilih Jenis Surat - Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Ukuran Kontainer Diperluas Agars Sesuai Lebar Layar */
+        .jenis-surat-wrapper {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            width: 100%;
+            max-width: 1350px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            box-sizing: border-box;
+        }
+
+        /* Kartu Lebih Luas dan Tinggi */
+        .jenis-surat-card {
+            background-color: #e2e2e2;
+            border-radius: 14px;
+            padding: 28px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .jenis-surat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .jenis-surat-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding-right: 12px;
+        }
+
+        /* Ikon Lebih Besar */
+        .jenis-surat-info svg {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            color: #1a1a1a;
+        }
+
+        /* Teks Judul Surat Lebih Besar */
+        .jenis-surat-info span {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a1a;
+            line-height: 1.35;
+        }
+
+        /* Tombol Pilih Lebih Pas & Proporsional */
+        .btn-pilih-custom {
+            background-color: #0d0b3e;
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .btn-pilih-custom:hover {
+            background-color: #1d196a;
+        }
+
+        @media (max-width: 1200px) {
+            .jenis-surat-wrapper {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .jenis-surat-wrapper {
+                grid-template-columns: 1fr;
+                padding: 15px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -16,122 +99,83 @@
         <h2 class="sidebar-title" onclick="window.location.href='jenis-surat.html'">Dashboard</h2>
     </aside>
 
-    <!-- Main Content Area -->
-    <main class="main-content">
-        <h1 class="content-header">Pilih Jenis Surat</h1>
+    <!-- Main Workspace -->
+    <main class="main-container">
+        <h1 class="page-header-title" style="text-align: center; margin-top: 10px; margin-bottom: 30px; font-size: 26px;">Pilih Jenis Surat</h1>
 
-        <div class="cards-grid">
+        <!-- Container Grid 3 Kolom -->
+        <div class="jenis-surat-wrapper">
             
-            <!-- 1. Surat Buka Isolir -->
-            <div class="card">
-                <div class="card-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#110c43" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
+            <!-- 1. Buka Isolir -->
+            <div class="jenis-surat-card">
+                <div class="jenis-surat-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    <span>Surat Permintaan Buka Isolir Sementara</span>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title">Surat Permintaan Buka Isolir Sementara</h3>
-                    <button class="btn-pilih" onclick="window.location.href='buka-isolir.html'">Pilih</button>
-                </div>
+                <a href="buka-isolir.html" class="btn-pilih-custom">Pilih</a>
             </div>
 
             <!-- 2. Surat PDA -->
-            <div class="card">
-                <div class="card-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#110c43" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
+            <div class="jenis-surat-card">
+                <div class="jenis-surat-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    <span>Surat PDA</span>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title">Surat PDA</h3>
-                    <button class="btn-pilih" onclick="window.location.href='surat-pda.html'">Pilih</button>
-                </div>
+                <a href="surat-pda.html" class="btn-pilih-custom">Pilih</a>
             </div>
 
             <!-- 3. Surat GNO -->
-            <div class="card">
-                <div class="card-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#110c43" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
+            <div class="jenis-surat-card">
+                <div class="jenis-surat-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    <span>Surat GNO</span>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title">Surat GNO</h3>
-                    <button class="btn-pilih" onclick="window.location.href='surat-gno.html'">Pilih</button>
-                </div>
+                <a href="surat-gno.html" class="btn-pilih-custom">Pilih</a>
             </div>
 
             <!-- 4. Surat BNA -->
-            <div class="card">
-                <div class="card-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#110c43" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
+            <div class="jenis-surat-card">
+                <div class="jenis-surat-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    <span>Surat BNA</span>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title">Surat BNA</h3>
-                    <button class="btn-pilih" onclick="window.location.href='surat-bna.html'">Pilih</button>
-                </div>
+                <a href="surat-bna.html" class="btn-pilih-custom">Pilih</a>
             </div>
 
             <!-- 5. Surat Permintaan DO -->
-            <div class="card">
-                <div class="card-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#110c43" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
+            <div class="jenis-surat-card">
+                <div class="jenis-surat-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    <span>Surat Permintaan DO</span>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title">Surat Permintaan DO</h3>
-                    <button class="btn-pilih" onclick="window.location.href='surat-do.html'">Pilih</button>
-                </div>
+                <a href="surat-do.html" class="btn-pilih-custom">Pilih</a>
             </div>
 
             <!-- 6. Surat Permintaan Isolir -->
-            <div class="card">
-                <div class="card-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#110c43" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
+            <div class="jenis-surat-card">
+                <div class="jenis-surat-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    <span>Surat Permintaan Isolir</span>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title">Surat Permintaan Isolir</h3>
-                    <button class="btn-pilih" onclick="window.location.href='surat-isolir.html'">Pilih</button>
-                </div>
+                <a href="surat-isolir.html" class="btn-pilih-custom">Pilih</a>
             </div>
 
             <!-- 7. Surat Upgrade-Downgrade -->
-            <div class="card">
-                <div class="card-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#110c43" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
+            <div class="jenis-surat-card">
+                <div class="jenis-surat-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    <span>Surat Upgrade-Downgrade</span>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title">Surat Upgrade-Downgrade</h3>
-                    <button class="btn-pilih" onclick="window.location.href='surat-upgrade-downgrade.html'">Pilih</button>
+                <a href="surat-upgrade-downgrade.html" class="btn-pilih-custom">Pilih</a>
+            </div>
+
+            <!-- 8. Surat Pernyataan WMS -->
+            <div class="jenis-surat-card">
+                <div class="jenis-surat-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    <span>Surat Pernyataan WMS</span>
                 </div>
+                <a href="surat-wms.html" class="btn-pilih-custom">Pilih</a>
             </div>
 
         </div>
