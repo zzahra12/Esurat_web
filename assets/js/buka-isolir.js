@@ -2,21 +2,29 @@ function generatePreview(event) {
     event.preventDefault();
 
     try {
-        // 1. Ambil Input Pelanggan Utama
+        // 1. Data Pelanggan Utama
         const namaPelanggan = document.getElementById('namaPelanggan')?.value || '-';
         const noLayanan = document.getElementById('noLayanan')?.value || '-';
         const tipeIdentitas = document.getElementById('tipeIdentitas')?.value || '-';
         const nikPelanggan = document.getElementById('nikPelanggan')?.value || '-';
-        const alamatPelanggan = document.getElementById('alamatPelanggan')?.value || '-';
 
-        // AMBIL INPUT ATAS NAMA LAYANAN SECARA MANDIRI (KANTOR / USAN / SEKOLAH)
+        const alamatPelangganInput = document.getElementById('alamatPelanggan')?.value;
+        const alamatPelanggan = (alamatPelangganInput && alamatPelangganInput.trim() !== '') ? alamatPelangganInput.trim() : '-';
+
         const atasNamaLayananInput = document.getElementById('atasNamaLayanan')?.value;
         const atasNamaLayanan = (atasNamaLayananInput && atasNamaLayananInput.trim() !== '') ? atasNamaLayananInput.trim() : '-';
 
-        const namaTelkom = document.getElementById('namaTelkom')?.value || 'Yustika Monita';
-        const isTtdMonitaChecked = document.getElementById('checkTtdMonita')?.checked;
+        const alamatLayananInput = document.getElementById('alamatLayanan')?.value;
+        const alamatLayanan = (alamatLayananInput && alamatLayananInput.trim() !== '') ? alamatLayananInput.trim() : '-';
 
-        // 2. Ambil Input Kuasa (Fallback Strip '-' Jika Kosong)
+        // 2. Keterangan Tambahan
+        const keteranganInput = document.getElementById('keteranganTambahan')?.value;
+        const keterangan = (keteranganInput && keteranganInput.trim() !== '') ? keteranganInput.trim() : '-';
+
+        const namaTelkom = document.getElementById('namaTelkom')?.value || 'Yustika Monita';
+        const isTtdChecked = document.getElementById('checkTtdMonita')?.checked;
+
+        // 3. Data Kuasa
         const namaKuasaInput = document.getElementById('namaKuasa')?.value;
         const nikKuasaInput = document.getElementById('nikKuasa')?.value;
         const tipeIdentitasKuasaInput = document.getElementById('tipeIdentitasKuasa')?.value;
@@ -30,35 +38,27 @@ function generatePreview(event) {
         // Toggle Gambar TTD Monita
         const imgTtd = document.getElementById('imgTtdMonita');
         if (imgTtd) {
-            imgTtd.style.display = isTtdMonitaChecked ? 'block' : 'none';
+            imgTtd.style.display = isTtdChecked ? 'block' : 'none';
         }
 
-        // --- MENGISI PREVIEW SURAT ---
-
-        // Pihak Atas: Yang bertanda tangan di bawah ini = SELALU Pelanggan Utama
+        // --- MENGISI PREVIEW ---
         if (document.getElementById('prevPelangganNama')) document.getElementById('prevPelangganNama').innerText = namaPelanggan;
         if (document.getElementById('prevPelangganAlamat')) document.getElementById('prevPelangganAlamat').innerText = alamatPelanggan;
         if (document.getElementById('prevPelangganTipe')) document.getElementById('prevPelangganTipe').innerText = tipeIdentitas;
         if (document.getElementById('prevPelangganNik')) document.getElementById('prevPelangganNik').innerText = nikPelanggan;
 
-        // Pihak Tengah: Bertindak untuk dan atas nama = SELALU Penerima Kuasa
         if (document.getElementById('prevKuasaNama')) document.getElementById('prevKuasaNama').innerText = namaKuasa;
         if (document.getElementById('prevKuasaAlamat')) document.getElementById('prevKuasaAlamat').innerText = alamatKuasa;
         if (document.getElementById('prevKuasaTipe')) document.getElementById('prevKuasaTipe').innerText = tipeIdentitasKuasa;
         if (document.getElementById('prevKuasaNik')) document.getElementById('prevKuasaNik').innerText = nikKuasa;
 
-        // Tanda Tangan: SELALU PAKAI NAMA PELANGGAN UTAMA
-        if (document.getElementById('prevSignPelanggan')) {
-            document.getElementById('prevSignPelanggan').innerText = namaPelanggan;
-        }
+        if (document.getElementById('prevSignPelanggan')) document.getElementById('prevSignPelanggan').innerText = namaPelanggan;
 
-        // Detail Layanan & Penanggung Jawab
         if (document.getElementById('prevNoLayanan')) document.getElementById('prevNoLayanan').innerText = noLayanan;
-        
-        // MENGISI PREVIEW ATAS NAMA LAYANAN MANUALLY
         if (document.getElementById('prevAtasNamaLayanan')) document.getElementById('prevAtasNamaLayanan').innerText = atasNamaLayanan;
-        
-        if (document.getElementById('prevAlamatLayanan')) document.getElementById('prevAlamatLayanan').innerText = alamatPelanggan;
+        if (document.getElementById('prevAlamatLayanan')) document.getElementById('prevAlamatLayanan').innerText = alamatLayanan;
+
+        if (document.getElementById('prevKeterangan')) document.getElementById('prevKeterangan').innerText = keterangan;
         if (document.getElementById('prevSignPenanggungJawab')) document.getElementById('prevSignPenanggungJawab').innerText = namaTelkom;
 
         // Tanggal Realtime
@@ -67,7 +67,7 @@ function generatePreview(event) {
             document.getElementById('prevRealtimeDate').innerText = `Banyuwangi, ${today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
         }
 
-        // --- TAMPILKAN PREVIEW & BUKA KUNCI TOMBOL UNDUH ---
+        // Tampilkan Preview
         const emptyState = document.getElementById('emptyState');
         const letterPaper = document.getElementById('letterPaper');
         const btnDownload = document.getElementById('btnDownload');
@@ -81,19 +81,19 @@ function generatePreview(event) {
         }
 
     } catch (error) {
-        console.error("Gagal memproses preview:", error);
+        console.error("Gagal memproses preview Buka Isolir:", error);
         alert("Terjadi kesalahan saat membuat preview.");
     }
 }
 
-// Unduh PDF Presisi (Pas 1 Halaman A4)
+// Unduh PDF Presisi
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
     const element = document.getElementById('letterPaper');
     const namaPelanggan = document.getElementById('namaPelanggan')?.value || 'Pelanggan';
 
     if (!element) {
-        alert("Elemen lembar surat tidak ditemukan.");
+        alert("Elemen surat tidak ditemukan.");
         return;
     }
 
@@ -105,7 +105,6 @@ async function downloadPDF() {
     const originalTransform = element.style.transform;
     const originalBoxShadow = element.style.boxShadow;
 
-    // Reset skala preview ke kondisi asli sebelum capture
     element.style.transform = 'scale(1)';
     element.style.boxShadow = 'none';
 
@@ -113,11 +112,10 @@ async function downloadPDF() {
         const jsPDF = window.jspdf ? window.jspdf.jsPDF : null;
 
         if (!jsPDF || typeof html2canvas === 'undefined') {
-            alert("Pustaka ekspor PDF belum ter-load sempurna. Pastikan koneksi internet aktif.");
+            alert("Pustaka ekspor PDF belum ter-load sempurna.");
             return;
         }
 
-        // Render dengan scale 2.5 agar teks tajam dan tidak pecah
         const canvas = await html2canvas(element, {
             scale: 2.5,
             useCORS: true,
@@ -132,7 +130,6 @@ async function downloadPDF() {
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
 
-        // Margin diperkecil ke 4mm agar tulisan surat otomatis membentang lebih besar & tajam
         const marginX = 4;
         const marginY = 5;
         const maxPrintWidth = pdfWidth - (marginX * 2);
@@ -166,23 +163,10 @@ async function downloadPDF() {
     }
 }
 
-// Control Zoom & Fullscreen
+// Zoom & Fullscreen
 let currentScale = 1;
-
-function zoomIn() {
-    if (currentScale < 1.5) {
-        currentScale += 0.1;
-        applyZoom();
-    }
-}
-
-function zoomOut() {
-    if (currentScale > 1.0) {
-        currentScale -= 0.1;
-        applyZoom();
-    }
-}
-
+function zoomIn() { if (currentScale < 1.5) { currentScale += 0.1; applyZoom(); } }
+function zoomOut() { if (currentScale > 1.0) { currentScale -= 0.1; applyZoom(); } }
 function applyZoom() {
     const paper = document.getElementById('letterPaper');
     if (paper) {
@@ -191,10 +175,7 @@ function applyZoom() {
         paper.style.transition = 'transform 0.2s ease';
     }
 }
-
 function toggleFullscreen() {
     const previewCard = document.querySelector('.card-preview');
-    if (previewCard) {
-        previewCard.classList.toggle('fullscreen-mode');
-    }
+    if (previewCard) previewCard.classList.toggle('fullscreen-mode');
 }
