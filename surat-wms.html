@@ -100,6 +100,13 @@
             font-size: 8.5px;
             font-weight: bold;
         }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -132,7 +139,7 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Nama TELDA / Kota</label>
+                            <label>Nama TELDA (Untuk No. Surat)</label>
                             <input type="text" id="namaTelda" placeholder="Contoh: BANYUWANGI" value="BANYUWANGI" required>
                         </div>
                         <div class="form-group">
@@ -176,8 +183,14 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Alamat Lengkap Pemasangan</label>
+                        <label>Alamat Lengkap Pemasangan / KTP</label>
                         <textarea id="alamatPelanggan" rows="2" placeholder="Alamat Lengkap Pemasangan" required></textarea>
+                    </div>
+
+                    <!-- KOTA LOKASI TANDA TANGAN (BISA BEDA DENGAN TELDA) -->
+                    <div class="form-group">
+                        <label>Kota Lokasi Surat (Atas Tanda Tangan)</label>
+                        <input type="text" id="kotaTtd" placeholder="Contoh: Banyuwangi / Genteng / Rogojampi">
                     </div>
 
                     <button type="submit" class="btn-primary" style="margin-top: 15px;">Lanjutkan</button>
@@ -225,13 +238,13 @@
                         </ol>
 
                         <!-- AREA TANDA TANGAN REAL-TIME -->
-<div class="single-signature-section">
-    <div class="sig-date" id="prevRealtimeDate">Banyuwangi, 5 September 2026</div>
-    <div class="single-sig-box">
-        <div class="single-materai-box">Materai 10rb</div>
-        <p class="sig-name" style="margin-top: 4px; font-weight: 600;">(<span id="prevSignPelanggan">....................................</span>)</p>
-    </div>
-</div>
+                        <div class="single-signature-section">
+                            <div class="sig-date" id="prevRealtimeDate">Banyuwangi, 8 September 2026</div>
+                            <div class="single-sig-box">
+                                <div class="single-materai-box">Materai 10rb</div>
+                                <p class="sig-name" style="margin-top: 4px; font-weight: 600;">(<span id="prevSignPelanggan">....................................</span>)</p>
+                            </div>
+                        </div>
                     </div>
 
                 </div>

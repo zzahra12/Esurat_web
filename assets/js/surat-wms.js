@@ -14,6 +14,7 @@ function generatePreview(event) {
     event.preventDefault();
 
     try {
+        // 1. TELDA untuk Header Nomor Surat
         const namaTeldaInput = document.getElementById('namaTelda')?.value || 'BANYUWANGI';
         const namaTelda = namaTeldaInput.trim().toUpperCase();
 
@@ -26,6 +27,23 @@ function generatePreview(event) {
         const noHpPelanggan = document.getElementById('noHpPelanggan')?.value || '-';
         const alamatPelanggan = document.getElementById('alamatPelanggan')?.value || '-';
 
+        // 2. Kota Lokasi Tanda Tangan (Terpisah dari TELDA)
+        const kotaTtdInput = document.getElementById('kotaTtd')?.value;
+        let kotaTtd = 'Banyuwangi';
+
+        if (kotaTtdInput && kotaTtdInput.trim() !== '') {
+            kotaTtd = kotaTtdInput.trim();
+        } else if (alamatPelanggan && alamatPelanggan !== '-') {
+            // Ambil bagian kata lokasi terakhir jika input khusus kosong
+            const parts = alamatPelanggan.split(',');
+            kotaTtd = parts[parts.length - 1].trim(); 
+        } else {
+            kotaTtd = namaTeldaInput.trim();
+        }
+
+        // Format Kota TTD (Kapital awal kata)
+        const kotaTtdFormatted = kotaTtd.charAt(0).toUpperCase() + kotaTtd.slice(1).toLowerCase();
+
         const inputTglVal = document.getElementById('tglSurat')?.value;
         let dateObj = inputTglVal ? new Date(inputTglVal) : new Date();
 
@@ -35,20 +53,12 @@ function generatePreview(event) {
 
         const yearSurat = dateObj.getFullYear();
 
-        // MERANGKAI NOMOR SURAT MURNI TANPA KURUNG KURAWAL {}
+        // MERANGKAI NOMOR SURAT MURNI DENGAN TELDA (BANYUWANGI)
         const fullNoSurat = `${noSuratWmsInput.trim()}/${namaTelda}/${yearSurat}`;
 
-        // Output Subtitle Nomor Surat
+        // Output Subtitle Nomor Surat Header
         if (document.getElementById('prevFullNoSurat')) {
             document.getElementById('prevFullNoSurat').innerText = fullNoSurat;
-        }
-
-        // Output Subtitle Komponen Terpisah (Fallback)
-        if (document.getElementById('prevTelda')) {
-            document.getElementById('prevTelda').innerText = namaTelda;
-        }
-        if (document.getElementById('prevTahunHeader')) {
-            document.getElementById('prevTahunHeader').innerText = yearSurat;
         }
 
         // Output Data Pelanggan Utama (Tabel)
@@ -65,9 +75,7 @@ function generatePreview(event) {
             elSign.innerText = (namaPelanggan !== '-' && namaPelanggan !== '') ? namaPelanggan : '....................................';
         }
 
-        // LOGIKA PENANGGALAN REAL-TIME (TEMPAT, TANGGAL BULAN TAHUN)
-        const namaKotaFormatted = namaTelda.charAt(0).toUpperCase() + namaTelda.slice(1).toLowerCase();
-
+        // LOGIKA PENANGGALAN REAL-TIME DENGAN KOTA LOKASI TTD DINAMIS
         const tglFormatted = dateObj.toLocaleDateString('id-ID', {
             day: 'numeric',
             month: 'long',
@@ -75,7 +83,7 @@ function generatePreview(event) {
         });
 
         if (document.getElementById('prevRealtimeDate')) {
-            document.getElementById('prevRealtimeDate').innerText = `${namaKotaFormatted}, ${tglFormatted}`;
+            document.getElementById('prevRealtimeDate').innerText = `${kotaTtdFormatted}, ${tglFormatted}`;
         }
 
         const emptyState = document.getElementById('emptyState');
@@ -91,7 +99,7 @@ function generatePreview(event) {
         }
 
     } catch (error) {
-        console.error("Gagal memproses preview:", error);
+        console.error("Gagal memproses preview Surat WMS:", error);
         alert("Terjadi kesalahan saat membuat preview.");
     }
 }
