@@ -1,5 +1,7 @@
+// ==========================================================================
+// 1. SET DEFAULT TANGGAL SURAT KETIKA DOM READY
+// ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Set default tanggal input form ke tanggal hari ini secara otomatis
     const inputTgl = document.getElementById('tglSurat');
     if (inputTgl && !inputTgl.value) {
         const today = new Date();
@@ -10,11 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// ==========================================================================
+// 2. GENERATE PREVIEW SURAT WMS
+// ==========================================================================
 function generatePreview(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
 
     try {
-        // 1. TELDA untuk Header Nomor Surat
         const namaTeldaInput = document.getElementById('namaTelda')?.value || 'BANYUWANGI';
         const namaTelda = namaTeldaInput.trim().toUpperCase();
 
@@ -27,21 +31,18 @@ function generatePreview(event) {
         const noHpPelanggan = document.getElementById('noHpPelanggan')?.value || '-';
         const alamatPelanggan = document.getElementById('alamatPelanggan')?.value || '-';
 
-        // 2. Kota Lokasi Tanda Tangan (Terpisah dari TELDA)
         const kotaTtdInput = document.getElementById('kotaTtd')?.value;
         let kotaTtd = 'Banyuwangi';
 
         if (kotaTtdInput && kotaTtdInput.trim() !== '') {
             kotaTtd = kotaTtdInput.trim();
         } else if (alamatPelanggan && alamatPelanggan !== '-') {
-            // Ambil bagian kata lokasi terakhir jika input khusus kosong
             const parts = alamatPelanggan.split(',');
             kotaTtd = parts[parts.length - 1].trim(); 
         } else {
             kotaTtd = namaTeldaInput.trim();
         }
 
-        // Format Kota TTD (Kapital awal kata)
         const kotaTtdFormatted = kotaTtd.charAt(0).toUpperCase() + kotaTtd.slice(1).toLowerCase();
 
         const inputTglVal = document.getElementById('tglSurat')?.value;
@@ -52,16 +53,12 @@ function generatePreview(event) {
         }
 
         const yearSurat = dateObj.getFullYear();
-
-        // MERANGKAI NOMOR SURAT MURNI DENGAN TELDA (BANYUWANGI)
         const fullNoSurat = `${noSuratWmsInput.trim()}/${namaTelda}/${yearSurat}`;
 
-        // Output Subtitle Nomor Surat Header
         if (document.getElementById('prevFullNoSurat')) {
             document.getElementById('prevFullNoSurat').innerText = fullNoSurat;
         }
 
-        // Output Data Pelanggan Utama (Tabel)
         if (document.getElementById('prevPelangganNama')) document.getElementById('prevPelangganNama').innerText = namaPelanggan;
         if (document.getElementById('prevPelangganNik')) document.getElementById('prevPelangganNik').innerText = nikPelanggan;
         if (document.getElementById('prevPelangganAlamat')) document.getElementById('prevPelangganAlamat').innerText = alamatPelanggan;
@@ -69,13 +66,11 @@ function generatePreview(event) {
         if (document.getElementById('prevNoLayanan')) document.getElementById('prevNoLayanan').innerText = noLayanan;
         if (document.getElementById('prevPaketWms')) document.getElementById('prevPaketWms').innerText = paketWms;
 
-        // Nama di dalam kurung TTD
         const elSign = document.getElementById('prevSignPelanggan');
         if (elSign) {
             elSign.innerText = (namaPelanggan !== '-' && namaPelanggan !== '') ? namaPelanggan : '....................................';
         }
 
-        // LOGIKA PENANGGALAN REAL-TIME DENGAN KOTA LOKASI TTD DINAMIS
         const tglFormatted = dateObj.toLocaleDateString('id-ID', {
             day: 'numeric',
             month: 'long',
@@ -84,6 +79,61 @@ function generatePreview(event) {
 
         if (document.getElementById('prevRealtimeDate')) {
             document.getElementById('prevRealtimeDate').innerText = `${kotaTtdFormatted}, ${tglFormatted}`;
+        }
+
+        // ==================================================================
+        // PENYESUAIAN POSISI TANGGAL LEBIH ATAS & TAMBAH ENTER UNTUK MATERAI
+        // ==================================================================
+        const elPaper = document.getElementById('page1') || document.getElementById('letterPaper');
+        if (elPaper) {
+            elPaper.style.paddingTop = '10px';
+            elPaper.style.paddingBottom = '10px';
+
+            const listItems = elPaper.querySelectorAll('ol li, ul li');
+            listItems.forEach(li => {
+                li.style.marginBottom = '0px';
+                li.style.lineHeight = '1.2';
+            });
+
+            // Container pembungkus utama blok TTD
+            const elDate = document.getElementById('prevRealtimeDate');
+            const signBlock = elDate?.parentElement || elSign?.closest('.signature-section') || elSign?.parentElement;
+
+            if (signBlock && signBlock !== elPaper) {
+                signBlock.style.marginTop = '-80px';
+                signBlock.style.marginLeft = 'auto';
+                signBlock.style.marginRight = '0';
+                signBlock.style.width = '245px';
+                signBlock.style.textAlign = 'center';
+            }
+
+            // TANGGAL
+            if (elDate) {
+                elDate.style.marginTop = '0px';
+                elDate.style.marginBottom = '0px';
+                elDate.style.textAlign = 'center';
+                elDate.style.whiteSpace = 'nowrap';
+            }
+
+            // MATERAI
+            const elMaterai = elPaper.querySelector('.materai-box') || (elSign ? elSign.closest('div')?.previousElementSibling : null);
+            if (elMaterai) {
+                elMaterai.style.marginTop = '85px';
+                elMaterai.style.marginBottom = '10px';
+                elMaterai.style.height = '55px';
+                elMaterai.style.marginLeft = 'auto';
+                elMaterai.style.marginRight = 'auto';
+                elMaterai.style.display = 'flex';
+                elMaterai.style.alignItems = 'center';
+                elMaterai.style.justifyContent = 'center';
+            }
+
+            // NAMA PELANGGAN (Dikebawahin dengan marginTop 25px)
+            if (elSign && elSign.parentElement) {
+                elSign.parentElement.style.marginTop = '25px'; // Jarak ditambah agar turun ke bawah
+                elSign.parentElement.style.marginBottom = '0px';
+                elSign.parentElement.style.textAlign = 'center';
+            }
         }
 
         const emptyState = document.getElementById('emptyState');
@@ -104,47 +154,112 @@ function generatePreview(event) {
     }
 }
 
-// EKSPOR PDF 1 HALAMAN A4 PRESISI
+// ==========================================================================
+// 3. DOWNLOAD PDF
+// ==========================================================================
 async function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const page1 = document.getElementById('page1');
+    const btnDownload = document.getElementById('btnDownload');
+    const element = document.getElementById('page1') || document.getElementById('letterPaper');
     const namaPelanggan = document.getElementById('namaPelanggan')?.value || 'Pelanggan';
 
-    const originalStyle = page1.getAttribute('style') || '';
-    page1.setAttribute('style', originalStyle + '; width: 794px !important; min-width: 794px !important; padding: 45px 50px !important; font-size: 12px !important; line-height: 1.45 !important;');
+    if (!element) {
+        alert("Elemen surat tidak ditemukan.");
+        return;
+    }
+
+    if (btnDownload) {
+        btnDownload.disabled = true;
+        btnDownload.innerText = "Mengunduh...";
+    }
 
     try {
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const jsPDFLib = window.jspdf ? (window.jspdf.jsPDF || window.jspdf) : window.jsPDF;
 
-        const canvas = await html2canvas(page1, { scale: 2, useCORS: true, logging: false });
-        const imgData = canvas.toDataURL('image/jpeg', 1.0);
+        if (!jsPDFLib) {
+            alert("Pustaka jsPDF belum ter-load.");
+            return;
+        }
 
-        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Surat_Pernyataan_WMS_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
+        const originalTransform = element.style.transform;
+        element.style.transform = 'none';
+
+        const doc = new jsPDFLib({
+            orientation: 'p',
+            unit: 'mm',
+            format: 'a4'
+        });
+
+        const targetWidth = element.offsetWidth > 0 ? element.offsetWidth : 794;
+
+        await doc.html(element, {
+            callback: function (pdf) {
+                element.style.transform = originalTransform;
+
+                const totalPages = pdf.internal.getNumberOfPages();
+                if (totalPages > 1) {
+                    for (let i = totalPages; i > 1; i--) {
+                        pdf.deletePage(i);
+                    }
+                }
+                pdf.save(`Surat_Pernyataan_WMS_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
+            },
+            x: 0,
+            y: 0,
+            width: 210,
+            windowWidth: targetWidth,
+            autoPaging: 'text',
+            html2canvas: {
+                scale: 210 / targetWidth,
+                useCORS: true,
+                allowTaint: true,
+                logging: false,
+                scrollX: 0,
+                scrollY: 0
+            }
+        });
 
     } catch (error) {
-        console.error("Gagal mengunduh PDF:", error);
-        alert("Terjadi kesalahan saat mendownload PDF.");
+        console.error("Gagal mengunduh PDF WMS:", error);
+        alert("Terjadi kesalahan saat membuat PDF: " + error.message);
     } finally {
-        page1.setAttribute('style', originalStyle);
+        if (btnDownload) {
+            btnDownload.disabled = false;
+            btnDownload.innerText = "Unduh PDF";
+        }
     }
 }
 
-// Kontrol Zoom & Fullscreen
+// ==========================================================================
+// 4. KONTROL ZOOM & FULLSCREEN PREVIEW
+// ==========================================================================
 let currentScale = 1;
-function zoomIn() { if (currentScale < 1.3) { currentScale += 0.1; applyZoom(); } }
-function zoomOut() { if (currentScale > 0.5) { currentScale -= 0.1; applyZoom(); } }
+
+function zoomIn() { 
+    if (currentScale < 1.3) { 
+        currentScale += 0.1; 
+        applyZoom(); 
+    } 
+}
+
+function zoomOut() { 
+    if (currentScale > 0.5) { 
+        currentScale -= 0.1; 
+        applyZoom(); 
+    } 
+}
+
 function applyZoom() {
-    const page = document.getElementById('page1');
+    const page = document.getElementById('page1') || document.getElementById('letterPaper');
     if (page) {
         page.style.transform = `scale(${currentScale})`;
         page.style.transformOrigin = 'top center';
         page.style.transition = 'transform 0.2s ease';
     }
 }
+
 function toggleFullscreen() {
     const previewCard = document.querySelector('.card-preview');
-    if (previewCard) previewCard.classList.toggle('fullscreen-mode');
+    if (previewCard) {
+        previewCard.classList.toggle('fullscreen-mode');
+    }
 }

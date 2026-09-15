@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat Tugas Penggunaan KBM dan BBM Harian</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- Pustaka Ekspor PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        .card-preview {
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            padding: 20px !important;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .paper-wrapper {
+            width: 100%;
+            max-width: 794px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* UKURAN AKURAT A4: 21cm x 29.7cm (794px x 1123px pada 96 DPI) */
+        .a4-page {
+            width: 794px !important;
+            height: 1123px !important;
+            box-sizing: border-box !important;
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            padding: 2.54cm !important;
+            font-size: 11pt !important;
+            line-height: 1.4 !important;
+            color: #000000;
+            font-family: Arial, Helvetica, sans-serif !important;
+            position: relative;
+        }
+
+        /* Header dari Atas: Presisi 1.27 cm */
+        .header-logo-container {
+            position: absolute;
+            top: 1.27cm;
+            right: 2.54cm;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-raiders-img {
+            height: 42px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .telkom-logo-text {
+            font-weight: bold;
+            font-size: 13.5pt;
+            color: #e02424;
+            text-align: right;
+            line-height: 1.1;
+        }
+
+        .content-body {
+            margin-top: 0.8cm;
+        }
+
+        .letter-title-kbm {
+            font-size: 12pt !important;
+            margin-bottom: 28px !important;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 0.4px;
+        }
+
+        .kbm-table {
+            width: 100%;
+            margin-bottom: 15px;
+            border-collapse: collapse;
+        }
+        
+        .kbm-table td {
+            padding: 3px 0 !important;
+            font-size: 11pt !important;
+            vertical-align: top;
+            font-family: Arial, Helvetica, sans-serif !important;
+        }
+
+        .deskripsi-title {
+            font-size: 11pt !important;
+            font-weight: normal;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+
+        .deskripsi-box {
+            border: 1px solid #000;
+            min-height: 175px;
+            padding: 10px 12px;
+            margin-bottom: 25px;
+            font-size: 11pt !important;
+            font-family: Arial, Helvetica, sans-serif !important;
+            text-transform: uppercase;
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        /* Footer dari Bawah: Presisi 1.27 cm */
+        .footer-signature-wrapper {
+            position: absolute;
+            bottom: 1.27cm;
+            left: 2.54cm;
+            right: 2.54cm;
+        }
+
+        .double-signature-section {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .sig-col {
+            width: 46%;
+            font-size: 11pt !important;
+            line-height: 1.3 !important;
+        }
+
+        .sig-box-space {
+            height: 65px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sig-box-space img {
+            max-height: 55px;
+            object-fit: contain;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .fullscreen-mode {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 9999;
+            background: #525659;
+            overflow: auto;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2 class="sidebar-title" onclick="window.location.href='jenis-surat.html'">Dashboard</h2>
+        <div class="surat-submenu">
+            <a href="buka-isolir.html" class="submenu-item">Surat Permintaan Buka Isolir Sementara</a>
+            <a href="surat-pda.html" class="submenu-item">Surat PDA</a>
+            <a href="surat-gno.html" class="submenu-item">Surat GNO</a>
+            <a href="surat-bna.html" class="submenu-item">Surat BNA</a>
+            <a href="surat-do.html" class="submenu-item">Surat Permintaan DO</a>
+            <a href="surat-isolir.html" class="submenu-item">Surat Permintaan Isolir</a>
+            <a href="surat-upgrade-downgrade.html" class="submenu-item">Surat Upgrade-Downgrade</a>
+            <a href="surat-wms.html" class="submenu-item">Surat Pernyataan WMS</a>
+            <a href="surat-tugas-kbm.html" class="submenu-item active">Surat Tugas KBM & BBM</a>
+        </div>
+    </aside>
+
+    <main class="main-container">
+        <h1 class="page-header-title">Surat Tugas Penggunaan KBM Dan BBM Harian</h1>
+
+        <div class="workspace-grid">
+            
+            <!-- FORM INPUT MANUAL -->
+            <div class="card-form">
+                <form id="suratForm" onsubmit="generatePreview(event)">
+                    
+                    <div class="form-group">
+                        <label>Nama Pengaju</label>
+                        <select id="selectPengaju" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
+                            <option value="ericha" selected>Ericha Septyan Dinata</option>
+                            <option value="azki">Azki Zarkasi Muhammad</option>
+                            <option value="yustika">Yustika Monita</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Unit / Loker</label>
+                        <textarea id="unitLoker" rows="3" placeholder="Isi Unit / Loker..." required>Plaza Telkom Jember, Kb. Kidul, Jember Kidul, Kec. Kaliwates, Kabupaten Jember, Jawa Timur 68131</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lokasi Tujuan</label>
+                        <textarea id="lokasiTujuan" rows="3" placeholder="Isi Lokasi Tujuan..." required>Jl. Jenderal Ahmad Yani No.131, Parse, Dawuhan, Situbondo, Situbondo Regency, East Java 68311</textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Jenis BBM</label>
+                            <select id="jenisBbm" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
+                                <option value="Pertamax" selected>Pertamax</option>
+                                <option value="Pertalite">Pertalite</option>
+                                <option value="Solar / Dexlite">Solar / Dexlite</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal Surat</label>
+                            <input type="date" id="tglSurat">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kota Surat</label>
+                        <input type="text" id="kotaSurat" value="Banyuwangi">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Deskripsi Kegiatan</label>
+                        <textarea id="deskripsiKegiatan" rows="4" placeholder="Isi Deskripsi Kegiatan..." required>KUNJUNGAN PELANGGAN KE BAPENDA, PENGADILAN AGAMA, ROXY SWALAYAN, SPBU KENDIT, SPBU KOTAKAN UTARA, SPBU KOTAKAN SELATAN</textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="margin-top: 15px;">Lanjutkan</button>
+                </form>
+            </div>
+
+            <!-- PREVIEW SURAT -->
+            <div class="card-preview">
+                <div class="toolbar">
+                    <button type="button" class="tool-btn" onclick="zoomIn()" title="Perbesar">+</button>
+                    <button type="button" class="tool-btn" onclick="zoomOut()" title="Perkecil">-</button>
+                    <button type="button" class="tool-btn" onclick="toggleFullscreen()" title="Layar Penuh">⛶</button>
+                </div>
+
+                <div class="paper-wrapper" id="paperWrapper" style="display: none;">
+                    
+                    <div id="page1" class="a4-page">
+                        
+                        <!-- Header (Posisi 1.27 cm dari Atas) -->
+                        <div class="header-logo-container">
+                            <img src="assets/images/logo-raiders.png" alt="Raiders SDA" class="logo-raiders-img" onerror="this.style.display='none'; document.getElementById('placeholderRaiders').style.display='block';">
+                            <div id="placeholderRaiders" style="display:none; border:1px dashed #666; padding:4px 8px; font-size:10px; color:#666;">[ Logo Raiders SDA ]</div>
+
+                            <div class="telkom-logo-text">
+                                Telkom<br>Indonesia
+                            </div>
+                        </div>
+
+                        <!-- Isi Dokumen -->
+                        <div class="content-body">
+                            <h4 class="letter-title-kbm">SURAT TUGAS PENGGUNAAN KBM DAN BBM HARIAN</h4>
+
+                            <table class="kbm-table">
+                                <tr>
+                                    <td style="width: 130px;">Nama</td>
+                                    <td style="width: 15px;">:</td>
+                                    <td><span id="prevNama">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Unit / Loker</td>
+                                    <td>:</td>
+                                    <td><span id="prevUnitLoker">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Lokasi Tujuan</td>
+                                    <td>:</td>
+                                    <td><span id="prevLokasiTujuan">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Jenis BBM</td>
+                                    <td>:</td>
+                                    <td><span id="prevJenisBbm">Pertamax</span> (<i>pilih salah satu</i>)</td>
+                                </tr>
+                            </table>
+
+                            <div class="deskripsi-title">Deskripsi Kegiatan</div>
+                            <div class="deskripsi-box" id="prevDeskripsi">-</div>
+                        </div>
+
+                        <!-- Footer (Posisi 1.27 cm dari Bawah) -->
+                        <div class="footer-signature-wrapper">
+                            <div id="prevTglKota" style="margin-bottom: 5px;">Banyuwangi, 13/Agustus/2026</div>
+                            
+                            <div class="double-signature-section">
+                                <!-- Kolom Yang Mengajukan -->
+                                <div class="sig-col">
+                                    <div>Yang mengajukan,</div>
+                                    <div class="sig-box-space">
+                                        <img id="imgTtdEricha" src="assets/images/ttd-ericha.png" alt="TTD Ericha" style="display:none;">
+                                        <img id="imgTtdAzki" src="assets/images/ttd-azki.png" alt="TTD Azki" style="display:none;">
+                                        <img id="imgTtdMonita" src="assets/images/ttd-monita.png" alt="TTD Monita" style="display:none;">
+                                    </div>
+                                    <div><span id="prevSignNik">NIK.405595</span></div>
+                                    <div><strong><span id="prevSignNama">ERICHA SEPTYAN DINATA</span></strong></div>
+                                    <div id="prevSignJabatan">ACCOUNT MANAGER GS</div>
+                                    <div id="prevSignKota">BANYUWANGI</div>
+                                </div>
+
+                                <!-- Kolom Yang Menyetujui -->
+                                <div class="sig-col">
+                                    <div>Yang menyetujui,</div>
+                                    <div class="sig-box-space">
+                                        <img id="imgTtdLukman" src="assets/images/ttd-lukman.png" alt="TTD Lukman" style="display:block; max-height:55px;">
+                                    </div>
+                                    <div>NIK. 790032</div>
+                                    <div><strong>MUHAMMAD LUKMAN HAKIM</strong></div>
+                                    <div>HEAD OF TELKOM DAERAH</div>
+                                    <div>BANYUWANGI</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div id="emptyState" class="empty-preview">
+                    <p>Isi formulir di sebelah kiri dan klik <strong>Lanjutkan</strong> untuk meninjau template surat.</p>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-action" id="btnDownload" disabled onclick="downloadPDF()">Unduh PDF</button>
+                </div>
+                
+                <a href="jenis-surat.html" class="back-link" style="margin-top:10px; display:inline-block;">Kembali Ke Dashboard</a>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="assets/js/surat-tugas-kbm.js"></script>
+</body>
+</html>

@@ -1,90 +1,93 @@
+// ==========================================================================
+// 1. GENERATE PREVIEW SURAT GANTI NOMOR (GNO)
+// ==========================================================================
 function generatePreview(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
 
     try {
-        // 1. Data Pelanggan Utama
-        const namaPelanggan = document.getElementById('namaPelanggan')?.value || '-';
-        const noLayanan = document.getElementById('noLayanan')?.value || '-';
-        const tipeIdentitas = document.getElementById('tipeIdentitas')?.value || '-';
-        const nikPelanggan = document.getElementById('nikPelanggan')?.value || '-';
+        const getValue = (id, defaultValue = '') => {
+            const el = document.getElementById(id);
+            return (el && el.value.trim() !== '') ? el.value.trim() : defaultValue;
+        };
 
-        const alamatPelangganInput = document.getElementById('alamatPelanggan')?.value;
-        const alamatPelanggan = (alamatPelangganInput && alamatPelangganInput.trim() !== '') ? alamatPelangganInput.trim() : '-';
+        // Data Pelanggan Utama
+        const namaPelanggan = getValue('namaPelanggan', '-');
+        const noLayanan = getValue('noLayanan', '-');
+        const tipeIdentitas = getValue('tipeIdentitas', '-');
+        const nikPelanggan = getValue('nikPelanggan', '-');
+        const alamatPelanggan = getValue('alamatPelanggan', '-');
+        const atasNamaLayanan = getValue('atasNamaLayanan', '-');
+        const alamatLayanan = getValue('alamatLayanan', '-');
 
-        const atasNamaLayananInput = document.getElementById('atasNamaLayanan')?.value;
-        const atasNamaLayanan = (atasNamaLayananInput && atasNamaLayananInput.trim() !== '') ? atasNamaLayananInput.trim() : '-';
+        // Detail Surat Ganti Nomor (GNO) Khas GNO
+        const noTelpLama = getValue('noTelpLama', '-');
+        const noTelpBaru = getValue('noTelpBaru', '-');
+        const noInternetLama = getValue('noInternetLama', '-');
+        const noInternetBaru = getValue('noInternetBaru', '-');
+        const keterangan = getValue('keteranganTambahan', '-');
 
-        const alamatLayananInput = document.getElementById('alamatLayanan')?.value;
-        const alamatLayanan = (alamatLayananInput && alamatLayananInput.trim() !== '') ? alamatLayananInput.trim() : '-';
+        const namaTelkom = getValue('namaTelkom', 'Yustika Monita');
+        const isTtdChecked = document.getElementById('checkTtdMonita')?.checked || false;
 
-        // 2. Data Detail Ganti Nomor (GNO)
-        const noTelpLamaInput = document.getElementById('noTelpLama')?.value;
-        const noTelpBaruInput = document.getElementById('noTelpBaru')?.value;
-        const noInternetLamaInput = document.getElementById('noInternetLama')?.value;
-        const noInternetBaruInput = document.getElementById('noInternetBaru')?.value;
-        const keteranganInput = document.getElementById('keteranganTambahan')?.value;
+        // Data Penerima Kuasa
+        const namaKuasa = getValue('namaKuasa');
+        const nikKuasa = getValue('nikKuasa');
+        const tipeIdentitasKuasa = getValue('tipeIdentitasKuasa');
+        const alamatKuasa = getValue('alamatKuasa');
 
-        const noTelpLama = (noTelpLamaInput && noTelpLamaInput.trim() !== '') ? noTelpLamaInput.trim() : '-';
-        const noTelpBaru = (noTelpBaruInput && noTelpBaruInput.trim() !== '') ? noTelpBaruInput.trim() : '-';
-        const noInternetLama = (noInternetLamaInput && noInternetLamaInput.trim() !== '') ? noInternetLamaInput.trim() : '-';
-        const noInternetBaru = (noInternetBaruInput && noInternetBaruInput.trim() !== '') ? noInternetBaruInput.trim() : '-';
-        const keterangan = (keteranganInput && keteranganInput.trim() !== '') ? keteranganInput.trim() : '-';
-
-        const namaTelkom = document.getElementById('namaTelkom')?.value || 'Yustika Monita';
-        const isTtdChecked = document.getElementById('checkTtdMonita')?.checked;
-
-        // 3. Data Kuasa (Fallback Strip '-' Jika Kosong)
-        const namaKuasaInput = document.getElementById('namaKuasa')?.value;
-        const nikKuasaInput = document.getElementById('nikKuasa')?.value;
-        const tipeIdentitasKuasaInput = document.getElementById('tipeIdentitasKuasa')?.value;
-        const alamatKuasaInput = document.getElementById('alamatKuasa')?.value;
-
-        const namaKuasa = (namaKuasaInput && namaKuasaInput.trim() !== '') ? namaKuasaInput.trim() : '-';
-        const nikKuasa = (nikKuasaInput && nikKuasaInput.trim() !== '') ? nikKuasaInput.trim() : '-';
-        const tipeIdentitasKuasa = (tipeIdentitasKuasaInput && tipeIdentitasKuasaInput.trim() !== '') ? tipeIdentitasKuasaInput.trim() : '-';
-        const alamatKuasa = (alamatKuasaInput && alamatKuasaInput.trim() !== '') ? alamatKuasaInput.trim() : '-';
-
-        // Toggle Gambar TTD Monita
+        // Toggle TTD
         const imgTtd = document.getElementById('imgTtdMonita');
         if (imgTtd) {
             imgTtd.style.display = isTtdChecked ? 'block' : 'none';
         }
 
-        // --- MENGISI PREVIEW SURAT ---
-        if (document.getElementById('prevPelangganNama')) document.getElementById('prevPelangganNama').innerText = namaPelanggan;
-        if (document.getElementById('prevPelangganAlamat')) document.getElementById('prevPelangganAlamat').innerText = alamatPelanggan;
-        if (document.getElementById('prevPelangganTipe')) document.getElementById('prevPelangganTipe').innerText = tipeIdentitas;
-        if (document.getElementById('prevPelangganNik')) document.getElementById('prevPelangganNik').innerText = nikPelanggan;
+        const setText = (id, text) => {
+            const el = document.getElementById(id);
+            if (el) el.innerText = text;
+        };
 
-        if (document.getElementById('prevKuasaNama')) document.getElementById('prevKuasaNama').innerText = namaKuasa;
-        if (document.getElementById('prevKuasaAlamat')) document.getElementById('prevKuasaAlamat').innerText = alamatKuasa;
-        if (document.getElementById('prevKuasaTipe')) document.getElementById('prevKuasaTipe').innerText = tipeIdentitasKuasa;
-        if (document.getElementById('prevKuasaNik')) document.getElementById('prevKuasaNik').innerText = nikKuasa;
+        // Set Data ke Preview
+        setText('prevPelangganNama', namaPelanggan);
+        setText('prevPelangganAlamat', alamatPelanggan);
+        setText('prevPelangganTipe', tipeIdentitas);
+        setText('prevPelangganNik', nikPelanggan);
 
-        if (document.getElementById('prevSignPelanggan')) {
-            document.getElementById('prevSignPelanggan').innerText = namaPelanggan;
+        // Pengaturan Kondisional Blok Penerima Kuasa (Sembunyi Otomatis Jika Kosong)
+        const blockKuasa = document.getElementById('blockKuasa') || document.querySelector('.kuasa-section');
+        if (blockKuasa) {
+            if (!namaKuasa) {
+                blockKuasa.style.display = 'none';
+            } else {
+                blockKuasa.style.display = 'block';
+                setText('prevKuasaNama', namaKuasa);
+                setText('prevKuasaAlamat', alamatKuasa);
+                setText('prevKuasaTipe', tipeIdentitasKuasa);
+                setText('prevKuasaNik', nikKuasa);
+            }
+        } else {
+            setText('prevKuasaNama', namaKuasa);
+            setText('prevKuasaAlamat', alamatKuasa);
+            setText('prevKuasaTipe', tipeIdentitasKuasa);
+            setText('prevKuasaNik', nikKuasa);
         }
 
-        if (document.getElementById('prevNoLayanan')) document.getElementById('prevNoLayanan').innerText = noLayanan;
-        if (document.getElementById('prevAtasNamaLayanan')) document.getElementById('prevAtasNamaLayanan').innerText = atasNamaLayanan;
-        if (document.getElementById('prevAlamatLayanan')) document.getElementById('prevAlamatLayanan').innerText = alamatLayanan;
+        setText('prevNoLayanan', noLayanan);
+        setText('prevAtasNamaLayanan', atasNamaLayanan);
+        setText('prevAlamatLayanan', alamatLayanan);
+        
+        // Populate Detail Poin GNO
+        setText('prevNoTelpLama', noTelpLama);
+        setText('prevNoTelpBaru', noTelpBaru);
+        setText('prevNoInternetLama', noInternetLama);
+        setText('prevNoInternetBaru', noInternetBaru);
+        setText('prevKeterangan', keterangan);
 
-        // Detail Poin a - e untuk Surat GNO
-        if (document.getElementById('prevNoTelpLama')) document.getElementById('prevNoTelpLama').innerText = noTelpLama;
-        if (document.getElementById('prevNoTelpBaru')) document.getElementById('prevNoTelpBaru').innerText = noTelpBaru;
-        if (document.getElementById('prevNoInternetLama')) document.getElementById('prevNoInternetLama').innerText = noInternetLama;
-        if (document.getElementById('prevNoInternetBaru')) document.getElementById('prevNoInternetBaru').innerText = noInternetBaru;
-        if (document.getElementById('prevKeterangan')) document.getElementById('prevKeterangan').innerText = keterangan;
+        setText('prevSignPelanggan', namaPelanggan);
+        setText('prevSignPenanggungJawab', namaTelkom);
 
-        if (document.getElementById('prevSignPenanggungJawab')) document.getElementById('prevSignPenanggungJawab').innerText = namaTelkom;
-
-        // Tanggal Realtime
         const today = new Date();
-        if (document.getElementById('prevRealtimeDate')) {
-            document.getElementById('prevRealtimeDate').innerText = `Banyuwangi, ${today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
-        }
+        setText('prevRealtimeDate', `Banyuwangi, ${today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`);
 
-        // TAMPILKAN PREVIEW & AKTIFKAN TOMBOL
         const emptyState = document.getElementById('emptyState');
         const letterPaper = document.getElementById('letterPaper');
         const btnDownload = document.getElementById('btnDownload');
@@ -103,7 +106,9 @@ function generatePreview(event) {
     }
 }
 
-// Fungsi Unduh PDF Presisi
+// ==========================================================================
+// 2. DOWNLOAD PDF (SURAT GNO - MARGIN ATAS 18MM & PRESISI 1 HALAMAN)
+// ==========================================================================
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
     const element = document.getElementById('letterPaper');
@@ -119,59 +124,74 @@ async function downloadPDF() {
         btnDownload.innerText = "Mengunduh...";
     }
 
-    const originalTransform = element.style.transform;
-    const originalBoxShadow = element.style.boxShadow;
-
-    element.style.transform = 'scale(1)';
-    element.style.boxShadow = 'none';
+    // --- STYLE INJECTION: MARGIN ATAS 18MM & SPASI KONSISTEN GNO ---
+    let pdfStyle = document.getElementById('pdfExportStyle');
+    if (!pdfStyle) {
+        pdfStyle = document.createElement('style');
+        pdfStyle.id = 'pdfExportStyle';
+        document.head.appendChild(pdfStyle);
+    }
+    pdfStyle.innerHTML = `
+        #letterPaper {
+            padding-top: 18mm !important;
+            padding-bottom: 5mm !important;
+        }
+        #letterPaper .paragraph {
+            margin-top: 3pt !important;
+            margin-bottom: 3pt !important;
+        }
+        #letterPaper .data-table {
+            margin-top: 2.5pt !important;
+            margin-bottom: 3.5pt !important;
+        }
+        #letterPaper .data-table td {
+            padding: 1.8pt 0 !important;
+        }
+        #letterPaper .statement-title {
+            margin: 6pt 0 3pt 0 !important;
+        }
+        #letterPaper .keterangan-list {
+            margin-bottom: 4pt !important;
+        }
+    `;
 
     try {
-        const jsPDF = window.jspdf ? window.jspdf.jsPDF : null;
+        const jsPDFLib = window.jspdf ? (window.jspdf.jsPDF || window.jspdf) : window.jsPDF;
 
-        if (!jsPDF || typeof html2canvas === 'undefined') {
-            alert("Pustaka ekspor PDF belum ter-load sempurna. Pastikan koneksi internet aktif.");
+        if (!jsPDFLib) {
+            alert("Pustaka jsPDF belum ter-load.");
             return;
         }
 
-        const canvas = await html2canvas(element, {
-            scale: 2.5,
-            useCORS: true,
-            logging: false,
-            windowWidth: element.scrollWidth,
-            windowHeight: element.scrollHeight
+        const doc = new jsPDFLib({
+            orientation: 'p',
+            unit: 'mm',
+            format: 'a4'
         });
 
-        const imgData = canvas.toDataURL('image/jpeg', 1.0);
-        const pdf = new jsPDF('p', 'mm', 'a4');
-
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-
-        const marginX = 4;
-        const marginY = 5;
-        const maxPrintWidth = pdfWidth - (marginX * 2);
-        const maxPrintHeight = pdfHeight - (marginY * 2);
-
-        let printWidth = maxPrintWidth;
-        let printHeight = (canvas.height * printWidth) / canvas.width;
-
-        if (printHeight > maxPrintHeight) {
-            printHeight = maxPrintHeight;
-            printWidth = (canvas.width * printHeight) / canvas.height;
-        }
-
-        const posX = (pdfWidth - printWidth) / 2;
-        const posY = marginY;
-
-        pdf.addImage(imgData, 'JPEG', posX, posY, printWidth, printHeight);
-        pdf.save(`Surat_GNO_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
+        await doc.html(element, {
+            callback: function (pdf) {
+                pdf.save(`Surat_GNO_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
+            },
+            x: 0,
+            y: 0,
+            width: 210,
+            windowWidth: 794,
+            autoPaging: 'text',
+            html2canvas: {
+                scale: 0.2645,
+                useCORS: true,
+                logging: false
+            }
+        });
 
     } catch (error) {
         console.error("Gagal mengunduh PDF:", error);
-        alert("Terjadi kesalahan saat membuat file PDF: " + error.message);
+        alert("Terjadi kesalahan saat membuat PDF: " + error.message);
     } finally {
-        element.style.transform = originalTransform;
-        element.style.boxShadow = originalBoxShadow;
+        if (pdfStyle) {
+            pdfStyle.remove();
+        }
 
         if (btnDownload) {
             btnDownload.disabled = false;
@@ -180,21 +200,23 @@ async function downloadPDF() {
     }
 }
 
-// Control Zoom & Fullscreen
+// ==========================================================================
+// 3. KONTROL ZOOM & FULLSCREEN PREVIEW
+// ==========================================================================
 let currentScale = 1;
 
-function zoomIn() {
-    if (currentScale < 1.5) {
-        currentScale += 0.1;
-        applyZoom();
-    }
+function zoomIn() { 
+    if (currentScale < 1.5) { 
+        currentScale += 0.1; 
+        applyZoom(); 
+    } 
 }
 
-function zoomOut() {
-    if (currentScale > 1.0) {
-        currentScale -= 0.1;
-        applyZoom();
-    }
+function zoomOut() { 
+    if (currentScale > 1.0) { 
+        currentScale -= 0.1; 
+        applyZoom(); 
+    } 
 }
 
 function applyZoom() {
