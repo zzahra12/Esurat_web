@@ -82,17 +82,21 @@ function generatePreview(event) {
         }
 
         // ==================================================================
-        // PENYESUAIAN POSISI TANGGAL LEBIH ATAS & TAMBAH ENTER UNTUK MATERAI
+        // OPITMISASI UKURAN DENGAN HARD RESET SPACING UNTUK GITHUB PAGES
         // ==================================================================
         const elPaper = document.getElementById('page1') || document.getElementById('letterPaper');
         if (elPaper) {
-            elPaper.style.paddingTop = '10px';
-            elPaper.style.paddingBottom = '10px';
+            // Kompresi padding kertas agar ruang lebih lega
+            elPaper.style.paddingTop = '15px';
+            elPaper.style.paddingBottom = '15px';
+            elPaper.style.boxSizing = 'border-box';
 
+            // Kunci line-height seluruh list (1-10) supaya tidak mulur di GitHub Pages
             const listItems = elPaper.querySelectorAll('ol li, ul li');
             listItems.forEach(li => {
-                li.style.marginBottom = '0px';
-                li.style.lineHeight = '1.2';
+                li.style.marginBottom = '2px';
+                li.style.lineHeight = '1.15';
+                li.style.fontSize = '12px';
             });
 
             // Container pembungkus utama blok TTD
@@ -100,7 +104,7 @@ function generatePreview(event) {
             const signBlock = elDate?.parentElement || elSign?.closest('.signature-section') || elSign?.parentElement;
 
             if (signBlock && signBlock !== elPaper) {
-                signBlock.style.marginTop = '-70px';
+                signBlock.style.marginTop = '10px'; // Pakai margin positif agar aman di semua browser
                 signBlock.style.marginLeft = 'auto';
                 signBlock.style.marginRight = '0';
                 signBlock.style.width = '220px';
@@ -118,9 +122,9 @@ function generatePreview(event) {
             // MATERAI
             const elMaterai = elPaper.querySelector('.materai-box') || (elSign ? elSign.closest('div')?.previousElementSibling : null);
             if (elMaterai) {
-                elMaterai.style.marginTop = '75px';
-                elMaterai.style.marginBottom = '8px';
-                elMaterai.style.height = '45px';
+                elMaterai.style.marginTop = '20px';
+                elMaterai.style.marginBottom = '5px';
+                elMaterai.style.height = '40px';
                 elMaterai.style.marginLeft = 'auto';
                 elMaterai.style.marginRight = 'auto';
                 elMaterai.style.display = 'flex';
@@ -128,9 +132,9 @@ function generatePreview(event) {
                 elMaterai.style.justifyContent = 'center';
             }
 
-            // NAMA PELANGGAN (Dikebawahin dengan marginTop 25px)
+            // NAMA PELANGGAN
             if (elSign && elSign.parentElement) {
-                elSign.parentElement.style.marginTop = '25px'; // Jarak ditambah agar turun ke bawah
+                elSign.parentElement.style.marginTop = '10px';
                 elSign.parentElement.style.marginBottom = '0px';
                 elSign.parentElement.style.textAlign = 'center';
             }
