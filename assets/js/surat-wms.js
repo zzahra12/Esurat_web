@@ -82,36 +82,35 @@ function generatePreview(event) {
         }
 
         // ==================================================================
-        // OPITMISASI UKURAN DENGAN HARD RESET SPACING UNTUK GITHUB PAGES
+        // PREVENSI KEPOTONG UNTUK GITHUB PAGES (HARD RESET SPACING)
         // ==================================================================
         const elPaper = document.getElementById('page1') || document.getElementById('letterPaper');
         if (elPaper) {
-            // Kompresi padding kertas agar ruang lebih lega
             elPaper.style.paddingTop = '15px';
             elPaper.style.paddingBottom = '15px';
             elPaper.style.boxSizing = 'border-box';
 
-            // Kunci line-height seluruh list (1-10) supaya tidak mulur di GitHub Pages
+            // Kunci spasi antar poin agar tidak molor di GitHub Pages
             const listItems = elPaper.querySelectorAll('ol li, ul li');
             listItems.forEach(li => {
                 li.style.marginBottom = '2px';
                 li.style.lineHeight = '1.15';
-                li.style.fontSize = '12px';
+                li.style.fontSize = '11.5px';
             });
 
-            // Container pembungkus utama blok TTD
+            // Container utama blok TTD
             const elDate = document.getElementById('prevRealtimeDate');
             const signBlock = elDate?.parentElement || elSign?.closest('.signature-section') || elSign?.parentElement;
 
             if (signBlock && signBlock !== elPaper) {
-                signBlock.style.marginTop = '10px'; // Pakai margin positif agar aman di semua browser
+                signBlock.style.marginTop = '10px';
                 signBlock.style.marginLeft = 'auto';
                 signBlock.style.marginRight = '0';
                 signBlock.style.width = '220px';
                 signBlock.style.textAlign = 'center';
             }
 
-            // TANGGAL
+            // Tanggal TTD
             if (elDate) {
                 elDate.style.marginTop = '0px';
                 elDate.style.marginBottom = '0px';
@@ -119,12 +118,12 @@ function generatePreview(event) {
                 elDate.style.whiteSpace = 'nowrap';
             }
 
-            // MATERAI
+            // Kotak Materai
             const elMaterai = elPaper.querySelector('.materai-box') || (elSign ? elSign.closest('div')?.previousElementSibling : null);
             if (elMaterai) {
-                elMaterai.style.marginTop = '20px';
+                elMaterai.style.marginTop = '15px';
                 elMaterai.style.marginBottom = '5px';
-                elMaterai.style.height = '40px';
+                elMaterai.style.height = '42px';
                 elMaterai.style.marginLeft = 'auto';
                 elMaterai.style.marginRight = 'auto';
                 elMaterai.style.display = 'flex';
@@ -132,9 +131,9 @@ function generatePreview(event) {
                 elMaterai.style.justifyContent = 'center';
             }
 
-            // NAMA PELANGGAN
+            // Nama Pelanggan
             if (elSign && elSign.parentElement) {
-                elSign.parentElement.style.marginTop = '10px';
+                elSign.parentElement.style.marginTop = '15px';
                 elSign.parentElement.style.marginBottom = '0px';
                 elSign.parentElement.style.textAlign = 'center';
             }
