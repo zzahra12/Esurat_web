@@ -28,62 +28,63 @@
             justify-content: center;
         }
 
-        /* UKURAN AKURAT A4: 21cm x 29.7cm (794px x 1123px pada 96 DPI) */
+        /* UKURAN PRESISI A4 KERTAS WORD */
         .a4-page {
             width: 794px !important;
-            height: 1123px !important;
+            min-height: 1123px !important;
             box-sizing: border-box !important;
             background: #ffffff;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            padding: 2.54cm !important;
+            padding: 1.5cm 2.54cm 2.2cm 2.54cm !important;
             font-size: 11pt !important;
-            line-height: 1.4 !important;
+            line-height: 1.35 !important;
             color: #000000;
             font-family: Arial, Helvetica, sans-serif !important;
             position: relative;
         }
 
-        /* Header dari Atas: Presisi 1.27 cm */
+        /* LOGO HEADER KANAN ATAS */
         .header-logo-container {
-            position: absolute;
-            top: 1.27cm;
-            right: 2.54cm;
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 15px;
         }
 
+        /* LOGO IMPACT DIPERBESAR SEHINGGA SEIMBANG */
         .logo-raiders-img {
-            height: 42px;
+            height: 135px !important; 
             width: auto;
             object-fit: contain;
         }
 
-        .telkom-logo-text {
-            font-weight: bold;
-            font-size: 13.5pt;
-            color: #e02424;
-            text-align: right;
-            line-height: 1.1;
+        .logo-telkom-img {
+            height: 110px !important;
+            width: auto;
+            object-fit: contain;
         }
 
         .content-body {
-            margin-top: 0.8cm;
+            margin-top: 0;
         }
 
         .letter-title-kbm {
-            font-size: 12pt !important;
-            margin-bottom: 28px !important;
+            font-size: 11.5pt !important;
+            margin-bottom: 25px !important;
             font-weight: bold;
             text-align: center;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
         }
 
+        /* TABEL SURAT */
         .kbm-table {
             width: 100%;
             margin-bottom: 15px;
             border-collapse: collapse;
+            table-layout: fixed;
         }
         
         .kbm-table td {
@@ -91,6 +92,17 @@
             font-size: 11pt !important;
             vertical-align: top;
             font-family: Arial, Helvetica, sans-serif !important;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .kbm-table td:nth-child(1) {
+            width: 140px !important;
+            white-space: nowrap;
+        }
+
+        .kbm-table td:nth-child(2) {
+            width: 20px !important;
         }
 
         .deskripsi-title {
@@ -102,46 +114,58 @@
 
         .deskripsi-box {
             border: 1px solid #000;
-            min-height: 175px;
+            min-height: 200px;
             padding: 10px 12px;
-            margin-bottom: 25px;
             font-size: 11pt !important;
             font-family: Arial, Helvetica, sans-serif !important;
             text-transform: uppercase;
             white-space: pre-wrap;
             word-break: break-word;
+            overflow-wrap: break-word;
             line-height: 1.4;
         }
 
-        /* Footer dari Bawah: Presisi 1.27 cm */
+        /* TANDA TANGAN POSISI MEPET KANAN */
         .footer-signature-wrapper {
-            position: absolute;
-            bottom: 1.27cm;
-            left: 2.54cm;
-            right: 2.54cm;
+            margin-top: 25px;
+            width: 100%;
         }
 
         .double-signature-section {
             margin-top: 10px;
             display: flex;
             justify-content: space-between;
+            width: 100%;
         }
 
-        .sig-col {
-            width: 46%;
+        .sig-col-left {
+            width: 280px;
             font-size: 11pt !important;
             line-height: 1.3 !important;
+            text-align: left;
+        }
+
+        .sig-col-right {
+            width: 280px;
+            font-size: 11pt !important;
+            line-height: 1.3 !important;
+            text-align: left;
+            margin-left: auto;
         }
 
         .sig-box-space {
-            height: 65px;
+            height: 75px;
             display: flex;
             align-items: center;
+            justify-content: flex-start;
+            margin: 5px 0;
         }
 
         .sig-box-space img {
-            max-height: 55px;
+            max-height: 70px;
+            width: auto;
             object-fit: contain;
+            display: block;
         }
 
         .action-buttons {
@@ -190,7 +214,7 @@
                     <div class="form-group">
                         <label>Nama Pengaju</label>
                         <select id="selectPengaju" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
-                            <option value="ericha" selected>Ericha Septyan Dinata</option>
+                            <option value="ericha">Ericha Septyan Dinata</option>
                             <option value="azki">Azki Zarkasi Muhammad</option>
                             <option value="yustika">Yustika Monita</option>
                         </select>
@@ -198,37 +222,37 @@
 
                     <div class="form-group">
                         <label>Unit / Loker</label>
-                        <textarea id="unitLoker" rows="3" placeholder="Isi Unit / Loker..." required>Plaza Telkom Jember, Kb. Kidul, Jember Kidul, Kec. Kaliwates, Kabupaten Jember, Jawa Timur 68131</textarea>
+                        <textarea id="unitLoker" rows="3" placeholder="Isi Unit / Loker..." required></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Lokasi Tujuan</label>
-                        <textarea id="lokasiTujuan" rows="3" placeholder="Isi Lokasi Tujuan..." required>Jl. Jenderal Ahmad Yani No.131, Parse, Dawuhan, Situbondo, Situbondo Regency, East Java 68311</textarea>
+                        <textarea id="lokasiTujuan" rows="3" placeholder="Isi Lokasi Tujuan..." required></textarea>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label>Jenis BBM</label>
                             <select id="jenisBbm" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
-                                <option value="Pertamax" selected>Pertamax</option>
+                                <option value="Pertamax">Pertamax</option>
                                 <option value="Pertalite">Pertalite</option>
                                 <option value="Solar / Dexlite">Solar / Dexlite</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Tanggal Surat</label>
-                            <input type="date" id="tglSurat">
+                            <input type="date" id="tglSurat" required>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Kota Surat</label>
-                        <input type="text" id="kotaSurat" value="Banyuwangi">
+                        <input type="text" id="kotaSurat" placeholder="Isi Kota Surat (cth: Banyuwangi)..." value="Banyuwangi" required>
                     </div>
 
                     <div class="form-group">
                         <label>Deskripsi Kegiatan</label>
-                        <textarea id="deskripsiKegiatan" rows="4" placeholder="Isi Deskripsi Kegiatan..." required>KUNJUNGAN PELANGGAN KE BAPENDA, PENGADILAN AGAMA, ROXY SWALAYAN, SPBU KENDIT, SPBU KOTAKAN UTARA, SPBU KOTAKAN SELATAN</textarea>
+                        <textarea id="deskripsiKegiatan" rows="4" placeholder="Isi Deskripsi Kegiatan..." required></textarea>
                     </div>
 
                     <button type="submit" class="btn-primary" style="margin-top: 15px;">Lanjutkan</button>
@@ -247,14 +271,10 @@
                     
                     <div id="page1" class="a4-page">
                         
-                        <!-- Header (Posisi 1.27 cm dari Atas) -->
+                        <!-- Header Logo -->
                         <div class="header-logo-container">
-                            <img src="assets/images/logo-raiders.png" alt="Raiders SDA" class="logo-raiders-img" onerror="this.style.display='none'; document.getElementById('placeholderRaiders').style.display='block';">
-                            <div id="placeholderRaiders" style="display:none; border:1px dashed #666; padding:4px 8px; font-size:10px; color:#666;">[ Logo Raiders SDA ]</div>
-
-                            <div class="telkom-logo-text">
-                                Telkom<br>Indonesia
-                            </div>
+                            <img src="assets/images/IMPACT.png" alt="Raiders SDA" class="logo-raiders-img" onerror="this.style.display='none';">
+                            <img src="assets/images/logo-telkom.png" alt="Telkom Indonesia" class="logo-telkom-img">
                         </div>
 
                         <!-- Isi Dokumen -->
@@ -263,8 +283,8 @@
 
                             <table class="kbm-table">
                                 <tr>
-                                    <td style="width: 130px;">Nama</td>
-                                    <td style="width: 15px;">:</td>
+                                    <td>Nama</td>
+                                    <td>:</td>
                                     <td><span id="prevNama">-</span></td>
                                 </tr>
                                 <tr>
@@ -280,7 +300,7 @@
                                 <tr>
                                     <td>Jenis BBM</td>
                                     <td>:</td>
-                                    <td><span id="prevJenisBbm">Pertamax</span> (<i>pilih salah satu</i>)</td>
+                                    <td><span id="prevJenisBbm">-</span>(<i>pilih salah satu</i>)</td>
                                 </tr>
                             </table>
 
@@ -288,18 +308,16 @@
                             <div class="deskripsi-box" id="prevDeskripsi">-</div>
                         </div>
 
-                        <!-- Footer (Posisi 1.27 cm dari Bawah) -->
+                        <!-- Footer Signatures -->
                         <div class="footer-signature-wrapper">
-                            <div id="prevTglKota" style="margin-bottom: 5px;">Banyuwangi, 13/Agustus/2026</div>
+                            <div id="prevTglKota" style="margin-bottom: 8px;">Banyuwangi, 13 Agustus 2026</div>
                             
                             <div class="double-signature-section">
                                 <!-- Kolom Yang Mengajukan -->
-                                <div class="sig-col">
+                                <div class="sig-col-left">
                                     <div>Yang mengajukan,</div>
                                     <div class="sig-box-space">
-                                        <img id="imgTtdEricha" src="assets/images/ttd-ericha.png" alt="TTD Ericha" style="display:none;">
-                                        <img id="imgTtdAzki" src="assets/images/ttd-azki.png" alt="TTD Azki" style="display:none;">
-                                        <img id="imgTtdMonita" src="assets/images/ttd-monita.png" alt="TTD Monita" style="display:none;">
+                                        <img id="imgTtdPengaju" src="assets/images/ttd-Ericha.jpeg" alt="TTD Pengaju">
                                     </div>
                                     <div><span id="prevSignNik">NIK.405595</span></div>
                                     <div><strong><span id="prevSignNama">ERICHA SEPTYAN DINATA</span></strong></div>
@@ -308,10 +326,10 @@
                                 </div>
 
                                 <!-- Kolom Yang Menyetujui -->
-                                <div class="sig-col">
+                                <div class="sig-col-right">
                                     <div>Yang menyetujui,</div>
                                     <div class="sig-box-space">
-                                        <img id="imgTtdLukman" src="assets/images/ttd-lukman.png" alt="TTD Lukman" style="display:block; max-height:55px;">
+                                        <img src="assets/images/ttd-pak Lukman.jpeg" alt="TTD Pak Lukman">
                                     </div>
                                     <div>NIK. 790032</div>
                                     <div><strong>MUHAMMAD LUKMAN HAKIM</strong></div>

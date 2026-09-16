@@ -1,6 +1,3 @@
-// ==========================================================================
-// 1. GENERATE PREVIEW SURAT DO
-// ==========================================================================
 function generatePreview(event) {
     if (event) event.preventDefault();
 
@@ -101,9 +98,7 @@ function generatePreview(event) {
     }
 }
 
-// ==========================================================================
-// 2. DOWNLOAD PDF (MARGIN ATAS PROPORSIONAL 18MM, TTD UTUH SANTAI)
-// ==========================================================================
+// DOWNLOAD PDF 
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
     const element = document.getElementById('letterPaper');
@@ -195,9 +190,7 @@ async function downloadPDF() {
     }
 }
 
-// ==========================================================================
-// 3. KONTROL ZOOM & FULLSCREEN PREVIEW
-// ==========================================================================
+
 let currentScale = 1;
 
 function zoomIn() { 

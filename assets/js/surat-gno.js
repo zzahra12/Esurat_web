@@ -106,9 +106,7 @@ function generatePreview(event) {
     }
 }
 
-// ==========================================================================
-// 2. DOWNLOAD PDF (SURAT GNO - MARGIN ATAS 18MM & PRESISI 1 HALAMAN)
-// ==========================================================================
+// DOWNLOAD PDF 
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
     const element = document.getElementById('letterPaper');
@@ -200,9 +198,7 @@ async function downloadPDF() {
     }
 }
 
-// ==========================================================================
-// 3. KONTROL ZOOM & FULLSCREEN PREVIEW
-// ==========================================================================
+
 let currentScale = 1;
 
 function zoomIn() { 

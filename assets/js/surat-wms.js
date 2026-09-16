@@ -1,6 +1,3 @@
-// ==========================================================================
-// 1. SET DEFAULT TANGGAL SURAT KETIKA DOM READY
-// ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
     const inputTgl = document.getElementById('tglSurat');
     if (inputTgl && !inputTgl.value) {
@@ -12,9 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// ==========================================================================
-// 2. GENERATE PREVIEW SURAT WMS
-// ==========================================================================
+
 function generatePreview(event) {
     if (event) event.preventDefault();
 
@@ -81,9 +76,8 @@ function generatePreview(event) {
             document.getElementById('prevRealtimeDate').innerText = `${kotaTtdFormatted}, ${tglFormatted}`;
         }
 
-        // ==================================================================
-        // PENYESUAIAN POSISI TANGGAL LEBIH ATAS & TAMBAH ENTER UNTUK MATERAI
-        // ==================================================================
+        
+
         const elPaper = document.getElementById('page1') || document.getElementById('letterPaper');
         if (elPaper) {
             elPaper.style.paddingTop = '10px';
@@ -154,9 +148,8 @@ function generatePreview(event) {
     }
 }
 
-// ==========================================================================
-// 3. DOWNLOAD PDF
-// ==========================================================================
+
+// DOWNLOAD PDF
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
     const element = document.getElementById('page1') || document.getElementById('letterPaper');
@@ -229,9 +222,7 @@ async function downloadPDF() {
     }
 }
 
-// ==========================================================================
-// 4. KONTROL ZOOM & FULLSCREEN PREVIEW
-// ==========================================================================
+
 let currentScale = 1;
 
 function zoomIn() { 

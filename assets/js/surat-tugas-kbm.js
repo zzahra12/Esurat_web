@@ -1,5 +1,5 @@
 // ==========================================================================
-// 1. DATA MASTER PENANDATANGAN YANG MENGAJUKAN (DROPDOWN OPTION)
+// DATA MASTER PENANDATANGAN
 // ==========================================================================
 const DATA_PENGAJU = {
     ericha: {
@@ -8,15 +8,15 @@ const DATA_PENGAJU = {
         nik: "NIK.405595",
         jabatan: "ACCOUNT MANAGER GS",
         lokasi: "BANYUWANGI",
-        imgTtdId: "imgTtdEricha"
+        imgTtd: "assets/images/ttd-Ericha.jpeg"
     },
     azki: {
         nama: "Azki Zarkasi Muhammad",
         namaKapital: "AZKI ZARKASI MUHAMMAD",
-        nik: "NIK.405596",
+        nik: "NIK.405591",
         jabatan: "ACCOUNT MANAGER GS",
         lokasi: "BANYUWANGI",
-        imgTtdId: "imgTtdAzki"
+        imgTtd: "assets/images/ttd-Azki.jpeg"
     },
     yustika: {
         nama: "Yustika Monita",
@@ -24,11 +24,11 @@ const DATA_PENGAJU = {
         nik: "NIK.980213",
         jabatan: "OFF 3 SO & CC",
         lokasi: "BANYUWANGI",
-        imgTtdId: "imgTtdMonita"
+        imgTtd: "assets/images/ttd-telkom.jpg"
     }
 };
 
-// Default Set Tanggal Surat ke Hari Ini saat Pertama Load DOM
+// Set Tanggal Default ke Hari Ini
 document.addEventListener('DOMContentLoaded', () => {
     const inputTgl = document.getElementById('tglSurat');
     if (inputTgl && !inputTgl.value) {
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================================================
-// 2. GENERATE PREVIEW SURAT TUGAS KBM & BBM (SAAT KLIK TOMBOL LANJUTKAN)
+// GENERATE PREVIEW SURAT TUGAS KBM
 // ==========================================================================
 function generatePreview(event) {
     if (event) event.preventDefault();
@@ -57,48 +57,48 @@ function generatePreview(event) {
             if (el) el.innerText = text;
         };
 
-        // Ambil Data Pengaju dari Dropdown Select
+        // 1. Data Dropdown Pengaju
         const selectedPengajuKey = document.getElementById('selectPengaju')?.value || 'ericha';
         const pengajuInfo = DATA_PENGAJU[selectedPengajuKey] || DATA_PENGAJU.ericha;
 
-        // Ambil Data Form Lainnya
-        const unitLoker = getValue('unitLoker', 'Plaza Telkom Jember, Kb. Kidul, Jember Kidul, Kec. Kaliwates, Kabupaten Jember, Jawa Timur 68131');
-        const lokasiTujuan = getValue('lokasiTujuan', 'Jl. Jenderal Ahmad Yani No.131, Parse, Dawuhan, Situbondo, Situbondo Regency, East Java 68311');
+        // 2. Data Form Input Manual
+        const unitLoker = getValue('unitLoker', '-');
+        const lokasiTujuan = getValue('lokasiTujuan', '-');
         const jenisBbm = getValue('jenisBbm', 'Pertamax');
         const kotaSurat = getValue('kotaSurat', 'Banyuwangi');
-        const deskripsiKegiatan = getValue('deskripsiKegiatan', 'KUNJUNGAN PELANGGAN KE BAPENDA, PENGADILAN AGAMA, ROXY SWALAYAN, SPBU KENDIT, SPBU KOTAKAN UTARA, SPBU KOTAKAN SELATAN');
+        const deskripsiKegiatan = getValue('deskripsiKegiatan', '-');
 
-        // Populate Nama di Tabel Atas Secara Otomatis Berdasarkan Dropdown Pengaju
+        // 3. Set Preview Teks
         setText('prevNama', pengajuInfo.nama);
         setText('prevUnitLoker', unitLoker);
         setText('prevLokasiTujuan', lokasiTujuan);
         setText('prevJenisBbm', jenisBbm);
         setText('prevDeskripsi', deskripsiKegiatan);
 
-        // Populate Penanda Tangan Dinamis Sesuai Dropdown (Yang Mengajukan)
+        // 4. Set Detail TTD Pengaju
         setText('prevSignNik', pengajuInfo.nik);
         setText('prevSignNama', pengajuInfo.namaKapital);
         setText('prevSignJabatan', pengajuInfo.jabatan);
         setText('prevSignKota', pengajuInfo.lokasi);
 
-        // Toggle TTD Gambar Sesuai Pengaju yang Dipilih
-        ['imgTtdEricha', 'imgTtdAzki', 'imgTtdMonita'].forEach(id => {
-            const img = document.getElementById(id);
-            if (img) img.style.display = 'none';
-        });
+        // 5. Update Gambar TTD Pengaju
+        const imgElement = document.getElementById('imgTtdPengaju');
+        if (imgElement) {
+            imgElement.src = pengajuInfo.imgTtd;
+        }
 
-        const activeImg = document.getElementById(pengajuInfo.imgTtdId);
-        if (activeImg) activeImg.style.display = 'block';
-
-        // Format Tanggal (Contoh: Banyuwangi, 13/Agustus/2026)
+        // 6. Format Tanggal Rapi Tanpa Tanda Garing (Banyuwangi, 13 Agustus 2026)
         const inputTgl = document.getElementById('tglSurat')?.value;
         const dateObj = inputTgl ? new Date(inputTgl) : new Date();
         const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        const tglStr = `${dateObj.getDate()}/${monthNames[dateObj.getMonth()]}/${dateObj.getFullYear()}`;
         
-        setText('prevTglKota', `${kotaSurat}, ${tglStr}`);
+        const day = dateObj.getDate();
+        const month = monthNames[dateObj.getMonth()];
+        const year = dateObj.getFullYear();
+        
+        setText('prevTglKota', `${kotaSurat}, ${day} ${month} ${year}`);
 
-        // TAMPILKAN KERTAS PREVIEW A4 & AKTIFKAN TOMBOL UNDUH
+        // 7. Tampilkan Preview Paper
         const emptyState = document.getElementById('emptyState');
         const paperWrapper = document.getElementById('paperWrapper');
         const btnDownload = document.getElementById('btnDownload');
@@ -118,11 +118,11 @@ function generatePreview(event) {
 }
 
 // ==========================================================================
-// 3. DOWNLOAD PDF SURAT TUGAS KBM (PRESISI PAS 1 HALAMAN A4)
+// DOWNLOAD PDF SURAT TUGAS KBM
 // ==========================================================================
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
-    const element = document.getElementById('page1') || document.getElementById('letterPaper');
+    const element = document.getElementById('page1');
     const selectedPengajuKey = document.getElementById('selectPengaju')?.value || 'ericha';
     const pengajuInfo = DATA_PENGAJU[selectedPengajuKey] || DATA_PENGAJU.ericha;
 
@@ -135,31 +135,6 @@ async function downloadPDF() {
         btnDownload.disabled = true;
         btnDownload.innerText = "Mengunduh...";
     }
-
-    let pdfStyle = document.getElementById('pdfExportStyle');
-    if (!pdfStyle) {
-        pdfStyle = document.createElement('style');
-        pdfStyle.id = 'pdfExportStyle';
-        document.head.appendChild(pdfStyle);
-    }
-    pdfStyle.innerHTML = `
-        #page1 {
-            padding: 1.27cm 2.54cm !important;
-        }
-        #page1 .kbm-table td {
-            padding: 2.5pt 0 !important;
-        }
-        #page1 .deskripsi-box {
-            min-height: 155px !important;
-            margin-bottom: 20pt !important;
-        }
-        #page1 .footer-signature-wrapper {
-            position: absolute !important;
-            bottom: 1.27cm !important;
-            left: 2.54cm !important;
-            right: 2.54cm !important;
-        }
-    `;
 
     try {
         const jsPDFLib = window.jspdf ? (window.jspdf.jsPDF || window.jspdf) : window.jsPDF;
@@ -195,10 +170,6 @@ async function downloadPDF() {
         console.error("Gagal mengunduh PDF Surat Tugas KBM:", error);
         alert("Terjadi kesalahan saat membuat PDF: " + error.message);
     } finally {
-        if (pdfStyle) {
-            pdfStyle.remove();
-        }
-
         if (btnDownload) {
             btnDownload.disabled = false;
             btnDownload.innerText = "Unduh PDF";
@@ -207,7 +178,7 @@ async function downloadPDF() {
 }
 
 // ==========================================================================
-// 4. KONTROL ZOOM & FULLSCREEN PREVIEW
+// KONTROL ZOOM & FULLSCREEN
 // ==========================================================================
 let currentScale = 1;
 

@@ -1,6 +1,3 @@
-// ==========================================================================
-// 1. GENERATE PREVIEW SURAT BUKA ISOLIR (ISI DIBIARKAN UTUH KHAS ISOLIR)
-// ==========================================================================
 function generatePreview(event) {
     if (event) event.preventDefault();
 
@@ -96,9 +93,7 @@ function generatePreview(event) {
     }
 }
 
-// ==========================================================================
-// 2. DOWNLOAD PDF (PERBAIKAN MARGIN ATAS 18MM & TTD UTUH PAS 1 HALAMAN A4)
-// ==========================================================================
+// download PDF
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
     const element = document.getElementById('letterPaper');
@@ -190,9 +185,7 @@ async function downloadPDF() {
     }
 }
 
-// ==========================================================================
-// 3. KONTROL ZOOM & FULLSCREEN PREVIEW
-// ==========================================================================
+// KONTROL ZOOM & FULLSCREEN PREVIEW
 let currentScale = 1;
 
 function zoomIn() { 
