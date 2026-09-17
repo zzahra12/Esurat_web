@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surat Pernyataan Berlangganan WMS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="assets/css/style.css?v=3.1">
 
     <!-- Pustaka Ekspor PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -13,8 +13,10 @@
 
     <style>
         .card-preview {
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
+            overflow-y: visible !important;
+            overflow-x: visible !important;
+            height: auto !important;
+            min-height: 100% !important;
             padding: 20px !important;
             display: flex;
             flex-direction: column;
@@ -33,55 +35,56 @@
             box-sizing: border-box !important;
             background: #ffffff;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            padding: 25px 35px !important;
-            font-size: 11px !important;
-            line-height: 1.4 !important;
+            padding: 20px 30px !important;
+            font-size: 10.5px !important;
+            line-height: 1.35 !important;
             color: #000000;
             font-family: Arial, Helvetica, sans-serif;
         }
 
         .letter-title {
-            font-size: 12.5px !important;
+            font-size: 12px !important;
             margin-bottom: 2px !important;
             font-weight: bold;
             text-align: center;
         }
         .letter-subtitle {
-            font-size: 11px !important;
+            font-size: 10.5px !important;
             text-align: center;
-            margin-bottom: 12px !important;
+            margin-bottom: 10px !important;
         }
         .data-table {
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             border-collapse: collapse;
         }
         .data-table td {
-            padding: 2px 0 !important;
-            font-size: 11px !important;
+            padding: 1.5px 0 !important;
+            font-size: 10.5px !important;
             vertical-align: top;
         }
         .paragraph {
-            margin-bottom: 5px !important;
+            margin-bottom: 4px !important;
             text-align: justify;
+            font-size: 10px !important; /* Diubah jadi 10px */
         }
 
         .wms-numbered-list {
             padding-left: 18px !important;
-            margin-top: 4px !important;
-            margin-bottom: 8px !important;
+            margin-top: 3px !important;
+            margin-bottom: 6px !important;
         }
         .wms-numbered-list li {
             margin-bottom: 2px !important;
             line-height: 1.25 !important;
-            font-size: 10.5px !important;
+            font-size: 10px !important; /* Diubah jadi 10px */
             text-align: justify;
             padding-left: 2px;
         }
 
         /* Area Tanda Tangan Presisi & Aman dari Terpotong */
         .single-signature-section {
-            margin-top: 10px !important;
+            margin-top: 8px !important;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -94,11 +97,11 @@
             border: 1px dashed #e02424;
             color: #e02424;
             width: 90px;
-            height: 50px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 40px auto 8px auto !important; /* Memberikan ruang tempel materai */
+            margin: 35px auto 6px auto !important; /* Nilai margin-top diubah ke 35px */
             font-size: 8.5px;
             font-weight: bold;
         }
@@ -266,6 +269,6 @@
         </div>
     </main>
 
-    <script src="assets/js/surat-wms.js?v=3.0"></script>
+    <script src="assets/js/surat-wms.js?v=3.1"></script>
 </body>
 </html>

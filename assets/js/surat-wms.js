@@ -82,20 +82,26 @@ function generatePreview(event) {
         }
 
         // ==================================================================
-        // PREVENSI KEPOTONG UNTUK GITHUB PAGES (HARD RESET SPACING)
+        // OPTIMASI TAMPILAN PREVIEW (FOKUS UKURAN FONT 10PX & BEBAS KEPOTONG)
         // ==================================================================
         const elPaper = document.getElementById('page1') || document.getElementById('letterPaper');
         if (elPaper) {
-            elPaper.style.paddingTop = '15px';
-            elPaper.style.paddingBottom = '15px';
+            elPaper.style.padding = '18px 25px';
             elPaper.style.boxSizing = 'border-box';
 
-            // Kunci spasi antar poin agar tidak molor di GitHub Pages
+            // Kunci ukuran font poin ke 10px pas
             const listItems = elPaper.querySelectorAll('ol li, ul li');
             listItems.forEach(li => {
                 li.style.marginBottom = '2px';
-                li.style.lineHeight = '1.15';
-                li.style.fontSize = '11.5px';
+                li.style.lineHeight = '1.2';
+                li.style.fontSize = '10px'; // Set ke 10px
+            });
+
+            // Set Paragraf ke 10px
+            const paragraphs = elPaper.querySelectorAll('.paragraph');
+            paragraphs.forEach(p => {
+                p.style.fontSize = '10px';
+                p.style.marginBottom = '4px';
             });
 
             // Container utama blok TTD
@@ -103,7 +109,7 @@ function generatePreview(event) {
             const signBlock = elDate?.parentElement || elSign?.closest('.signature-section') || elSign?.parentElement;
 
             if (signBlock && signBlock !== elPaper) {
-                signBlock.style.marginTop = '10px';
+                signBlock.style.marginTop = '8px';
                 signBlock.style.marginLeft = 'auto';
                 signBlock.style.marginRight = '0';
                 signBlock.style.width = '220px';
@@ -118,12 +124,13 @@ function generatePreview(event) {
                 elDate.style.whiteSpace = 'nowrap';
             }
 
-            // Kotak Materai
-            const elMaterai = elPaper.querySelector('.materai-box') || (elSign ? elSign.closest('div')?.previousElementSibling : null);
+            // Kotak Materai (ruang rapat & aman)
+            // Kotak Materai (ditambah jarak 2 enter / ~35px dari tanggal)
+            const elMaterai = elPaper.querySelector('.single-materai-box') || elPaper.querySelector('.materai-box');
             if (elMaterai) {
-                elMaterai.style.marginTop = '15px';
-                elMaterai.style.marginBottom = '5px';
-                elMaterai.style.height = '42px';
+                elMaterai.style.marginTop = '35px'; // Diubah dari 12px ke 35px
+                elMaterai.style.marginBottom = '6px';
+                elMaterai.style.height = '45px';
                 elMaterai.style.marginLeft = 'auto';
                 elMaterai.style.marginRight = 'auto';
                 elMaterai.style.display = 'flex';
@@ -131,9 +138,9 @@ function generatePreview(event) {
                 elMaterai.style.justifyContent = 'center';
             }
 
-            // Nama Pelanggan
+            // Nama Pelanggan di TTD
             if (elSign && elSign.parentElement) {
-                elSign.parentElement.style.marginTop = '15px';
+                elSign.parentElement.style.marginTop = '4px';
                 elSign.parentElement.style.marginBottom = '0px';
                 elSign.parentElement.style.textAlign = 'center';
             }
@@ -158,7 +165,7 @@ function generatePreview(event) {
 }
 
 // ==========================================================================
-// 3. DOWNLOAD PDF
+// 3. DOWNLOAD PDF (Metode Rendering Presisi 1 Halaman A4)
 // ==========================================================================
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
@@ -178,48 +185,50 @@ async function downloadPDF() {
     try {
         const jsPDFLib = window.jspdf ? (window.jspdf.jsPDF || window.jspdf) : window.jsPDF;
 
-        if (!jsPDFLib) {
-            alert("Pustaka jsPDF belum ter-load.");
+        if (!jsPDFLib || typeof html2canvas === 'undefined') {
+            alert("Pustaka jsPDF atau html2canvas belum ter-load sempurna.");
             return;
         }
 
+        // Simpan transform zoom lokal sementara
         const originalTransform = element.style.transform;
         element.style.transform = 'none';
 
-        const doc = new jsPDFLib({
-            orientation: 'p',
-            unit: 'mm',
-            format: 'a4'
+        // Render HTML ke Canvas gambar dengan rasio tinggi
+        const canvas = await html2canvas(element, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            logging: false,
+            scrollX: 0,
+            scrollY: 0
         });
 
-        const targetWidth = element.offsetWidth > 0 ? element.offsetWidth : 794;
+        // Kembalikan zoom preview
+        element.style.transform = originalTransform;
 
-        await doc.html(element, {
-            callback: function (pdf) {
-                element.style.transform = originalTransform;
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDFLib('p', 'mm', 'a4');
+        
+        const pdfWidth = pdf.internal.pageSize.getWidth();   // 210 mm
+        const pdfHeight = pdf.internal.pageSize.getHeight(); // 297 mm
 
-                const totalPages = pdf.internal.getNumberOfPages();
-                if (totalPages > 1) {
-                    for (let i = totalPages; i > 1; i--) {
-                        pdf.deletePage(i);
-                    }
-                }
-                pdf.save(`Surat_Pernyataan_WMS_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
-            },
-            x: 0,
-            y: 0,
-            width: 210,
-            windowWidth: targetWidth,
-            autoPaging: 'text',
-            html2canvas: {
-                scale: 210 / targetWidth,
-                useCORS: true,
-                allowTaint: true,
-                logging: false,
-                scrollX: 0,
-                scrollY: 0
-            }
-        });
+        const imgWidth = pdfWidth;
+        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        // Auto-scale jika tinggi gambar melebihi 1 halaman A4
+        if (imgHeight > pdfHeight) {
+            const ratio = pdfHeight / imgHeight;
+            const adjustedWidth = pdfWidth * ratio;
+            const adjustedHeight = pdfHeight;
+            const xOffset = (pdfWidth - adjustedWidth) / 2;
+            
+            pdf.addImage(imgData, 'PNG', xOffset, 0, adjustedWidth, adjustedHeight);
+        } else {
+            pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        }
+
+        pdf.save(`Surat_Pernyataan_WMS_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
 
     } catch (error) {
         console.error("Gagal mengunduh PDF WMS:", error);
