@@ -82,26 +82,32 @@ function generatePreview(event) {
         }
 
         // ==================================================================
-        // OPTIMASI TAMPILAN PREVIEW (FOKUS UKURAN FONT 10PX & BEBAS KEPOTONG)
+        // OPTIMASI TAMPILAN PREVIEW (UKURAN FONT KONSISTEN 10PX & 9.5PX)
         // ==================================================================
         const elPaper = document.getElementById('page1') || document.getElementById('letterPaper');
         if (elPaper) {
-            elPaper.style.padding = '18px 25px';
+            elPaper.style.padding = '22px 32px';
             elPaper.style.boxSizing = 'border-box';
 
-            // Kunci ukuran font poin ke 10px pas
+            // Font daftar poin 1-10 di-set ke 9.5px
             const listItems = elPaper.querySelectorAll('ol li, ul li');
             listItems.forEach(li => {
                 li.style.marginBottom = '2px';
-                li.style.lineHeight = '1.2';
-                li.style.fontSize = '10px'; // Set ke 10px
+                li.style.lineHeight = '1.25';
+                li.style.fontSize = '9.5px';
             });
 
-            // Set Paragraf ke 10px
+            // Font paragraf & tabel di-set ke 10px
             const paragraphs = elPaper.querySelectorAll('.paragraph');
             paragraphs.forEach(p => {
                 p.style.fontSize = '10px';
                 p.style.marginBottom = '4px';
+            });
+
+            const tableCells = elPaper.querySelectorAll('.data-table td');
+            tableCells.forEach(td => {
+                td.style.fontSize = '10px';
+                td.style.padding = '1.5px 0';
             });
 
             // Container utama blok TTD
@@ -118,19 +124,19 @@ function generatePreview(event) {
 
             // Tanggal TTD
             if (elDate) {
+                elDate.style.fontSize = '10px';
                 elDate.style.marginTop = '0px';
                 elDate.style.marginBottom = '0px';
                 elDate.style.textAlign = 'center';
                 elDate.style.whiteSpace = 'nowrap';
             }
 
-            // Kotak Materai (ruang rapat & aman)
-            // Kotak Materai (ditambah jarak 2 enter / ~35px dari tanggal)
+            // Kotak Materai (jarak 35px ~2 enter dari tanggal)
             const elMaterai = elPaper.querySelector('.single-materai-box') || elPaper.querySelector('.materai-box');
             if (elMaterai) {
-                elMaterai.style.marginTop = '35px'; // Diubah dari 12px ke 35px
+                elMaterai.style.marginTop = '35px';
                 elMaterai.style.marginBottom = '6px';
-                elMaterai.style.height = '45px';
+                elMaterai.style.height = '48px';
                 elMaterai.style.marginLeft = 'auto';
                 elMaterai.style.marginRight = 'auto';
                 elMaterai.style.display = 'flex';
@@ -140,6 +146,7 @@ function generatePreview(event) {
 
             // Nama Pelanggan di TTD
             if (elSign && elSign.parentElement) {
+                elSign.parentElement.style.fontSize = '10px';
                 elSign.parentElement.style.marginTop = '4px';
                 elSign.parentElement.style.marginBottom = '0px';
                 elSign.parentElement.style.textAlign = 'center';
@@ -165,7 +172,7 @@ function generatePreview(event) {
 }
 
 // ==========================================================================
-// 3. DOWNLOAD PDF (Teks Asli / Vector PDF, Bukan Gambar)
+// 3. DOWNLOAD PDF (UKURAN TEKS NORMAL, JELAS & BISA DIBACA SAAT DIPRINT)
 // ==========================================================================
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
@@ -185,44 +192,38 @@ async function downloadPDF() {
     try {
         const jsPDFLib = window.jspdf ? (window.jspdf.jsPDF || window.jspdf) : window.jsPDF;
 
-        if (!jsPDFLib) {
-            alert("Pustaka jsPDF belum ter-load sempurna.");
+        if (!jsPDFLib || typeof html2canvas === 'undefined') {
+            alert("Pustaka jsPDF atau html2canvas belum ter-load sempurna.");
             return;
         }
 
-        // Simpan posisi transform zoom jika ada
         const originalTransform = element.style.transform;
         element.style.transform = 'none';
 
-        // Inisialisasi dokumen PDF A4
-        const doc = new jsPDFLib({
-            orientation: 'p',
-            unit: 'mm',
-            format: 'a4'
+        // Render HTML ke Canvas dengan skala tinggi (skala 2) agar tulisan sangat tajam
+        const canvas = await html2canvas(element, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            logging: false,
+            scrollX: 0,
+            scrollY: 0
         });
 
-        // Konversi HTML langsung ke Vector PDF Teks
-        await doc.html(element, {
-            callback: function (pdf) {
-                // Kembalikan style transform ke asal
-                element.style.transform = originalTransform;
+        element.style.transform = originalTransform;
 
-                // Hapus halaman kedua jika tidak sengaja terbuat halaman kosong
-                const totalPages = pdf.internal.getNumberOfPages();
-                if (totalPages > 1) {
-                    for (let i = totalPages; i > 1; i--) {
-                        pdf.deletePage(i);
-                    }
-                }
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDFLib('p', 'mm', 'a4');
+        
+        const pdfWidth = pdf.internal.pageSize.getWidth();   // 210 mm
+        const pdfHeight = pdf.internal.pageSize.getHeight(); // 297 mm
 
-                pdf.save(`Surat_Pernyataan_WMS_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
-            },
-            x: 0,
-            y: 0,
-            width: 210, // Lebar halaman A4 dalam mm
-            windowWidth: element.offsetWidth || 700,
-            autoPaging: 'text' // Memastikan teks diproses sebagai teks asli
-        });
+        // Pas-kan lebar gambar ke 210mm tanpa mengecilkan skala teks berlebih
+        const imgWidth = pdfWidth;
+        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        pdf.save(`Surat_Pernyataan_WMS_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
 
     } catch (error) {
         console.error("Gagal mengunduh PDF WMS:", error);
