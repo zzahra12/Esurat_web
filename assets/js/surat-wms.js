@@ -165,7 +165,7 @@ function generatePreview(event) {
 }
 
 // ==========================================================================
-// 3. DOWNLOAD PDF (Metode Rendering Presisi 1 Halaman A4)
+// 3. DOWNLOAD PDF (Teks Asli / Vector PDF, Bukan Gambar)
 // ==========================================================================
 async function downloadPDF() {
     const btnDownload = document.getElementById('btnDownload');
@@ -185,50 +185,44 @@ async function downloadPDF() {
     try {
         const jsPDFLib = window.jspdf ? (window.jspdf.jsPDF || window.jspdf) : window.jsPDF;
 
-        if (!jsPDFLib || typeof html2canvas === 'undefined') {
-            alert("Pustaka jsPDF atau html2canvas belum ter-load sempurna.");
+        if (!jsPDFLib) {
+            alert("Pustaka jsPDF belum ter-load sempurna.");
             return;
         }
 
-        // Simpan transform zoom lokal sementara
+        // Simpan posisi transform zoom jika ada
         const originalTransform = element.style.transform;
         element.style.transform = 'none';
 
-        // Render HTML ke Canvas gambar dengan rasio tinggi
-        const canvas = await html2canvas(element, {
-            scale: 2,
-            useCORS: true,
-            allowTaint: true,
-            logging: false,
-            scrollX: 0,
-            scrollY: 0
+        // Inisialisasi dokumen PDF A4
+        const doc = new jsPDFLib({
+            orientation: 'p',
+            unit: 'mm',
+            format: 'a4'
         });
 
-        // Kembalikan zoom preview
-        element.style.transform = originalTransform;
+        // Konversi HTML langsung ke Vector PDF Teks
+        await doc.html(element, {
+            callback: function (pdf) {
+                // Kembalikan style transform ke asal
+                element.style.transform = originalTransform;
 
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDFLib('p', 'mm', 'a4');
-        
-        const pdfWidth = pdf.internal.pageSize.getWidth();   // 210 mm
-        const pdfHeight = pdf.internal.pageSize.getHeight(); // 297 mm
+                // Hapus halaman kedua jika tidak sengaja terbuat halaman kosong
+                const totalPages = pdf.internal.getNumberOfPages();
+                if (totalPages > 1) {
+                    for (let i = totalPages; i > 1; i--) {
+                        pdf.deletePage(i);
+                    }
+                }
 
-        const imgWidth = pdfWidth;
-        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-        // Auto-scale jika tinggi gambar melebihi 1 halaman A4
-        if (imgHeight > pdfHeight) {
-            const ratio = pdfHeight / imgHeight;
-            const adjustedWidth = pdfWidth * ratio;
-            const adjustedHeight = pdfHeight;
-            const xOffset = (pdfWidth - adjustedWidth) / 2;
-            
-            pdf.addImage(imgData, 'PNG', xOffset, 0, adjustedWidth, adjustedHeight);
-        } else {
-            pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-        }
-
-        pdf.save(`Surat_Pernyataan_WMS_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
+                pdf.save(`Surat_Pernyataan_WMS_${namaPelanggan.replace(/\s+/g, '_')}.pdf`);
+            },
+            x: 0,
+            y: 0,
+            width: 210, // Lebar halaman A4 dalam mm
+            windowWidth: element.offsetWidth || 700,
+            autoPaging: 'text' // Memastikan teks diproses sebagai teks asli
+        });
 
     } catch (error) {
         console.error("Gagal mengunduh PDF WMS:", error);
